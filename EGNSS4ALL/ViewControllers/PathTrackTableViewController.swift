@@ -168,22 +168,11 @@ class PathTrackTableViewController: UITableViewController {
         ]
         
         // Prepare URL
-        
-        let customServer = localStorage.bool(forKey: "customServer")
-        
-        var urlStr = ""
-        
-        if customServer {
-            urlStr = (localStorage.string(forKey: "url") ?? "https://www.egnss4all.com") + "/egnss4allservices/comm_path.php"
-        } else {
-            urlStr = "https://www.egnss4all.com/egnss4allservices/comm_path.php"
-        }
-        
-        
+        let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_path.php"
+        print("------------------------------------------")
         print(urlStr)
+        print("------------------------------------------")
         let url = URL(string: urlStr)
-        
-       
         guard let requestUrl = url else { fatalError() }
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"

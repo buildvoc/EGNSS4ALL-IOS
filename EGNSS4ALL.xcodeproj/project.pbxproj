@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04EB49FB2B8DE9340064A1DC /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB49FA2B8DE9340064A1DC /* Configuration.swift */; };
+		11CFA11497372C336862770A /* Pods_EGNSS4ALL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FFA27C040FA506CD45CCA59 /* Pods_EGNSS4ALL.framework */; };
 		49051E4E2567EBFA00FEB06D /* SEActiveCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49051E4D2567EBFA00FEB06D /* SEActiveCell.swift */; };
 		49051E542567EDB000FEB06D /* SECentroidSampleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49051E532567EDB000FEB06D /* SECentroidSampleCell.swift */; };
 		49051E5A2567EF5300FEB06D /* SESetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49051E592567EF5300FEB06D /* SESetting.swift */; };
@@ -71,6 +73,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04EB49FA2B8DE9340064A1DC /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		49051E4D2567EBFA00FEB06D /* SEActiveCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEActiveCell.swift; sourceTree = "<group>"; };
 		49051E532567EDB000FEB06D /* SECentroidSampleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECentroidSampleCell.swift; sourceTree = "<group>"; };
 		49051E592567EF5300FEB06D /* SESetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SESetting.swift; sourceTree = "<group>"; };
@@ -127,6 +130,9 @@
 		61CFFC1B255EE0E10009554D /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		61DB65CD26415A07001DF7EB /* SETrackingIntervalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SETrackingIntervalCell.swift; sourceTree = "<group>"; };
 		61DDD8982591EA470080019F /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		8FFA27C040FA506CD45CCA59 /* Pods_EGNSS4ALL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EGNSS4ALL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		95E79B0CBFCF7AD2C96A0DBC /* Pods-EGNSS4ALL.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EGNSS4ALL.release.xcconfig"; path = "Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL.release.xcconfig"; sourceTree = "<group>"; };
+		C36948A497D4901D5F4AC5E2 /* Pods-EGNSS4ALL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EGNSS4ALL.debug.xcconfig"; path = "Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL.debug.xcconfig"; sourceTree = "<group>"; };
 		E00925E628E215AB00B2739B /* alertVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = alertVC.swift; sourceTree = "<group>"; };
 		E01E6EFF2844B9C30034C02D /* SkyViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyViewVC.swift; sourceTree = "<group>"; };
 		E0AFE5482847DE9400FF5DBD /* circleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = circleView.swift; sourceTree = "<group>"; };
@@ -143,12 +149,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11CFA11497372C336862770A /* Pods_EGNSS4ALL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04EB49F92B8DE9260064A1DC /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				04EB49FA2B8DE9340064A1DC /* Configuration.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		49051E4B2567EB3000FEB06D /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,12 +244,21 @@
 			path = DB;
 			sourceTree = "<group>";
 		};
+		56D4F0DFF7AB5B494607B1DE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8FFA27C040FA506CD45CCA59 /* Pods_EGNSS4ALL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		61C3AC912551461F000CED80 = {
 			isa = PBXGroup;
 			children = (
 				61C3AC9C2551461F000CED80 /* EGNSS4ALL */,
 				61C3AC9B2551461F000CED80 /* Products */,
 				7676F9DBCFBB4153CA27D20C /* Pods */,
+				56D4F0DFF7AB5B494607B1DE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -249,6 +273,7 @@
 		61C3AC9C2551461F000CED80 /* EGNSS4ALL */ = {
 			isa = PBXGroup;
 			children = (
+				04EB49F92B8DE9260064A1DC /* Helpers */,
 				E02CF41D284E443500EA189B /* Class */,
 				E02CF41C284E441E00EA189B /* UIKit Extensions */,
 				E02CF41B284E440900EA189B /* Cells */,
@@ -285,6 +310,8 @@
 		7676F9DBCFBB4153CA27D20C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				C36948A497D4901D5F4AC5E2 /* Pods-EGNSS4ALL.debug.xcconfig */,
+				95E79B0CBFCF7AD2C96A0DBC /* Pods-EGNSS4ALL.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -347,9 +374,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 61C3ACAE2551461F000CED80 /* Build configuration list for PBXNativeTarget "EGNSS4ALL" */;
 			buildPhases = (
+				397F0360AEC823F62CF6D930 /* [CP] Check Pods Manifest.lock */,
 				61C3AC962551461F000CED80 /* Sources */,
 				61C3AC972551461F000CED80 /* Frameworks */,
 				61C3AC982551461F000CED80 /* Resources */,
+				8AE1837582F103EA909BF440 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -413,6 +442,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		397F0360AEC823F62CF6D930 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-EGNSS4ALL-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8AE1837582F103EA909BF440 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		61C3AC962551461F000CED80 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -448,6 +519,7 @@
 				E0AFE5492847DE9400FF5DBD /* circleView.swift in Sources */,
 				61C4DA9C2552D784003540DE /* MapViewController.swift in Sources */,
 				49AAE59525755F8F00A37C1B /* PTManager.swift in Sources */,
+				04EB49FB2B8DE9340064A1DC /* Configuration.swift in Sources */,
 				61CFFC1C255EE0E10009554D /* Util.swift in Sources */,
 				E0E5D2E128D9F78E0028CCDD /* alertPickerVC.swift in Sources */,
 				49AAE5A12575699800A37C1B /* PTMKAnnotationView.swift in Sources */,
@@ -616,23 +688,27 @@
 		};
 		61C3ACAF2551461F000CED80 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C36948A497D4901D5F4AC5E2 /* Pods-EGNSS4ALL.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
-				DEVELOPMENT_TEAM = FP2Y2BZASX;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 43;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7UUTF6T5P9;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.erasmicoin.euspa.egnss4all;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infoenum.CRI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "CRI - iMessage Distribution";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -640,23 +716,27 @@
 		};
 		61C3ACB02551461F000CED80 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 95E79B0CBFCF7AD2C96A0DBC /* Pods-EGNSS4ALL.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
-				DEVELOPMENT_TEAM = FP2Y2BZASX;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 43;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7UUTF6T5P9;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.erasmicoin.euspa.egnss4all;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infoenum.CRI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "CRI - iMessage Distribution";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

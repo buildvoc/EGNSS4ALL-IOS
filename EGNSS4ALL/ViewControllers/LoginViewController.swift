@@ -144,30 +144,16 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         let pswdText = encodeParamenters(parametro: pswdTextField.text ?? "")
         
         // Prepare URL
-        
-        let customServer = localStorage.bool(forKey: "customServer")
-        
-        var urlStr = ""
-        
-        if customServer {
-            urlStr = (localStorage.string(forKey: "url") ?? "https://www.egnss4all.com") + "/egnss4allservices/comm_login.php"
-        } else {
-            urlStr = "https://www.egnss4all.com/egnss4allservices/comm_login.php"
-        }
-        
-        
+        let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_login.php"
+        print("------------------------------------------")
         print(urlStr)
-        
-        
+        print("------------------------------------------")
         let url = URL(string: urlStr)
-        
-    
         guard let requestUrl = url else { fatalError() }
         // Prepare URL Request Object
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
         
-         
         // HTTP Request Parameters which will be sent in HTTP Request Body
         let postString = "login=\(loginText)&pswd=\(pswdText)"
         print(postString)

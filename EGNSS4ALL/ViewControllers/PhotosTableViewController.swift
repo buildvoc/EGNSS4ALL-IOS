@@ -115,7 +115,7 @@ class PhotosTableViewController: UITableViewController {
         let cellIdentifier = "PhotoTableViewCell"
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? PhotoTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of MealTableViewCell.")
+            return UITableViewCell()
         }
         
         let photo = persistPhotos[indexPath.row]

@@ -220,23 +220,10 @@ class TasksTableViewController: UITableViewController {
         let userID = String(UserStorage.userID)
         
         do {
-           
-            // Prepare URL
-            
-            let customServer = localStorage.bool(forKey: "customServer")
-            
-            var urlStr = ""
-            
-            if customServer {
-                urlStr = (localStorage.string(forKey: "url") ?? "https://www.egnss4all.com") + "/egnss4allservices/comm_tasks.php"
-            } else {
-                urlStr = "https://www.egnss4all.com/egnss4allservices/comm_tasks.php"
-            }
-            
-            
+            let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_tasks.php"
+            print("------------------------------------------")
             print(urlStr)
-            
-          
+            print("------------------------------------------")
             let url = URL(string: urlStr)
             guard let requestUrl = url else { fatalError() }
             // Prepare URL Request Object

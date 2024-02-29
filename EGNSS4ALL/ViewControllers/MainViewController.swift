@@ -46,6 +46,120 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     var timerNavPvt = Timer()
     
     let localStorage = UserDefaults.standard
+        
+    //MARK: View Life Cycle -
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        manager = CBCentralManager(delegate: self, queue: nil)
+        
+        let extGPS = localStorage.bool(forKey: "externalGPS")
+        let perUUID = localStorage.string(forKey: "periphealUUID")
+        
+        if extGPS {
+            periphealUUID = CBUUID(string: perUUID ?? "00000000-0000-0000-0000-000000000000")
+            self.timerNavPvt = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
+                self.triggerPvt()
+            })
+        }
+        // Do any additional setup after loading the view.
+        
+        manageObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        userView.layer.cornerRadius = 10
+        /*userTitleView.layer.cornerRadius = 10
+        userTitleView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        userView.layer.shadowColor = UIColor.black.cgColor
+        userView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        userView.layer.shadowOpacity = 0.3
+        userView.layer.shadowRadius = 2.0*/
+        
+        basicInfoView.layer.cornerRadius = 10
+        /*basicInfoTitleView.layer.cornerRadius = 10
+        basicInfoTitleView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        basicInfoView.layer.shadowColor = UIColor.black.cgColor
+        basicInfoView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        basicInfoView.layer.shadowOpacity = 0.3
+        basicInfoView.layer.shadowRadius = 2.0*/
+        
+        /*buttonView.layer.cornerRadius = 10
+        buttonView.layer.shadowColor = UIColor.black.cgColor
+        buttonView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        buttonView.layer.shadowOpacity = 0.3
+        buttonView.layer.shadowRadius = 2.0*/
+        
+        checkIfLocationServicesIsEnabled()
+        
+        //updateLoggedUser()
+        //updateBasicInfo()
+        
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(updateBasicInfo), userInfo: nil, repeats: true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
+        
+        updateLoggedUser()
+        updateBasicInfo()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        checkLoggedUser()
+        print(self.navigationController?.viewControllers.count)
+        if (self.navigationController?.viewControllers.count)! > 1 {
+            self.navigationController?.viewControllers.remove(at: 1)
+        }
+        
+    }
+
+    //MARK: - IBActions -
+    
+    @IBAction func unwindToMainView(sender: UIStoryboardSegue) {
+        updateLoggedUser()
+        print("unwind")
+    }
+
+    @IBAction func photosButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowPhotos", sender: self)
+    }
+    
+    @IBAction func tasksButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowTasks", sender: self)
+    }
+    
+    @IBAction func mapButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowMap", sender: self)
+    }
+    
+    
+    @IBAction func skyMapButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowSkyMap", sender: self)
+    }
+    
+    @IBAction func settingsButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowSettings", sender: self)
+    }
+    @IBAction func aboutButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowAbout", sender: self)
+    }
+        
+    @IBAction func logout(_ sender: UIBarButtonItem) {
+        UserStorage.removeObject(key: UserStorage.Key.userID)
+        UserStorage.removeObject(key: UserStorage.Key.login)
+        UserStorage.removeObject(key: UserStorage.Key.userName)
+        UserStorage.removeObject(key: UserStorage.Key.userSurname)
+        
+        //updateLoggedUser()
+        
+        checkLoggedUser()
+    }
+    
+    //MARK: - Other Helpers -
     
     func triggerPvt() {
         let str = "getNavPvt"
@@ -95,7 +209,6 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         peripheral.discoverServices([serviceUUID])
         print("Connesso a " +  peripheral.name!)
        
-    
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
@@ -109,7 +222,6 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         print(error!)
     }
-    
     
     
     func getNavPvt(characteristic: CBCharacteristic) {
@@ -148,117 +260,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
             
         }
     }
-    
-    override func viewDidLoad() {
         
-        manager = CBCentralManager(delegate: self, queue: nil)
-        
-        let extGPS = localStorage.bool(forKey: "externalGPS")
-        let perUUID = localStorage.string(forKey: "periphealUUID")
-        
-        if extGPS {
-            periphealUUID = CBUUID(string: perUUID ?? "00000000-0000-0000-0000-000000000000")
-            self.timerNavPvt = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
-                self.triggerPvt()
-            })
-        }
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        manageObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
-        userView.layer.cornerRadius = 10
-        /*userTitleView.layer.cornerRadius = 10
-        userTitleView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        userView.layer.shadowColor = UIColor.black.cgColor
-        userView.layer.shadowOffset = CGSize(width: 3, height: 3)
-        userView.layer.shadowOpacity = 0.3
-        userView.layer.shadowRadius = 2.0*/
-        
-        basicInfoView.layer.cornerRadius = 10
-        /*basicInfoTitleView.layer.cornerRadius = 10
-        basicInfoTitleView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        basicInfoView.layer.shadowColor = UIColor.black.cgColor
-        basicInfoView.layer.shadowOffset = CGSize(width: 3, height: 3)
-        basicInfoView.layer.shadowOpacity = 0.3
-        basicInfoView.layer.shadowRadius = 2.0*/
-        
-        /*buttonView.layer.cornerRadius = 10
-        buttonView.layer.shadowColor = UIColor.black.cgColor
-        buttonView.layer.shadowOffset = CGSize(width: 3, height: 3)
-        buttonView.layer.shadowOpacity = 0.3
-        buttonView.layer.shadowRadius = 2.0*/
-        
-        locationManager.requestWhenInUseAuthorization()
-        
-        //updateLoggedUser()
-        //updateBasicInfo()
-        
-        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(updateBasicInfo), userInfo: nil, repeats: true)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
-        
-        updateLoggedUser()
-        updateBasicInfo()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        checkLoggedUser()
-        print(self.navigationController?.viewControllers.count)
-        if (self.navigationController?.viewControllers.count)! > 1 {
-            self.navigationController?.viewControllers.remove(at: 1)
-        }
-        
-    }
-    
-   
-    
-    @IBAction func unwindToMainView(sender: UIStoryboardSegue) {
-        updateLoggedUser()
-        print("unwind")
-    }
-
-    @IBAction func photosButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "ShowPhotos", sender: self)
-    }
-    
-    @IBAction func tasksButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "ShowTasks", sender: self)
-    }
-    
-    @IBAction func mapButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "ShowMap", sender: self)
-    }
-    
-    
-    @IBAction func skyMapButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "ShowSkyMap", sender: self)
-    }
-    
-    @IBAction func settingsButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "ShowSettings", sender: self)
-    }
-    @IBAction func aboutButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "ShowAbout", sender: self)
-    }
-        
-    @IBAction func logout(_ sender: UIBarButtonItem) {
-        UserStorage.removeObject(key: UserStorage.Key.userID)
-        UserStorage.removeObject(key: UserStorage.Key.login)
-        UserStorage.removeObject(key: UserStorage.Key.userName)
-        UserStorage.removeObject(key: UserStorage.Key.userSurname)
-        
-        //updateLoggedUser()
-        
-        checkLoggedUser()
-    }    
-    
     private func checkLoggedUser() {
         let isLogged = UserStorage.exists(key: UserStorage.Key.userID)
         
@@ -310,21 +312,6 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     }
     
     @objc func updateBasicInfo() {
-        if CLLocationManager.locationServicesEnabled() {
-            switch CLLocationManager.authorizationStatus() {
-                case .notDetermined, .restricted, .denied:
-                    print("No access")
-                    locationCheckImage.image = UIImage(named: "red_circle")
-                case .authorizedAlways, .authorizedWhenInUse:
-                    print("Access")
-                    locationCheckImage.image = UIImage(named: "green_circle")
-                @unknown default:
-                break
-            }
-        } else {
-            print("Location services are not enabled")
-            locationCheckImage.image = UIImage(named: "red_circle")
-        }
         
         if (UserStorage.exists(key: UserStorage.Key.gpsCapable) != true) {
             var capableType: Bool
@@ -433,6 +420,49 @@ extension MainViewController: CBPeripheralDelegate {
     }
 }
 
+extension MainViewController: CLLocationManagerDelegate {
+    
+    func checkIfLocationServicesIsEnabled() {
+        DispatchQueue.global().async {
+            if CLLocationManager.locationServicesEnabled() {
+                self.locationManager.delegate = self
+                self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation/// kCLLocationAccuracyBest is the default
+                DispatchQueue.main.async {
+                    self.checkLocationAuthorization()
+                }
+            } else {
+                // show message: Services desabled!
+                DispatchQueue.main.async {
+                    self.checkLocationAuthorization()
+                }
+            }
+        }
+    }
+    
+    private func checkLocationAuthorization() {
+        switch locationManager.authorizationStatus {
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+            locationCheckImage.image = UIImage(named: "red_circle")
+        case .restricted, .denied:
+            // show message
+            locationCheckImage.image = UIImage(named: "red_circle")
+        case .authorizedWhenInUse, .authorizedAlways:
+            /// app is authorized
+            locationCheckImage.image = UIImage(named: "green_circle")
+        default:
+            break
+        }
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        checkLocationAuthorization()
+    }
+        
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Location services are not enabled")
+    }
+}
 
 
 // Created for the GSA in 2020-2021. Project management: SpaceTec Partners, software development: www.foxcom.eu
