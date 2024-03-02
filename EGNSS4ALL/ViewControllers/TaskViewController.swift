@@ -120,9 +120,9 @@ class TaskViewController: UIViewController {
             
             self.persistTask.note = textField?.text
             
-            do{
+            do {
                 try self.manageObjectContext.save()
-            }catch{
+            } catch {
                 print("Could not save data: \(error.localizedDescription)")
             }
             
@@ -153,7 +153,7 @@ class TaskViewController: UIViewController {
     }
     
     @IBAction func nextButton(_ sender: Any) {
-        if currentPhotoIndex < (persistPhotos.count - 1){
+        if currentPhotoIndex < (persistPhotos.count - 1) {
             currentPhotoIndex = currentPhotoIndex + 1
             loadPhoto()
         }
@@ -176,9 +176,9 @@ class TaskViewController: UIViewController {
         if persistTask.status == "new" {
             persistTask.status = "open"
             
-            do{
+            do {
                 try self.manageObjectContext.save()
-            }catch{
+            } catch {
                 print("Could not save data: \(error.localizedDescription)")
             }
         }
@@ -205,9 +205,9 @@ class TaskViewController: UIViewController {
         loadPhoto()
         updateSendButton()
                 
-        do{
+        do {
             try self.manageObjectContext.save()
-        }catch{
+        } catch {
             print("Could not save data: \(error.localizedDescription)")
         }
     }
@@ -422,9 +422,9 @@ class TaskViewController: UIViewController {
         if answer.status == "ok" {
             photosToSend[0].sended = true
             
-            do{
+            do {
                 try self.manageObjectContext.save()
-            }catch{
+            } catch {
                 print("Could not save data: \(error.localizedDescription)")
             }
             
@@ -489,9 +489,9 @@ class TaskViewController: UIViewController {
         if answer.status == "ok" {
             persistTask.status = "data provided"
             
-            do{
+            do {
                 try self.manageObjectContext.save()
-            }catch{
+            } catch {
                 print("Could not save data: \(error.localizedDescription)")
             }
             

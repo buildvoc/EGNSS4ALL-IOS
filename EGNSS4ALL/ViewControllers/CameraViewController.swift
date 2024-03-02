@@ -126,7 +126,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
             }
            
         }
-        photoDataController.headingReceiver = {heading in
+        photoDataController.headingReceiver = { heading in
             self.azimuthLabel.text = String(format: "%.0f", self.photoDataController.computePhotoHeading() ?? "unknown")
         }
         photoDataController.motionReceiver = { attitude in
@@ -517,9 +517,9 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         
         //persistPhotos += [persistPhoto]
                
-        do{
+        do {
             try self.manageObjectContext.save()
-        }catch{
+        } catch {
             print("Could not save data: \(error.localizedDescription)")
         }
         if taskid == -1 {

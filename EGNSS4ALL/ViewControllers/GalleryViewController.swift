@@ -53,7 +53,7 @@ class GalleryViewController: UIViewController {
     }
     
     @IBAction func rightButton(_ sender: UIButton) {
-        if currentPhotoIndex < (persistPhotos.count - 1){
+        if currentPhotoIndex < (persistPhotos.count - 1) {
             currentPhotoIndex = currentPhotoIndex + 1
             loadPhoto()
         }

@@ -135,7 +135,7 @@ class PhotoDataController: NSObject {
     }
     
     private func isDelayCorrect(refTimeArr: [TimeInterval]) -> Bool {
-        if (refTimeArr.count == 1){
+        if (refTimeArr.count == 1) {
             return true
         }
         var sumTime: Double = 0
@@ -181,7 +181,7 @@ class PhotoDataController: NSObject {
     private func startLocations() {
         isLocRefreshRunning = true
         if (isCentroid) {
-            centroidTimer = Timer.scheduledTimer(withTimeInterval: Double(Self.centroidUpdateIntervalMils) / 1000, repeats: true) {timer in
+            centroidTimer = Timer.scheduledTimer(withTimeInterval: Double(Self.centroidUpdateIntervalMils) / 1000, repeats: true) { timer in
                 // násilné vynucení updatu
                 self.locationManager.stopUpdatingLocation()
                 self.locationManager.startUpdatingLocation()

@@ -63,7 +63,7 @@
 		61DDD8992591EA470080019F /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DDD8982591EA470080019F /* AboutViewController.swift */; };
 		E00925E728E215AB00B2739B /* alertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00925E628E215AB00B2739B /* alertVC.swift */; };
 		E01E6F002844B9C30034C02D /* SkyViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01E6EFF2844B9C30034C02D /* SkyViewVC.swift */; };
-		E0AFE5492847DE9400FF5DBD /* circleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AFE5482847DE9400FF5DBD /* circleView.swift */; };
+		E0AFE5492847DE9400FF5DBD /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AFE5482847DE9400FF5DBD /* CircleView.swift */; };
 		E0C6ECEE2A499A8F00CE0F4B /* selectServerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6ECED2A499A8F00CE0F4B /* selectServerVC.swift */; };
 		E0D76800284E597F001DE921 /* Satellite.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D767FF284E597E001DE921 /* Satellite.swift */; };
 		E0D76802284E5AC4001DE921 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D76801284E5AC4001DE921 /* NetworkService.swift */; };
@@ -135,7 +135,7 @@
 		C36948A497D4901D5F4AC5E2 /* Pods-EGNSS4ALL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EGNSS4ALL.debug.xcconfig"; path = "Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL.debug.xcconfig"; sourceTree = "<group>"; };
 		E00925E628E215AB00B2739B /* alertVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = alertVC.swift; sourceTree = "<group>"; };
 		E01E6EFF2844B9C30034C02D /* SkyViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyViewVC.swift; sourceTree = "<group>"; };
-		E0AFE5482847DE9400FF5DBD /* circleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = circleView.swift; sourceTree = "<group>"; };
+		E0AFE5482847DE9400FF5DBD /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		E0C6ECED2A499A8F00CE0F4B /* selectServerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = selectServerVC.swift; sourceTree = "<group>"; };
 		E0D767FF284E597E001DE921 /* Satellite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Satellite.swift; sourceTree = "<group>"; };
 		E0D76801284E5AC4001DE921 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -353,7 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				E0D76801284E5AC4001DE921 /* NetworkService.swift */,
-				E0AFE5482847DE9400FF5DBD /* circleView.swift */,
+				E0AFE5482847DE9400FF5DBD /* CircleView.swift */,
 				49355A5E256302CD00EA478F /* extensions.swift */,
 			);
 			path = "UIKit Extensions";
@@ -516,7 +516,7 @@
 				49AAE59B257566D200A37C1B /* PTMKAnnotation.swift in Sources */,
 				E0C6ECEE2A499A8F00CE0F4B /* selectServerVC.swift in Sources */,
 				61C3AC9E2551461F000CED80 /* AppDelegate.swift in Sources */,
-				E0AFE5492847DE9400FF5DBD /* circleView.swift in Sources */,
+				E0AFE5492847DE9400FF5DBD /* CircleView.swift in Sources */,
 				61C4DA9C2552D784003540DE /* MapViewController.swift in Sources */,
 				49AAE59525755F8F00A37C1B /* PTManager.swift in Sources */,
 				04EB49FB2B8DE9340064A1DC /* Configuration.swift in Sources */,
@@ -693,7 +693,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 43;
 				DEVELOPMENT_TEAM = "";
@@ -705,10 +705,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.infoenum.CRI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infoenumapps.CRI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "CRI - iMessage Distribution";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = infoenumapps;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -721,7 +721,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 43;
 				DEVELOPMENT_TEAM = "";
@@ -733,10 +733,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.infoenum.CRI;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infoenumapps.CRI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "CRI - iMessage Distribution";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = infoenumapps;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -53,7 +53,7 @@ class PhotosTableViewController: UITableViewController {
         openDetail = true
     }
     
-    func scrollToBottom(){
+    func scrollToBottom() {
             DispatchQueue.main.async {
                 let indexPath = IndexPath(row: self.persistPhotos.count-1, section: 0)
                 self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
@@ -160,9 +160,9 @@ class PhotosTableViewController: UITableViewController {
             persistPhotos.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             
-            do{
+            do {
                 try self.manageObjectContext.save()
-            }catch{
+            } catch {
                 print("Could not save data: \(error.localizedDescription)")
             }
             
@@ -293,9 +293,9 @@ class PhotosTableViewController: UITableViewController {
         
         persistPhotos += [persistPhoto1, persistPhoto2]
                
-        do{
+        do {
             try self.manageObjectContext.save()
-        }catch{
+        } catch {
             print("Could not save data: \(error.localizedDescription)")
         }
         

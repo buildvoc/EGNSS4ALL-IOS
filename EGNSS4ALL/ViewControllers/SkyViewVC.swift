@@ -23,7 +23,7 @@ class SkyViewVC: UIViewController, CLLocationManagerDelegate, UIPickerViewDelega
     }
     
     
-    @IBOutlet weak var circleView: circleView!
+    @IBOutlet weak var circleView: CircleView!
     
     @IBOutlet weak var selectBtn: UIButton!
     @IBOutlet weak var constLabel: UILabel!

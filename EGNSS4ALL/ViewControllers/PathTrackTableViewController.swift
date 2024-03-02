@@ -67,7 +67,7 @@ class PathTrackTableViewController: UITableViewController {
     }
     
     @IBAction func editTable(_ sender: UIBarButtonItem) {
-        if(tableView.isEditing == true){
+        if(tableView.isEditing == true) {
             tableView.isEditing = false
             editButton.title = "Edit"
             sendButton.isEnabled = true

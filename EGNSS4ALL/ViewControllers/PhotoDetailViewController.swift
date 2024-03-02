@@ -123,9 +123,9 @@ class PhotoDetailViewController: UIViewController {
             
             self.persistPhoto.note = textField?.text
             
-            do{
+            do {
                 try self.manageObjectContext.save()
-            }catch{
+            } catch {
                 print("Could not save data: \(error.localizedDescription)")
             }
             
@@ -219,9 +219,9 @@ class PhotoDetailViewController: UIViewController {
             
             persistPhoto.sended = true
             
-            do{
+            do {
                 try self.manageObjectContext.save()
-            }catch{
+            } catch {
                 print("Could not save data: \(error.localizedDescription)")
             }
             

@@ -322,9 +322,9 @@ class TasksTableViewController: UITableViewController {
                                 persistTask.date_created = df.date(from: task.date_created)
                                 persistTask.task_due_date = df.date(from: task.task_due_date)
                                 
-                                do{
+                                do {
                                     try self.manageObjectContext.save()
-                                }catch{
+                                } catch {
                                     print("Could not save data: \(error.localizedDescription)")
                                 }
                             }
@@ -348,9 +348,9 @@ class TasksTableViewController: UITableViewController {
                                 persistTask.text_returned = task.text_returned
                                 persistTask.status = task.status
                                 
-                                do{
+                                do {
                                     try self.manageObjectContext.save()
-                                }catch{
+                                } catch {
                                     print("Could not save data: \(error.localizedDescription)")
                                 }
                             }
