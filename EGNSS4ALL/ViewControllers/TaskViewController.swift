@@ -45,11 +45,8 @@ class TaskViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         changeStatus()
-        
         loadPersistPhotos()
-        
         updateDetail()
         updateSendButton()
         loadPhoto()
@@ -224,7 +221,6 @@ class TaskViewController: UIViewController {
     }
     
     func updateDetail() {
-        
         if persistTask.status == "data provided" {
             noteButton.isHidden = true;
             cameraButton.isHidden = true;
@@ -282,7 +278,6 @@ class TaskViewController: UIViewController {
     func loadPhoto() {
         if (persistPhotos.count > 0) {
             orderLabel.text = String(currentPhotoIndex+1) + "/" + String(persistPhotos.count)
-            
             photoImage.image = UIImage(data: persistPhotos[currentPhotoIndex].photo!)
             latLabel.text = persistPhotos[currentPhotoIndex].lat.description
             longLabel.text = persistPhotos[currentPhotoIndex].lng.description
@@ -304,9 +299,7 @@ class TaskViewController: UIViewController {
             latLabel.text = ""
             longLabel.text = ""
             photoCreatedLabel.text = ""
-            
             deleteButton.isEnabled = false
-            
             galleryButton.isEnabled = false;
         }
     }
@@ -318,9 +311,7 @@ class TaskViewController: UIViewController {
         loadingIndicator.style = .medium
         loadingIndicator.startAnimating();
         waitAlert.view.addSubview(loadingIndicator)
-        
         self.present(waitAlert, animated: true, completion: nil)
-        
         sendPhoto()
     }
     
@@ -427,7 +418,6 @@ class TaskViewController: UIViewController {
             } catch {
                 print("Could not save data: \(error.localizedDescription)")
             }
-            
             sendPhoto()
         } else {
             waitAlert.dismiss(animated: true) {
@@ -437,7 +427,6 @@ class TaskViewController: UIViewController {
     }
     
     func sendStatus() {
-                
         do {
             let statusString = "data provided"
             let noteString = persistTask.note ?? ""

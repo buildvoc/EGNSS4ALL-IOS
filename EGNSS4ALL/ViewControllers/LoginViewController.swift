@@ -45,9 +45,6 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                 self.view.bounds.origin.y += keyboardFrame.height
             }
         }
-        
-        
-       
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
