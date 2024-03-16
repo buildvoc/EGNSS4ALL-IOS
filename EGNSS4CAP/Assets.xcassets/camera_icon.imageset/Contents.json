@@ -1,8 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "btn_camera_light.pdf",
-      "idiom" : "universal"
+      "filename" : "camera_icon.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

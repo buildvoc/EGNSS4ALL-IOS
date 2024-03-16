@@ -33,7 +33,6 @@ class SEActiveCell: UITableViewCell, SECell {
             }, save: {active in
                 SEStorage.centroidActive = active
             })
-            
         default:
             break
         }
