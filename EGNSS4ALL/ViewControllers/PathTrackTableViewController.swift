@@ -138,8 +138,8 @@ class PathTrackTableViewController: UITableViewController {
         
         let ptPoints = ptPointsSet.array as! [PTPoint]
         
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let df = MyDateFormatter.yyyyMMdd
+     
         struct RPoint: Codable {
             var lat: Double
             var lng: Double

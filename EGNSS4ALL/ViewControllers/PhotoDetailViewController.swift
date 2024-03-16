@@ -55,8 +55,8 @@ class PhotoDetailViewController: UIViewController {
             var digest:String
         }
         
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let df = MyDateFormatter.yyyyMMdd
+
         let stringDate = df.string(from: persistPhoto.created!)
         
         let data:Data = persistPhoto.photo!
@@ -173,8 +173,8 @@ class PhotoDetailViewController: UIViewController {
         lngValueLabel.text = persistPhoto.centroidLng.description
         /**/*/
         
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let df = MyDateFormatter.yyyyMMdd
+        
         createdValueLabel.text = df.string(from: persistPhoto.created!)
         
         if persistPhoto.sended == true {

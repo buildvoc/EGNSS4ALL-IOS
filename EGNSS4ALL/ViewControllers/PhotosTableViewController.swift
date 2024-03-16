@@ -124,8 +124,8 @@ class PhotosTableViewController: UITableViewController {
         cell.lngValueLabel.text = photo.lng.description
         cell.backgroundColor = .clear
         
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let df = MyDateFormatter.yyyyMMdd
+
         cell.createdValueLabel.text = df.string(from: photo.created!)
         
         if photo.sended == true {
@@ -258,8 +258,8 @@ class PhotosTableViewController: UITableViewController {
         let img2 = UIImage(named: "tree")
         
         let userID = String(UserStorage.userID)
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let df = MyDateFormatter.yyyyMMdd
+       
         
         let persistPhoto1 = PersistPhoto(context: manageObjectContext)
         

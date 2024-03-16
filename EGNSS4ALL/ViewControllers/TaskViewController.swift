@@ -18,7 +18,6 @@ class TaskViewController: UIViewController {
     
     var waitAlert:UIAlertController!
     var photosToSend = [PersistPhoto]()
-    
     let localStorage = UserDefaults.standard
 
     @IBOutlet weak var idLabel: UILabel!
@@ -65,7 +64,6 @@ class TaskViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
-        
         switch(segue.identifier ?? "") {
             
         case "ShowTaskCamera":
@@ -82,7 +80,6 @@ class TaskViewController: UIViewController {
             guard let galleryViewController = segue.destination as? GalleryViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            
             galleryViewController.taskid = persistTask.id
             galleryViewController.currentPhotoIndex = currentPhotoIndex
             galleryViewController.persistPhotos = persistPhotos
@@ -91,8 +88,6 @@ class TaskViewController: UIViewController {
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
         }
     }
-    
-
     /*
     // MARK: - Navigation
 
@@ -169,10 +164,8 @@ class TaskViewController: UIViewController {
     }
     
     func changeStatus() {
-        
         if persistTask.status == "new" {
-            persistTask.status = "open"
-            
+             persistTask.status = "open"
             do {
                 try self.manageObjectContext.save()
             } catch {
@@ -245,10 +238,14 @@ class TaskViewController: UIViewController {
         nameLabel.text = persistTask.name
         statusLabel.text = persistTask.status
         
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        createdLabel.text = df.string(from: persistTask.date_created!)
-        dueLabel.text = df.string(from: persistTask.task_due_date!)
+        let df = MyDateFormatter.yyyyMMdd
+        if let dateCreated = persistTask.date_created  {
+            createdLabel.text = df.string(from: dateCreated)
+        }
+        if let dueDate = persistTask.task_due_date {
+            dueLabel.text = df.string(from: dueDate)
+        }
+
         textView.text = persistTask.text
         returnLabel.text = persistTask.text_returned
         noteLabel.text = persistTask.note
@@ -282,9 +279,9 @@ class TaskViewController: UIViewController {
             latLabel.text = persistPhotos[currentPhotoIndex].lat.description
             longLabel.text = persistPhotos[currentPhotoIndex].lng.description
             
-            let df = DateFormatter()
-            df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            photoCreatedLabel.text = df.string(from: persistPhotos[currentPhotoIndex].created!)
+            if let created = persistPhotos[currentPhotoIndex].created {
+                photoCreatedLabel.text = MyDateFormatter.yyyyMMdd.string(from: created)
+            }
             
             if persistPhotos[currentPhotoIndex].sended == false {
                 deleteButton.isEnabled = true
@@ -346,8 +343,7 @@ class TaskViewController: UIViewController {
                 var digest:String
             }
             
-            let df = DateFormatter()
-            df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let df = MyDateFormatter.yyyyMMdd
             let stringDate = df.string(from: photosToSend[0].created!)
             
             let data:Data = photosToSend[0].photo!
@@ -369,9 +365,10 @@ class TaskViewController: UIViewController {
                 // Prepare URL Request Object
                 var request = URLRequest(url: requestUrl)
                 request.httpMethod = "POST"
-                 
+                
                 // HTTP Request Parameters which will be sent in HTTP Request Body
                 let postString = "user_id="+userID+"&task_id="+String(persistTask.id)+"&photo="+jsonString
+                
                 // Set HTTP Request Body
                 request.httpBody = postString.data(using: String.Encoding.utf8);
                 // Perform HTTP Request
@@ -398,6 +395,7 @@ class TaskViewController: UIViewController {
         } else {
             sendStatus()
         }
+        
     }
     
     func processResponseData1(data:String) {
@@ -412,7 +410,6 @@ class TaskViewController: UIViewController {
         
         if answer.status == "ok" {
             photosToSend[0].sended = true
-            
             do {
                 try self.manageObjectContext.save()
             } catch {
@@ -432,7 +429,12 @@ class TaskViewController: UIViewController {
             let noteString = persistTask.note ?? ""
                         
             // Prepare URL
-            let url = URL(string: "http://18.202.38.244/egnss4capservices/comm_status.php")
+            let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_status.php"
+            print("------------------------------------------")
+            print(urlStr)
+            print("------------------------------------------")
+            let url = URL(string: urlStr)
+
             guard let requestUrl = url else { fatalError() }
             // Prepare URL Request Object
             var request = URLRequest(url: requestUrl)

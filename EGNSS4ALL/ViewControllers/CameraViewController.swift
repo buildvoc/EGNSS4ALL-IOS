@@ -461,9 +461,8 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         print("Image orientation: \(image!.imageOrientation.rawValue)")
                 
         let userID = String(UserStorage.userID)
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
+        let df = MyDateFormatter.yyyyMMdd
+
         let persistPhoto = PersistPhoto(context: manageObjectContext)
         
         persistPhoto.userid = Int64(userID) ?? 0
@@ -516,7 +515,6 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         persistPhoto.digest = SHA256.hash(data: digest_string1.data(using: .utf8)!).hexStr.lowercased()
         
         //persistPhotos += [persistPhoto]
-               
         do {
             try self.manageObjectContext.save()
         } catch {

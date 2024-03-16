@@ -39,8 +39,7 @@ class Util {
     }
     
     static func prettyDate(date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+        let formatter = MyDateFormatter.yyyyMMdd
         return formatter.string(from: date)
     }
     

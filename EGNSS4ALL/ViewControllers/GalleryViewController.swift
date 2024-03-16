@@ -65,8 +65,7 @@ class GalleryViewController: UIViewController {
         latLabel.text = persistPhotos[currentPhotoIndex].lat.description
         longLabel.text = persistPhotos[currentPhotoIndex].lng.description
         
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let df = MyDateFormatter.yyyyMMdd
         createdLabel.text = df.string(from: persistPhotos[currentPhotoIndex].created!)
         
         photoImage.image = UIImage(data: persistPhotos[currentPhotoIndex].photo!)
