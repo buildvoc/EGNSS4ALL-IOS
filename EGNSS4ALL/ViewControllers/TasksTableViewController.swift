@@ -74,7 +74,7 @@ class TasksTableViewController: UITableViewController {
         if let taskDueDate = task.task_due_date {
             cell.dueLabel.text = MyDateFormatter.yyyyMMdd.string(from: taskDueDate)
             if (taskDueDate < Date()) {
-                cell.dueLabel.textColor = UIColor.systemRed;
+                cell.dueLabel.textColor = UIColor.systemRed
             } else {
                 cell.dueLabel.textColor = UIColor.systemGreen
             }
