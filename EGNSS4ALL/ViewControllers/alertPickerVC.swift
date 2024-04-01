@@ -50,7 +50,7 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         case .poweredOn:
             
             print("Bluetooth attivo")
-            manager?.scanForPeripherals(withServices:[serviceUUID], options: nil)
+            manager?.scanForPeripherals(withServices:nil, options: nil)
         case .unsupported:
            
             print("Bluetooth non è supportato")
@@ -112,7 +112,7 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         manager?.connect(myPeripheal!)
         periphealUUID = CBUUID(string: peripherals[indexPath.row].identifier.uuidString)
         peripherals.removeAll()
-        manager?.scanForPeripherals(withServices:[serviceUUID], options: nil)
+        manager?.scanForPeripherals(withServices:nil, options: nil)
         //self.dismiss(animated: true, completion: nil)
     }
     
