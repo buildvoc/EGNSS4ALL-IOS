@@ -24,6 +24,8 @@
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Capture GPS Data for localize photo</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>To taking geotagged photos you must enable location services.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Capture GPS Data for localize photo</string>
 	<key>NSCameraUsageDescription</key>
@@ -51,6 +53,10 @@
 	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

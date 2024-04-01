@@ -64,7 +64,7 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         peripheral.discoverServices([serviceUUID])
         print("Connesso a " +  peripheral.name!)
         
-        //self.alertStandard(titolo: "External GNSS", testo: "Connected")
+        self.alertStandard(titolo: "External GNSS", testo: "Connected")
     
     }
     
@@ -104,9 +104,12 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let oggetto = oggetti![indexPath.row]
         //delegate?.onSelectData(professione: oggetto)
+        myPeripheal = peripherals[indexPath.row]
+        myPeripheal?.delegate = self
         self.localStorage.set(true, forKey: "externalGPS")
         self.localStorage.set(peripherals[indexPath.row].identifier.uuidString, forKey: "periphealUUID")
         let selPeriphealUUID = localStorage.string(forKey: "periphealUUID")
+        manager?.connect(myPeripheal!)
         periphealUUID = CBUUID(string: peripherals[indexPath.row].identifier.uuidString)
         peripherals.removeAll()
         manager?.scanForPeripherals(withServices:[serviceUUID], options: nil)
@@ -176,7 +179,7 @@ extension alertPickerVC: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        //print(characteristic.debugDescription)
+        print(characteristic.debugDescription)
         //print("update")
         //self.recordFunc()
         
@@ -202,7 +205,7 @@ extension alertPickerVC: CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
         
-       //NO
+       print("didUpdateValueFor")
     }
     
     
