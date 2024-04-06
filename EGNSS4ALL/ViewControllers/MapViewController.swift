@@ -513,7 +513,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         let extGPS = localStorage.bool(forKey: "externalGPS")
         
         if extGPS {
-                  
             latitude = navPVTData["latitudine"] as? Double ?? 0.000000
             longitude = navPVTData["longitudine"] as? Double ?? 0.000000
             accuracyH = navPVTData["accH"] as? Double ?? 0.0

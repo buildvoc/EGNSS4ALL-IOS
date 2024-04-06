@@ -118,6 +118,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
                 self.longitudeLabel.text = String(navPVTData["longitudine"] as? Double ?? 0.000000) + "°E"
                 self.altitudeLabel.text = String(navPVTData["msl"] as? Double ?? 0.0)
                 self.accuracyLabel.text = String(navPVTData["accH"] as? Double ?? 0.0)
+                
             } else {
                 self.latitudeLabel.text = String(format: "%f", location.coordinate.latitude)
                 self.longitudeLabel.text = String(format: "%f", location.coordinate.longitude)

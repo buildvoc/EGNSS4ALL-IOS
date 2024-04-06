@@ -105,7 +105,7 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         //let oggetto = oggetti![indexPath.row]
         //delegate?.onSelectData(professione: oggetto)
         myPeripheal = peripherals[indexPath.row]
-        myPeripheal?.delegate = self
+        myPeripheal!.delegate = self
         self.localStorage.set(true, forKey: "externalGPS")
         self.localStorage.set(peripherals[indexPath.row].identifier.uuidString, forKey: "periphealUUID")
         let selPeriphealUUID = localStorage.string(forKey: "periphealUUID")
@@ -255,7 +255,7 @@ public extension String {
     self[index(at: value.lowerBound)..<index(at: value.upperBound)]
   }
 
-  subscript(value: PartialRangeUpTo<Int>) -> Substring {
+  subscript(value: PartialRangeUpTo<Int>) -> Substring  {
     self[..<index(at: value.upperBound)]
   }
 

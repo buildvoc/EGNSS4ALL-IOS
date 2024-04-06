@@ -192,7 +192,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
             
             
             if extGPS {
-                manager?.scanForPeripherals(withServices:[serviceUUID], options: nil)
+                manager?.scanForPeripherals(withServices:nil, options: nil)
             }
             
             print("Bluetooth attivo")
