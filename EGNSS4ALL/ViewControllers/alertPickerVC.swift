@@ -50,7 +50,7 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         case .poweredOn:
             
             print("Bluetooth attivo")
-            manager?.scanForPeripherals(withServices:nil, options: nil)
+            manager?.scanForPeripherals(withServices:[sppServiceUUID], options: nil)
         case .unsupported:
            
             print("Bluetooth non è supportato")
@@ -61,7 +61,7 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        peripheral.discoverServices([serviceUUID])
+        peripheral.discoverServices([sppServiceUUID])
         print("Connesso a " +  peripheral.name!)
         
         self.alertStandard(titolo: "External GNSS", testo: "Connected")
