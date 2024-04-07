@@ -50,7 +50,7 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         case .poweredOn:
             
             print("Bluetooth attivo")
-            manager?.scanForPeripherals(withServices:[sppServiceUUID], options: nil)
+            manager?.scanForPeripherals(withServices:nil, options: nil)
         case .unsupported:
            
             print("Bluetooth non è supportato")
