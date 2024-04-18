@@ -13,6 +13,11 @@
 		0427071E2BA3091D006633C4 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0427071D2BA3091D006633C4 /* Photo.swift */; };
 		04EB49FB2B8DE9340064A1DC /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB49FA2B8DE9340064A1DC /* Configuration.swift */; };
 		11CFA11497372C336862770A /* Pods_EGNSS4ALL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FFA27C040FA506CD45CCA59 /* Pods_EGNSS4ALL.framework */; };
+		2E2AE7A52BCD11940020CA1E /* TcpNemaTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2AE7A42BCD11940020CA1E /* TcpNemaTableCell.swift */; };
+		2E2AE7A72BCD25FA0020CA1E /* TCPnmeaVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2AE7A62BCD25FA0020CA1E /* TCPnmeaVC.swift */; };
+		2E2AE7AC2BCD30B70020CA1E /* CustomTCPTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2AE7AA2BCD30B70020CA1E /* CustomTCPTableView.swift */; };
+		2E2AE7AD2BCD30B70020CA1E /* CustomTCPTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E2AE7AB2BCD30B70020CA1E /* CustomTCPTableView.xib */; };
+		2E2AE7AF2BCD518D0020CA1E /* UDPHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2AE7AE2BCD518D0020CA1E /* UDPHandler.swift */; };
 		49051E4E2567EBFA00FEB06D /* SEActiveCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49051E4D2567EBFA00FEB06D /* SEActiveCell.swift */; };
 		49051E542567EDB000FEB06D /* SECentroidSampleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49051E532567EDB000FEB06D /* SECentroidSampleCell.swift */; };
 		49051E5A2567EF5300FEB06D /* SESetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49051E592567EF5300FEB06D /* SESetting.swift */; };
@@ -83,6 +88,11 @@
 		0427071B2BA308F3006633C4 /* GetPhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotoResponse.swift; sourceTree = "<group>"; };
 		0427071D2BA3091D006633C4 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		04EB49FA2B8DE9340064A1DC /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		2E2AE7A42BCD11940020CA1E /* TcpNemaTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TcpNemaTableCell.swift; sourceTree = "<group>"; };
+		2E2AE7A62BCD25FA0020CA1E /* TCPnmeaVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCPnmeaVC.swift; sourceTree = "<group>"; };
+		2E2AE7AA2BCD30B70020CA1E /* CustomTCPTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTCPTableView.swift; sourceTree = "<group>"; };
+		2E2AE7AB2BCD30B70020CA1E /* CustomTCPTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTCPTableView.xib; sourceTree = "<group>"; };
+		2E2AE7AE2BCD518D0020CA1E /* UDPHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPHandler.swift; sourceTree = "<group>"; };
 		49051E4D2567EBFA00FEB06D /* SEActiveCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEActiveCell.swift; sourceTree = "<group>"; };
 		49051E532567EDB000FEB06D /* SECentroidSampleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECentroidSampleCell.swift; sourceTree = "<group>"; };
 		49051E592567EF5300FEB06D /* SESetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SESetting.swift; sourceTree = "<group>"; };
@@ -198,6 +208,7 @@
 			children = (
 				04EB49FA2B8DE9340064A1DC /* Configuration.swift */,
 				EAB10BD92B99D10B006C8915 /* MyDateFormatter.swift */,
+				2E2AE7AE2BCD518D0020CA1E /* UDPHandler.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -211,6 +222,9 @@
 				49051E532567EDB000FEB06D /* SECentroidSampleCell.swift */,
 				61DB65CD26415A07001DF7EB /* SETrackingIntervalCell.swift */,
 				E0F41C45284F902A00E8E302 /* activeGPSCell.swift */,
+				2E2AE7A42BCD11940020CA1E /* TcpNemaTableCell.swift */,
+				2E2AE7AA2BCD30B70020CA1E /* CustomTCPTableView.swift */,
+				2E2AE7AB2BCD30B70020CA1E /* CustomTCPTableView.xib */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -311,20 +325,20 @@
 		61C3AC9C2551461F000CED80 /* EGNSS4ALL */ = {
 			isa = PBXGroup;
 			children = (
-				04EB49F92B8DE9260064A1DC /* Helpers */,
-				E02CF41D284E443500EA189B /* Class */,
-				E02CF41C284E441E00EA189B /* UIKit Extensions */,
-				E02CF41B284E440900EA189B /* Cells */,
-				E02CF41A284E43E300EA189B /* ViewControllers */,
-				61CFFC1A255EE0890009554D /* Model */,
+				61C3ACAB2551461F000CED80 /* Info.plist */,
+				E0E5D2DE28D9F7250028CCDD /* Alerts.storyboard */,
 				61C3AC9D2551461F000CED80 /* AppDelegate.swift */,
 				61C3AC9F2551461F000CED80 /* SceneDelegate.swift */,
-				E0E5D2DE28D9F7250028CCDD /* Alerts.storyboard */,
-				61C3ACA32551461F000CED80 /* Main.storyboard */,
 				61C3ACA62551461F000CED80 /* Assets.xcassets */,
+				E02CF41B284E440900EA189B /* Cells */,
+				E02CF41D284E443500EA189B /* Class */,
+				04EB49F92B8DE9260064A1DC /* Helpers */,
 				61C3ACA82551461F000CED80 /* LaunchScreen.storyboard */,
-				61C3ACAB2551461F000CED80 /* Info.plist */,
+				61C3ACA32551461F000CED80 /* Main.storyboard */,
+				61CFFC1A255EE0890009554D /* Model */,
 				613A5E56255537DE007D82E5 /* PhotoModel.xcdatamodeld */,
+				E02CF41C284E441E00EA189B /* UIKit Extensions */,
+				E02CF41A284E43E300EA189B /* ViewControllers */,
 			);
 			path = EGNSS4ALL;
 			sourceTree = "<group>";
@@ -376,6 +390,7 @@
 				E0E5D2E028D9F78E0028CCDD /* alertPickerVC.swift */,
 				E00925E628E215AB00B2739B /* alertVC.swift */,
 				E0C6ECED2A499A8F00CE0F4B /* selectServerVC.swift */,
+				2E2AE7A62BCD25FA0020CA1E /* TCPnmeaVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -474,6 +489,7 @@
 				49355A5B2563010400EA478F /* PhotoMapInfoView.xib in Resources */,
 				49AAE5802571782E00A37C1B /* PTPointInfoView.xib in Resources */,
 				61C3ACA72551461F000CED80 /* Assets.xcassets in Resources */,
+				2E2AE7AD2BCD30B70020CA1E /* CustomTCPTableView.xib in Resources */,
 				61C3ACA52551461F000CED80 /* Main.storyboard in Resources */,
 				E0E5D2DF28D9F7250028CCDD /* Alerts.storyboard in Resources */,
 			);
@@ -531,6 +547,7 @@
 				499B6BBC256B13A90078AEE6 /* CHQuickHull.swift in Sources */,
 				49CA64D52561A33B00817406 /* PersistPhoto+CoreDataClass.swift in Sources */,
 				0427071E2BA3091D006633C4 /* Photo.swift in Sources */,
+				2E2AE7A72BCD25FA0020CA1E /* TCPnmeaVC.swift in Sources */,
 				49B9EEA92567DBA600D21C82 /* SettingViewController.swift in Sources */,
 				49355A5F256302CD00EA478F /* extensions.swift in Sources */,
 				61CFFC18255EE0790009554D /* PhotoDataController.swift in Sources */,
@@ -551,6 +568,7 @@
 				49B32BB52569ADE9009240EE /* PersistStorage.swift in Sources */,
 				49AAE58825717C0500A37C1B /* PTPoint+CoreDataClass.swift in Sources */,
 				6117A00C260CAF9F007B0593 /* TaskViewController.swift in Sources */,
+				2E2AE7AC2BCD30B70020CA1E /* CustomTCPTableView.swift in Sources */,
 				499B6BB8256B129B0078AEE6 /* CHPoint.swift in Sources */,
 				611181B4260DC106006DC555 /* GalleryViewController.swift in Sources */,
 				E0D76802284E5AC4001DE921 /* NetworkService.swift in Sources */,
@@ -571,6 +589,7 @@
 				495415312563340C0072510A /* PhotoMapInfoView.swift in Sources */,
 				6189FA41260B88E90026F43F /* PersistTask+CoreDataClass.swift in Sources */,
 				61C3ACA02551461F000CED80 /* SceneDelegate.swift in Sources */,
+				2E2AE7A52BCD11940020CA1E /* TcpNemaTableCell.swift in Sources */,
 				496B73A12564C6F5009723BE /* AzimuthMKAnnotation.swift in Sources */,
 				61B3EC622552DF7500AB8AA6 /* PhotosTableViewController.swift in Sources */,
 				6189FA49260B996D0026F43F /* TasksTableViewCell.swift in Sources */,
@@ -580,6 +599,7 @@
 				496B73A42564C7D5009723BE /* AzimuthMKAnnotationView.swift in Sources */,
 				61DDD8992591EA470080019F /* AboutViewController.swift in Sources */,
 				0427071C2BA308F3006633C4 /* GetPhotoResponse.swift in Sources */,
+				2E2AE7AF2BCD518D0020CA1E /* UDPHandler.swift in Sources */,
 				6189FA17260B52790026F43F /* MainViewController.swift in Sources */,
 				49051E5A2567EF5300FEB06D /* SESetting.swift in Sources */,
 				042707162BA30754006633C4 /* TasksResponse.swift in Sources */,
@@ -738,8 +758,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 50;
-				DEVELOPMENT_TEAM = XHPCKB3GXU;
+				CURRENT_PROJECT_VERSION = 51;
+				DEVELOPMENT_TEAM = CABRFL8LU3;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -747,7 +767,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.infoenum.CRI-h";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bondnine.bondnine.LinkLiason;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -763,8 +783,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 50;
-				DEVELOPMENT_TEAM = XHPCKB3GXU;
+				CURRENT_PROJECT_VERSION = 51;
+				DEVELOPMENT_TEAM = CABRFL8LU3;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -772,7 +792,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.infoenum.CRI-h";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bondnine.bondnine.LinkLiason;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

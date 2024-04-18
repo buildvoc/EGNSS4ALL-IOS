@@ -23,7 +23,6 @@ var satelliti = [Satellite]()
 var navPVTData = [String: Any]()
 var telemetryData = [String: Any]()
 
-let sppServiceUUID = CBUUID(string: "00001101-0000-1000-8000-00805F9B34FB")
 let serviceUUID = CBUUID(string: "4fafc201-1fb5-459e-8fcc-c5c9c331914b")
 var periphealUUID = CBUUID(string: "A5A4976E-D2C6-46BA-98C9-2878B849C311")
 
@@ -163,7 +162,6 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     //MARK: - Other Helpers -
     
     func triggerPvt() {
-        print("pvtTrigger")
         let str = "getNavPvt"
         
         let data = Data(str.utf8)
@@ -194,7 +192,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
             
             
             if extGPS {
-                manager?.scanForPeripherals(withServices:nil, options: nil)
+                manager?.scanForPeripherals(withServices:[serviceUUID], options: nil)
             }
             
             print("Bluetooth attivo")

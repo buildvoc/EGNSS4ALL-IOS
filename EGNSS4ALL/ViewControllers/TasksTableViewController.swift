@@ -1,10 +1,3 @@
-//
-//  TasksTableViewController.swift
-//  GTPhotos
-//
-//  Created by FoxCom on 24.03.2021.
-//
-
 import UIKit
 import CoreData
 import CryptoKit

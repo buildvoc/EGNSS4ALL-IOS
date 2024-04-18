@@ -391,7 +391,9 @@ class TaskViewController: UIViewController {
                 }
                 task.resume()
                 
-            } catch { print(error) }
+            } catch { 
+                print(error)
+            }
         } else {
             sendStatus()
         }
@@ -418,7 +420,7 @@ class TaskViewController: UIViewController {
             sendPhoto()
         } else {
             waitAlert.dismiss(animated: true) {
-                self.showSendingError()
+                self.showSendingError(answer.error_msg ?? "Something went wrong.")
             }
         }
     }
@@ -491,7 +493,7 @@ class TaskViewController: UIViewController {
             }
         } else {
             waitAlert.dismiss(animated: true) {
-                self.showSendingError()
+                self.showSendingError(answer.error_msg ?? "Something went wrong.")
             }
         }
     }
@@ -506,8 +508,8 @@ class TaskViewController: UIViewController {
         loadPhoto()
     }
     
-    func showSendingError() {
-        let alert = UIAlertController(title: "Sending error", message: "Could not send task", preferredStyle: UIAlertController.Style.alert)
+    func showSendingError(_ error:String) {
+        let alert = UIAlertController(title: "Sending error", message: error, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
         

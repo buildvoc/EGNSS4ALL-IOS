@@ -7,6 +7,8 @@ target 'EGNSS4ALL' do
 
   # Pods for EGNSS4ALL
 	pod 'AAInfographics', :git => 'https://github.com/AAChartModel/AAChartKit-Swift.git'
+  pod 'IQKeyboardManagerSwift'
+  pod 'CocoaAsyncSocket'
 
 end
 

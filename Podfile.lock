@@ -1,8 +1,17 @@
 PODS:
   - AAInfographics (9.0.0)
+  - CocoaAsyncSocket (7.6.5)
+  - IQKeyboardManagerSwift (7.0.2)
 
 DEPENDENCIES:
   - AAInfographics (from `https://github.com/AAChartModel/AAChartKit-Swift.git`)
+  - CocoaAsyncSocket
+  - IQKeyboardManagerSwift
+
+SPEC REPOS:
+  trunk:
+    - CocoaAsyncSocket
+    - IQKeyboardManagerSwift
 
 EXTERNAL SOURCES:
   AAInfographics:
@@ -15,7 +24,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AAInfographics: 31fd2891509a97e34693aeaf681daa7b2b4d8c0f
+  CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
+  IQKeyboardManagerSwift: d338c11a896e9f29603443700c4567e32f830c22
 
-PODFILE CHECKSUM: a3d00cca437d8f507322e246e9614559a4d99445
+PODFILE CHECKSUM: 6d3db54c77b95fb3caf59c96685609bf00b71477
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.14.3

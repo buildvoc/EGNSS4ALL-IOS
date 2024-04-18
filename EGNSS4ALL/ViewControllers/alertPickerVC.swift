@@ -50,7 +50,7 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         case .poweredOn:
             
             print("Bluetooth attivo")
-            manager?.scanForPeripherals(withServices:nil, options: nil)
+            manager?.scanForPeripherals(withServices:[serviceUUID], options: nil)
         case .unsupported:
            
             print("Bluetooth non è supportato")
@@ -61,10 +61,10 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        peripheral.discoverServices([sppServiceUUID])
+        peripheral.discoverServices([serviceUUID])
         print("Connesso a " +  peripheral.name!)
         
-        self.alertStandard(titolo: "External GNSS", testo: "Connected")
+        //self.alertStandard(titolo: "External GNSS", testo: "Connected")
     
     }
     
@@ -104,15 +104,12 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let oggetto = oggetti![indexPath.row]
         //delegate?.onSelectData(professione: oggetto)
-        myPeripheal = peripherals[indexPath.row]
-        myPeripheal!.delegate = self
         self.localStorage.set(true, forKey: "externalGPS")
         self.localStorage.set(peripherals[indexPath.row].identifier.uuidString, forKey: "periphealUUID")
         let selPeriphealUUID = localStorage.string(forKey: "periphealUUID")
-        manager?.connect(myPeripheal!)
         periphealUUID = CBUUID(string: peripherals[indexPath.row].identifier.uuidString)
         peripherals.removeAll()
-        manager?.scanForPeripherals(withServices:nil, options: nil)
+        manager?.scanForPeripherals(withServices:[serviceUUID], options: nil)
         //self.dismiss(animated: true, completion: nil)
     }
     
@@ -179,7 +176,7 @@ extension alertPickerVC: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        print(characteristic.debugDescription)
+        //print(characteristic.debugDescription)
         //print("update")
         //self.recordFunc()
         
@@ -205,7 +202,7 @@ extension alertPickerVC: CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
         
-       print("didUpdateValueFor")
+       //NO
     }
     
     
@@ -255,7 +252,7 @@ public extension String {
     self[index(at: value.lowerBound)..<index(at: value.upperBound)]
   }
 
-  subscript(value: PartialRangeUpTo<Int>) -> Substring  {
+  subscript(value: PartialRangeUpTo<Int>) -> Substring {
     self[..<index(at: value.upperBound)]
   }
 

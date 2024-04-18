@@ -4,6 +4,7 @@ import CoreBluetooth
 
 
 class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, alertPickerDelegate {
+    
     func onCancel() {
         self.tableView.reloadData()
     }
@@ -13,7 +14,7 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     var satellites = [Satellite]()
     private var alertController = UIAlertController()
     private var tblView = UITableView()
- 
+    
     
     let localStorage = UserDefaults.standard
     
@@ -25,18 +26,31 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return SESection(rawValue: section) == nil ? 0 : SESection(rawValue: section)!.optionCount
-        return 4
+        return 5
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row != 3 {
+        if indexPath.row == 4 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TcpNemaTableCell", for: indexPath) as! TcpNemaTableCell
+            let extGPS = localStorage.bool(forKey: "TCPNmeaStatus")
+            if extGPS {
+                cell.tcpSwitch.setOn(true, animated: false)
+            } else {
+                cell.tcpSwitch.setOn(false, animated: false)
+            }
+            
+            cell.tcpSwitch.addTarget(self, action: #selector(self.tcpSwitchClicked(_:)), for: .valueChanged)
+            
+            return cell
+        } else if indexPath.row != 3 {
             let option = SEOption.init(rawValue: indexPath.row)!
             let cell = tableView.dequeueReusableCell(withIdentifier: option.type.reuseIdentifier, for: indexPath)
             let seCell = cell as! SECell
             seCell.reuse(option: option)
             return cell
-        } else {
+        }
+        else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "activeGPS", for: indexPath) as! activeGPSCell
             
             cell.titolo = "External GNSS"
@@ -50,9 +64,32 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.activeSW.addTarget(self, action: #selector(self.enableExtGPS(_:)), for: .valueChanged)
             return cell
         }
-        
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 4 {
+            let extGPS = localStorage.bool(forKey: "externalGPS")
+            if extGPS {
+                let sb = UIStoryboard(name: "Main", bundle: nil)
+                let tcpNmeaVC = sb.instantiateViewController(withIdentifier: "TCPnmeaVC") as! TCPnmeaVC
+                self.localStorage.set(true, forKey: "TCPNmeaStatus")
+                navigationController?.pushViewController(tcpNmeaVC, animated: true)
+            } else {
+                self.localStorage.set(false, forKey: "TCPNmeaStatus")
+            }
+        }
+    }
+    
+    @objc func tcpSwitchClicked(_ sender: UISwitch!) {
+        if sender.isOn {
+            let sb = UIStoryboard(name: "Main", bundle: nil)
+            let tcpNmeaVC = sb.instantiateViewController(withIdentifier: "TCPnmeaVC") as! TCPnmeaVC
+            self.localStorage.set(true, forKey: "TCPNmeaStatus")
+            navigationController?.pushViewController(tcpNmeaVC, animated: true)
+        } else {
+            self.localStorage.set(false, forKey: "TCPNmeaStatus")
+        }
+    }
     
     @objc func enableExtGPS(_ sender : UISwitch!) {
         if sender.isOn {
@@ -65,30 +102,21 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else {
             self.localStorage.set(false, forKey: "externalGPS")
             periphealUUID = CBUUID(string: "00000000-0000-0000-0000-000000000000")
-            
             if (myPeripheal != nil) {
                 manager?.cancelPeripheralConnection(myPeripheal!)
             }
-            
         }
-        
     }
-    
-    
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-       
+        super.viewDidAppear(animated)
         self.tableView.reloadData()
     }
-    
 }
-
