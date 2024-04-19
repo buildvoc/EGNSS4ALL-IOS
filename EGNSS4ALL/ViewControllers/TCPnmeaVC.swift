@@ -24,9 +24,7 @@ class TCPnmeaVC: UIViewController {
     private var errorMessageCancellable: AnyCancellable?
     private var connectionMessageCancellable: AnyCancellable?
     private var isConnectedCancellable: AnyCancellable?
-  
-    
-    
+
     
     @IBOutlet weak var messageTextField: UITextField!
     @IBOutlet weak var portTextField: UITextField!
@@ -49,6 +47,7 @@ class TCPnmeaVC: UIViewController {
     }
     
     private func handleBindings() {
+        
         receiveMessageCancellable = NetworkManager.shared.$receivedMessage.sink { receivedMessage in
             if let message = receivedMessage {
                 print("Received message: \(message)")
@@ -84,7 +83,10 @@ class TCPnmeaVC: UIViewController {
     }
     
     @IBAction func backDidTapped(_ sender: Any) {
-        NetworkManager.shared.disconnectSocket()
+        guard currentState == .disconnected else {
+            showAlert("Information!", "Please Disconnect First.")
+            return
+        }
         navigationController?.popViewController(animated: true)
     }
     

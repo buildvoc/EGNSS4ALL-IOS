@@ -35,7 +35,6 @@ class NetworkManager: NSObject {
     }
     
     public func sendData(_ data:Data) {
-        
         mutableData = NSMutableData.init(data: data)
         mutableData.append(GCDAsyncSocket.crlfData())
         socket?.write(mutableData as Data, withTimeout: -1, tag: 0)
