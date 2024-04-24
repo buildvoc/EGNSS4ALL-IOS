@@ -12,7 +12,6 @@
 		0427071C2BA308F3006633C4 /* GetPhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0427071B2BA308F3006633C4 /* GetPhotoResponse.swift */; };
 		0427071E2BA3091D006633C4 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0427071D2BA3091D006633C4 /* Photo.swift */; };
 		04EB49FB2B8DE9340064A1DC /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EB49FA2B8DE9340064A1DC /* Configuration.swift */; };
-		11CFA11497372C336862770A /* Pods_EGNSS4ALL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FFA27C040FA506CD45CCA59 /* Pods_EGNSS4ALL.framework */; };
 		49051E4E2567EBFA00FEB06D /* SEActiveCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49051E4D2567EBFA00FEB06D /* SEActiveCell.swift */; };
 		49051E542567EDB000FEB06D /* SECentroidSampleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49051E532567EDB000FEB06D /* SECentroidSampleCell.swift */; };
 		49051E5A2567EF5300FEB06D /* SESetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49051E592567EF5300FEB06D /* SESetting.swift */; };
@@ -65,6 +64,7 @@
 		61CFFC1C255EE0E10009554D /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CFFC1B255EE0E10009554D /* Util.swift */; };
 		61DB65CE26415A07001DF7EB /* SETrackingIntervalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DB65CD26415A07001DF7EB /* SETrackingIntervalCell.swift */; };
 		61DDD8992591EA470080019F /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DDD8982591EA470080019F /* AboutViewController.swift */; };
+		8D08F66B59398E63901EA443 /* Pods_PIC2BIM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EE3948FA8F480F9116EAAF4 /* Pods_PIC2BIM.framework */; };
 		E00925E728E215AB00B2739B /* alertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00925E628E215AB00B2739B /* alertVC.swift */; };
 		E01E6F002844B9C30034C02D /* SkyViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01E6EFF2844B9C30034C02D /* SkyViewVC.swift */; };
 		E0AFE5492847DE9400FF5DBD /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AFE5482847DE9400FF5DBD /* CircleView.swift */; };
@@ -115,6 +115,7 @@
 		49CA64D32561A33B00817406 /* PersistPhoto+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistPhoto+CoreDataClass.swift"; sourceTree = "<group>"; };
 		49CA64D92561A3B100817406 /* DB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DB.swift; sourceTree = "<group>"; };
 		49F003A02565865400795C7C /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
+		5EE3948FA8F480F9116EAAF4 /* Pods_PIC2BIM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PIC2BIM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		611181B3260DC106006DC555 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		6117A00B260CAF9F007B0593 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		611FE5802553FC0700063891 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
@@ -139,8 +140,9 @@
 		61CFFC1B255EE0E10009554D /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		61DB65CD26415A07001DF7EB /* SETrackingIntervalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SETrackingIntervalCell.swift; sourceTree = "<group>"; };
 		61DDD8982591EA470080019F /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
-		8FFA27C040FA506CD45CCA59 /* Pods_EGNSS4ALL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EGNSS4ALL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C2035CCB5E8E01CAD78D9BF /* Pods-PIC2BIM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PIC2BIM.debug.xcconfig"; path = "Target Support Files/Pods-PIC2BIM/Pods-PIC2BIM.debug.xcconfig"; sourceTree = "<group>"; };
 		95E79B0CBFCF7AD2C96A0DBC /* Pods-EGNSS4ALL.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EGNSS4ALL.release.xcconfig"; path = "Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL.release.xcconfig"; sourceTree = "<group>"; };
+		AEFBA95353D5ABD8257053EF /* Pods-PIC2BIM.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PIC2BIM.release.xcconfig"; path = "Target Support Files/Pods-PIC2BIM/Pods-PIC2BIM.release.xcconfig"; sourceTree = "<group>"; };
 		C36948A497D4901D5F4AC5E2 /* Pods-EGNSS4ALL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EGNSS4ALL.debug.xcconfig"; path = "Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL.debug.xcconfig"; sourceTree = "<group>"; };
 		E00925E628E215AB00B2739B /* alertVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = alertVC.swift; sourceTree = "<group>"; };
 		E01E6EFF2844B9C30034C02D /* SkyViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyViewVC.swift; sourceTree = "<group>"; };
@@ -159,7 +161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11CFA11497372C336862770A /* Pods_EGNSS4ALL.framework in Frameworks */,
+				8D08F66B59398E63901EA443 /* Pods_PIC2BIM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,7 +287,7 @@
 		56D4F0DFF7AB5B494607B1DE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8FFA27C040FA506CD45CCA59 /* Pods_EGNSS4ALL.framework */,
+				5EE3948FA8F480F9116EAAF4 /* Pods_PIC2BIM.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -351,6 +353,8 @@
 			children = (
 				C36948A497D4901D5F4AC5E2 /* Pods-EGNSS4ALL.debug.xcconfig */,
 				95E79B0CBFCF7AD2C96A0DBC /* Pods-EGNSS4ALL.release.xcconfig */,
+				8C2035CCB5E8E01CAD78D9BF /* Pods-PIC2BIM.debug.xcconfig */,
+				AEFBA95353D5ABD8257053EF /* Pods-PIC2BIM.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -447,7 +451,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 61C3AC952551461F000CED80 /* Build configuration list for PBXProject "EGNSS4ALL" */;
+			buildConfigurationList = 61C3AC952551461F000CED80 /* Build configuration list for PBXProject "PIC2BIM" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -497,7 +501,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-EGNSS4ALL-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PIC2BIM-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -510,15 +514,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-PIC2BIM/Pods-PIC2BIM-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-PIC2BIM/Pods-PIC2BIM-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PIC2BIM/Pods-PIC2BIM-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -732,7 +736,7 @@
 		};
 		61C3ACAF2551461F000CED80 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C36948A497D4901D5F4AC5E2 /* Pods-EGNSS4ALL.debug.xcconfig */;
+			baseConfigurationReference = 8C2035CCB5E8E01CAD78D9BF /* Pods-PIC2BIM.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -757,7 +761,7 @@
 		};
 		61C3ACB02551461F000CED80 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95E79B0CBFCF7AD2C96A0DBC /* Pods-EGNSS4ALL.release.xcconfig */;
+			baseConfigurationReference = AEFBA95353D5ABD8257053EF /* Pods-PIC2BIM.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -783,7 +787,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		61C3AC952551461F000CED80 /* Build configuration list for PBXProject "EGNSS4ALL" */ = {
+		61C3AC952551461F000CED80 /* Build configuration list for PBXProject "PIC2BIM" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61C3ACAC2551461F000CED80 /* Debug */,
