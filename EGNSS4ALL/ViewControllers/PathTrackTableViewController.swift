@@ -168,7 +168,7 @@ class PathTrackTableViewController: UITableViewController {
         ]
         
         // Prepare URL
-        let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_path.php"
+        let urlStr = Configuration.baseURLString + "/comm_path.php"
         print("------------------------------------------")
         print(urlStr)
         print("------------------------------------------")

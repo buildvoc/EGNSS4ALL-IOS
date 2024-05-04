@@ -141,7 +141,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         let pswdText = encodeParamenters(parametro: pswdTextField.text ?? "")
         
         // Prepare URL
-        let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_login.php"
+        let urlStr = Configuration.baseURLString + "/comm_login.php"
         print("------------------------------------------")
         print(urlStr)
         print("------------------------------------------")

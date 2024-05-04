@@ -69,7 +69,7 @@ class PhotoDetailViewController: UIViewController {
             let jsonString = String(data: jsonData, encoding: .utf8)!
             
             // Prepare URL
-            let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_photo.php"
+            let urlStr = Configuration.baseURLString + "/comm_photo.php"
             print("------------------------------------------")
             print(urlStr)
             print("------------------------------------------")

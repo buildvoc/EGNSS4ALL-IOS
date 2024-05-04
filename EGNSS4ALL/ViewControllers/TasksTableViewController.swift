@@ -172,7 +172,7 @@ class TasksTableViewController: UITableViewController {
         
         let userID = String(UserStorage.userID)
         
-        let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_tasks.php"
+        let urlStr = Configuration.baseURLString + "/comm_tasks.php"
         print("------------------------------------------")
         print(urlStr)
         print("------------------------------------------")
@@ -306,7 +306,7 @@ class TasksTableViewController: UITableViewController {
     func photoLoad(photoID: String?, taskId: String, completion: (() -> Void)?) {
         guard let photoID = photoID else { return }
         
-        let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_get_photo.php"
+        let urlStr = Configuration.baseURLString + "/comm_get_photo.php"
         print("------------------------------------------")
         print(urlStr)
         print("------------------------------------------")

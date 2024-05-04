@@ -24,12 +24,12 @@
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Capture GPS Data for localize photo</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>To taking geotagged photos you must enable location services.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Capture GPS Data for localize photo</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Allows the user to take a picture of the required land lot.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>To taking geotagged photos you must enable location services.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To taking geotagged photos you must enable location services.</string>
 	<key>UIApplicationSceneManifest</key>
