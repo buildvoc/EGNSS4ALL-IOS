@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import MapKit
 
 class PhotoDetailViewController: UIViewController {
     
@@ -14,6 +15,7 @@ class PhotoDetailViewController: UIViewController {
     var manageObjectContext: NSManagedObjectContext!
     
     let localStorage = UserDefaults.standard
+    var imageMap = UIImageView()
 
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var sendButton: UIBarButtonItem!
@@ -24,6 +26,34 @@ class PhotoDetailViewController: UIViewController {
     @IBOutlet weak var sendedValueLabel: UILabel!
     @IBOutlet weak var noteValueLabel: UILabel!
     @IBOutlet weak var noteButton: UIBarButtonItem!
+    @IBOutlet weak var pdfButton: UIButton!
+    
+    
+    
+    @IBAction func pdfAction(_ sender: UIButton) {
+        guard
+          let image = photoImageView.image
+          else {
+            // 2
+            let alert = UIAlertController(title: "All Information Not Provided", message: "You must supply all information to create a PDF", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return
+        }
+        let df = MyDateFormatter.yyyyMMdd
+        
+        guard let map = imageMap.image else { return }
+        
+        let pdfCreator = PDFCreator(title: "", image: image, map: map, latitude: persistPhoto.lat, longitude: persistPhoto.lng, shotDate: df.string(from: persistPhoto.created!), note: persistPhoto.note ?? "", send: persistPhoto.sended, validated: persistPhoto.validated)
+        let pdfData = pdfCreator.createPDF()
+        
+        let vc = UIActivityViewController(activityItems: [pdfData], applicationActivities: [])
+       
+        // Oppure
+        vc.popoverPresentationController?.sourceView = pdfButton // Specifica l'elemento di barra
+        self.present(vc, animated: true, completion: nil)
+        
+    }
     
     @IBAction func send(_ sender: UIBarButtonItem) {
         let waitAlert = UIAlertController(title: nil, message: "Sending, please wait...", preferredStyle: .alert)
@@ -69,7 +99,7 @@ class PhotoDetailViewController: UIViewController {
             let jsonString = String(data: jsonData, encoding: .utf8)!
             
             // Prepare URL
-            let urlStr = Configuration.baseURLString + "/comm_photo.php"
+            let urlStr = Configuration.baseURLString + ApiEndPoint.photo
             print("------------------------------------------")
             print(urlStr)
             print("------------------------------------------")
@@ -136,13 +166,61 @@ class PhotoDetailViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    
+    func mapScreenShot(completion: @escaping (UIImage?) -> Void) {
+   
+        let mapView = MKMapView(frame: CGRect(x: 0, y: 0, width: 300, height: 245))
+        
+       
+        let initialLocation = CLLocationCoordinate2D(latitude: persistPhoto.lat, longitude: persistPhoto.lng)
+        
+        
+        let zoomDelta = 0.002
+        let region = MKCoordinateRegion(center: initialLocation, span: MKCoordinateSpan(latitudeDelta: zoomDelta, longitudeDelta: zoomDelta))
+        
+        mapView.setRegion(region, animated: false)
+        
+     
+        let options = MKMapSnapshotter.Options()
+        
+        
+        options.size = mapView.bounds.size
+        options.mapType = .standard
+        options.showsBuildings = true
+        options.region = region
+      
+        //options.region.span = MKCoordinateSpan(latitudeDelta: zoomDelta, longitudeDelta: zoomDelta)
+        
+
+        let snapshotter = MKMapSnapshotter(options: options)
+        
+
+        snapshotter.start { snapshot, error in
+            if let snapshotImage = snapshot?.image {
+                completion(snapshotImage)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        mapScreenShot { image in
+            if let mapImage = image {
+               
+                self.imageMap.image = mapImage
+            } else {
+                // Error
+            }
+        }
+
         // Do any additional setup after loading the view.
         metaView.layer.cornerRadius = 10
+        pdfButton.layer.cornerRadius = 10
         
-        updateDetail()        
+        updateDetail()
         updateSendBUtton()
     }
     

@@ -356,7 +356,7 @@ class TaskViewController: UIViewController {
                 let jsonString = String(data: jsonData, encoding: .utf8)!
                 
                 // Prepare URL
-                let urlStr = Configuration.baseURLString + "/comm_photo.php"
+                let urlStr = Configuration.baseURLString + ApiEndPoint.photo
                 print("------------------------------------------")
                 print(urlStr)
                 print("------------------------------------------")
@@ -429,7 +429,7 @@ class TaskViewController: UIViewController {
             let noteString = persistTask.note ?? ""
                         
             // Prepare URL
-            let urlStr = Configuration.baseURLString + "/comm_status.php"
+            let urlStr = Configuration.baseURLString + ApiEndPoint.status
             print("------------------------------------------")
             print(urlStr)
             print("------------------------------------------")

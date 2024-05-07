@@ -16,7 +16,7 @@ struct Configuration {
             let url = UserDefaults.standard.string(forKey: "url") {
             return url
         } else {
-            return "https://api.pic2bim.co.uk"
+            return "https://pic2bim.co.uk/egnss4allservices/"
         }
     }
 }

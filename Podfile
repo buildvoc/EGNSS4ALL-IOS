@@ -6,7 +6,7 @@ target 'PIC2BIM' do
   use_frameworks!
 
   # Pods for EGNSS4ALL
-	pod 'AAInfographics', :git => 'https://github.com/AAChartModel/AAChartKit-Swift.git'
+  pod 'lottie-ios'
 
 end
 
