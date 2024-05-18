@@ -15,6 +15,10 @@ var myCharacteristic:CBCharacteristic?
 var telCharacteristic:CBCharacteristic?
 var navCharacteristic:CBCharacteristic?
 var pvtCharacteristic:CBCharacteristic?
+var gnssBleCharacteristic:CBCharacteristic?
+
+
+
 var manager:CBCentralManager?
 var peripherals:[CBPeripheral] = []
 
@@ -26,6 +30,12 @@ var telemetryData = [String: Any]()
 let sppServiceUUID = CBUUID(string: "00001101-0000-1000-8000-00805F9B34FB")
 let serviceUUID = CBUUID(string: "4fafc201-1fb5-459e-8fcc-c5c9c331914b")
 var periphealUUID = CBUUID(string: "A5A4976E-D2C6-46BA-98C9-2878B849C311")
+
+let gnssBLEServiceUUID = CBUUID(string: "0000FFF0-0000-1000-8000-00805F9B34FB")
+let gnssBLECharacteristicUUID = CBUUID(string: "0000FFF1-0000-1000-8000-00805F9B34FB")
+
+var mainGNSSString = ""
+
 
 class MainViewController: UIViewController, CBCentralManagerDelegate {
     
@@ -208,7 +218,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        peripheral.discoverServices([serviceUUID])
+        peripheral.discoverServices([gnssBLEServiceUUID])
         print("Connesso a " +  peripheral.name!)
        
     }
@@ -358,7 +368,10 @@ extension MainViewController: CBPeripheralDelegate {
         guard let services = peripheral.services else { return }
         
         for service in services {
-            peripheral.discoverCharacteristics(nil, for: service)
+            if(service.uuid == gnssBLEServiceUUID)
+            {
+                peripheral.discoverCharacteristics([gnssBLECharacteristicUUID], for: service)
+            }
             
             
         }
@@ -373,8 +386,29 @@ extension MainViewController: CBPeripheralDelegate {
         //NO
     }
     
+    
+    
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         //print(characteristic.debugDescription)
+        
+        if(characteristic == gnssBleCharacteristic){
+            
+            let str = String(decoding: characteristic.value!, as: UTF8.self)
+            let data = Data(str.utf8)
+            
+
+            if(str.contains("*")){
+                let finalStr =  mainGNSSString + str
+                mainGNSSString = ""
+                
+                self.showToast(message: "NEMA : \(finalStr) ", font: .systemFont(ofSize: 12.0))
+            }
+            else {
+                mainGNSSString = str
+            }
+            
+            return
+        }
         
         if characteristic == myCharacteristic {
             //print("update sfrbx")
@@ -408,17 +442,28 @@ extension MainViewController: CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
-        myCharacteristic = characteristics[0]
-        telCharacteristic = characteristics[1]
-        navCharacteristic = characteristics[2]
-        pvtCharacteristic = characteristics[3]
+    
+        for characteristic in characteristics {
+            if(characteristic.uuid == gnssBLECharacteristicUUID)
+            {
+                gnssBleCharacteristic = characteristic
+                myPeripheal?.setNotifyValue(true, for: gnssBleCharacteristic!)
+            }
+
+        }
+
         
-        myPeripheal?.setNotifyValue(true, for: myCharacteristic!)
-        myPeripheal?.setNotifyValue(true, for: telCharacteristic!)
-        myPeripheal?.setNotifyValue(true, for: navCharacteristic!)
-        myPeripheal?.setNotifyValue(true, for: pvtCharacteristic!)
-
-
+//        myCharacteristic = characteristics[0]
+//        telCharacteristic = characteristics[1]
+//        navCharacteristic = characteristics[2]
+//        pvtCharacteristic = characteristics[3]
+//        
+//        myPeripheal?.setNotifyValue(true, for: myCharacteristic!)
+//        myPeripheal?.setNotifyValue(true, for: telCharacteristic!)
+//        myPeripheal?.setNotifyValue(true, for: navCharacteristic!)
+//        myPeripheal?.setNotifyValue(true, for: pvtCharacteristic!)
+        
+        
     }
 }
 
@@ -464,6 +509,28 @@ extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location services are not enabled")
     }
+    
+    
+    func showToast(message : String, font: UIFont) {
+
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 65, y: self.view.frame.size.height-100, width: 200, height: 35))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.textAlignment = .center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+             toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
+    
+    
 }
 
 
