@@ -47,6 +47,7 @@
 		49CA64D52561A33B00817406 /* PersistPhoto+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CA64D32561A33B00817406 /* PersistPhoto+CoreDataClass.swift */; };
 		49CA64DA2561A3B100817406 /* DB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CA64D92561A3B100817406 /* DB.swift */; };
 		49F003A12565865400795C7C /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F003A02565865400795C7C /* Weak.swift */; };
+		5E7489DB2BFBF141007063AB /* NMEAParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7489DA2BFBF141007063AB /* NMEAParser.swift */; };
 		611181B4260DC106006DC555 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611181B3260DC106006DC555 /* GalleryViewController.swift */; };
 		6117A00C260CAF9F007B0593 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6117A00B260CAF9F007B0593 /* TaskViewController.swift */; };
 		611FE5812553FC0700063891 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611FE5802553FC0700063891 /* PhotoDetailViewController.swift */; };
@@ -125,6 +126,7 @@
 		49CA64D32561A33B00817406 /* PersistPhoto+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistPhoto+CoreDataClass.swift"; sourceTree = "<group>"; };
 		49CA64D92561A3B100817406 /* DB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DB.swift; sourceTree = "<group>"; };
 		49F003A02565865400795C7C /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
+		5E7489DA2BFBF141007063AB /* NMEAParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NMEAParser.swift; path = ../../../../../Downloads/NMEAParser.swift; sourceTree = "<group>"; };
 		5EE3948FA8F480F9116EAAF4 /* Pods_PIC2BIM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PIC2BIM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		611181B3260DC106006DC555 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		6117A00B260CAF9F007B0593 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				04EB49FA2B8DE9340064A1DC /* Configuration.swift */,
+				5E7489DA2BFBF141007063AB /* NMEAParser.swift */,
 				EAB10BD92B99D10B006C8915 /* MyDateFormatter.swift */,
 				18FA96452BEA38B600F9B48B /* ApiEndPoint.swift */,
 			);
@@ -597,6 +600,7 @@
 				61C3ACA02551461F000CED80 /* SceneDelegate.swift in Sources */,
 				496B73A12564C6F5009723BE /* AzimuthMKAnnotation.swift in Sources */,
 				61B3EC622552DF7500AB8AA6 /* PhotosTableViewController.swift in Sources */,
+				5E7489DB2BFBF141007063AB /* NMEAParser.swift in Sources */,
 				6189FA49260B996D0026F43F /* TasksTableViewCell.swift in Sources */,
 				49F003A12565865400795C7C /* Weak.swift in Sources */,
 				E01E6F002844B9C30034C02D /* SkyViewVC.swift in Sources */,

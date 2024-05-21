@@ -184,16 +184,32 @@ extension alertPickerVC: CBPeripheralDelegate {
             let str = String(decoding: characteristic.value!, as: UTF8.self)
             let data = Data(str.utf8)
             
-
             if(str.contains("*")){
+
                 let finalStr =  mainGNSSString + str
-                mainGNSSString = ""
-                
-                self.showToast(message: "NEMA : \(finalStr) ", font: .systemFont(ofSize: 12.0))
+                let matched = matchesNmea(in: finalStr)
+                if(!matched.isEmpty){
+                    for stringItem in matched {
+                        mainGNSSString = mainGNSSString.replacingOccurrences(of: stringItem, with: "")
+                        showToast(message: "NEMA : \(stringItem) ", font: .systemFont(ofSize: 12.0))
+                        print("NEMA : \(stringItem)")
+                    }
+                }
+
             }
             else {
-                mainGNSSString = str
+                mainGNSSString = mainGNSSString + str
             }
+
+//            if(str.contains("*")){
+//                let finalStr =  mainGNSSString + str
+//                mainGNSSString = ""
+//                
+//                self.showToast(message: "NEMA : \(finalStr) ", font: .systemFont(ofSize: 12.0))
+//            }
+//            else {
+//                mainGNSSString = str
+//            }
             
             return
         }
@@ -221,6 +237,17 @@ extension alertPickerVC: CBPeripheralDelegate {
         }
        
         //NO
+    }
+    
+    func matchesNmea( in text: String) -> [String] {
+
+        do {
+            let results = nmeaRegex.matches(in: text,
+                                        range: NSRange(text.startIndex..., in: text))
+            return results.map {
+                String(text[Range($0.range, in: text)!])
+            }
+        }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {

@@ -28,6 +28,14 @@ var satelliti = [Satellite]()
 var navPVTData = [String: Any]()
 var telemetryData = [String: Any]()
 var sfrbxArray: NSMutableArray = []
+var gpgaData : NMEASentenceParser.GPGGA?
+var gpgsaData : NMEASentenceParser.GPGSA?
+var gpgsvData : NMEASentenceParser.GPGSV?
+
+let nmeaRegex = try! NSRegularExpression(pattern:
+                    "(\\$(G[ABILNPQ][A-Z]{3}(?:,(-?\\d*(\\.\\d+)?(?:\\.\\d+)?|[a-zA-Z]+|))+\\w*\\*[\\dA-Fa-f]{2})$)"
+                                     , options: [.caseInsensitive])
+
 
 let sppServiceUUID = CBUUID(string: "00001101-0000-1000-8000-00805F9B34FB")
 let serviceUUID = CBUUID(string: "4fafc201-1fb5-459e-8fcc-c5c9c331914b")

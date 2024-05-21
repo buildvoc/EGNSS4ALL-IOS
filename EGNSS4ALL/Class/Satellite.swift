@@ -279,7 +279,7 @@ class Satellite
                 let azimuth = jsonArray[i]!["azimuth"] as! Double
                 let elevation = jsonArray[i]!["elevation"] as! Double
    
-                let singleSat = Satellite.init(id: Int(actualSatId)!, gnssId: 2, timestamp: 0, validTimeStamp: 0, source: "skyView", numWords: 0, versione: 0, iTow: 0, manufacturer: "none", model: "none", dwrd: [], stato: false, checked: 0, osnma: "Validating...", azim: Int(azimuth), elev: Int(elevation), cno: 0, valid: false)
+                let singleSat = Satellite.init(id: (Int(actualSatId) ?? Int(i)) ?? 0, gnssId: 2, timestamp: 0, validTimeStamp: 0, source: "skyView", numWords: 0, versione: 0, iTow: 0, manufacturer: "none", model: "none", dwrd: [], stato: false, checked: 0, osnma: "Validating...", azim: Int(azimuth), elev: Int(elevation), cno: 0, valid: false)
                 sats.append(singleSat)
             }
         }

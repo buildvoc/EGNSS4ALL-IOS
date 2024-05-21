@@ -12,7 +12,7 @@ import CryptoKit
 import CoreLocation
 import CoreBluetooth
 
-class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
+class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCentralManagerDelegate {
     
     private enum MsgInfo {
         case takePhotoWait
@@ -70,10 +70,11 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     //var persistPhotos = [PersistPhoto]()
     var manageObjectContext: NSManagedObjectContext!
     
-   
 
     @IBOutlet weak var previewView: UIView!
     
+    var manager:CBCentralManager?
+
     
     
     override func viewDidLoad() {
@@ -82,7 +83,8 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         
         
         super.viewDidLoad()
-        //manager = CBCentralManager(delegate: self, queue: nil)
+        manager = CBCentralManager(delegate: self, queue: nil)
+
         /*snapshotButton.layer.cornerRadius = 10
         snapshotButton.layer.shadowColor = UIColor.black.cgColor
         snapshotButton.layer.shadowOffset = CGSize(width: 3, height: 3)
@@ -109,16 +111,19 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         let extGPS = localStorage.bool(forKey: "externalGPS")
         let perUUID = localStorage.string(forKey: "periphealUUID")
         
-       
+        if extGPS {
+            periphealUUID = CBUUID(string: perUUID ?? "00000000-0000-0000-0000-000000000000")
+        }
+        
         photoDataController.locationReceiver = {location in
             
             if extGPS {
               
-                self.latitudeLabel.text = String(navPVTData["latitudine"] as? Double ?? 0.000000) + "°N"
-                self.longitudeLabel.text = String(navPVTData["longitudine"] as? Double ?? 0.000000) + "°E"
-                self.altitudeLabel.text = String(navPVTData["msl"] as? Double ?? 0.0)
-                self.accuracyLabel.text = String(navPVTData["accH"] as? Double ?? 0.0)
-                
+//                self.latitudeLabel.text = String(navPVTData["latitudine"] as? Double ?? 0.000000) + "°N"
+//                self.longitudeLabel.text = String(navPVTData["longitudine"] as? Double ?? 0.000000) + "°E"
+//                self.altitudeLabel.text = String(navPVTData["msl"] as? Double ?? 0.0)
+//                self.accuracyLabel.text = String(navPVTData["accH"] as? Double ?? 0.0)
+//                
             } else {
                 self.latitudeLabel.text = String(format: "%f", location.coordinate.latitude)
                 self.longitudeLabel.text = String(format: "%f", location.coordinate.longitude)
@@ -221,12 +226,12 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
                 let str = String(decoding: characteristic.value!, as: UTF8.self)
                 let data = Data(str.utf8)
                 
-                //print(str)
+                print(str)
 
                 do {
                     // make sure this JSON is in the format we expect
                     if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                        // try to read out a string array
+                      //   try to read out a string array
                         
                         
                         
@@ -236,8 +241,8 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
                     }
                                 
                 } catch let error as NSError {
-                    //print("qui")
-                    //print("Failed to load: \(error.localizedDescription)")
+                    print("qui")
+                    print("Failed to load: \(error.localizedDescription)")
                    
                 }
                 
@@ -245,8 +250,8 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
             }
             
         }
-    }
-    */
+    }*/
+    
     
     
     func recordFunc() {
@@ -300,7 +305,9 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         //setExternalLocation()
     }
     
-    /*func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+    ///////
+    
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         print(peripheral.debugDescription)
         
         if peripheral.identifier.uuidString == periphealUUID.uuidString {
@@ -321,7 +328,9 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
             
             
             if extGPS {
-                manager?.scanForPeripherals(withServices:[serviceUUID], options: nil)
+               // manager?.scanForPeripherals(withServices:[gnssBLEServiceUUID], options: nil)
+                manager?.scanForPeripherals(withServices:nil, options: nil)
+
             }
             
             print("Bluetooth attivo")
@@ -335,7 +344,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        peripheral.discoverServices([serviceUUID])
+        peripheral.discoverServices([gnssBLEServiceUUID])
         print("Connesso a " +  peripheral.name!)
        
     
@@ -351,7 +360,9 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         print(error!)
-    }*/
+    }
+    
+    ///////////
     
     func setupLivePreview() {
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -630,13 +641,15 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
 // Created for the GSA in 2020-2021. Project management: SpaceTec Partners, software development: www.foxcom.eu
 
 
-/*extension CameraViewController: CBPeripheralDelegate {
+extension CameraViewController: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         guard let services = peripheral.services else { return }
         
         for service in services {
-            peripheral.discoverCharacteristics(nil, for: service)
-            
+            if(service.uuid == gnssBLEServiceUUID)
+            {
+                peripheral.discoverCharacteristics([gnssBLECharacteristicUUID], for: service)
+            }
             
         }
         
@@ -646,33 +659,96 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         print(characteristic.debugDescription)
-        
-        //NO
+        ///NO
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        //print(characteristic.debugDescription)
-        
-        if characteristic == myCharacteristic {
-            //print("update sfrbx")
-            //self.addSat(characteristic: characteristic)
+        if(characteristic == gnssBleCharacteristic){
+            
+            let str = String(decoding: characteristic.value!, as: UTF8.self)
+            let data = Data(str.utf8)
+            
+
+            if(str.contains("*")){
+
+                let finalStr =  mainGNSSString + str
+                let matched = matchesNmea(in: finalStr)
+                if(!matched.isEmpty){
+                    for stringItem in matched {
+                        mainGNSSString = mainGNSSString.replacingOccurrences(of: stringItem, with: "")
+                        showToast(message: "NEMA : \(stringItem) ", font: .systemFont(ofSize: 6.0))
+                        print("NEMA : \(stringItem)")
+                        let parsedItem = NMEASentenceParser.shared.parse(stringItem)
+                        if(parsedItem != nil){
+                            if (parsedItem is NMEASentenceParser.GPGGA){
+                                let gga = (parsedItem as? NMEASentenceParser.GPGGA)
+                                self.latitudeLabel.text = "\(gga?.latitude?.coordinate) \(gga?.latitude?.direction)" ?? ""
+                                
+                                self.longitudeLabel.text = "\(gga?.longitude?.coordinate) \(gga?.longitude?.direction)" ?? ""
+                                
+                                self.altitudeLabel.text = "\(gga?.mslAltitude)" ?? ""
+                                
+                                self.accuracyLabel.text = "\(gga?.horizontalDilutionOfPosition)" ?? ""
+
+                                
+                            }
+                            
+                            else if (parsedItem is NMEASentenceParser.GPGSA){
+                                let gga = (parsedItem as? NMEASentenceParser.GPGSA)
+
+                                self.accuracyLabel.text = "\(gga?.hdop)" ?? ""
+
+
+                            }
+                            else if (parsedItem is NMEASentenceParser.GPGSV){
+
+
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            else {
+                mainGNSSString = mainGNSSString + str
+            }
+           
+            
+            
+            return
         }
         
-        if characteristic == navCharacteristic {
-            //self.getNavSat(characteristic: characteristic)
-        }
-        
-        if characteristic == pvtCharacteristic {
-            self.getNavPvt(characteristic: characteristic)
-        }
-        
-        if characteristic == telCharacteristic {
-            //self.getTelemetry(characteristic: characteristic)
+//        if characteristic == myCharacteristic {
+//            print("update sfrbx")
+//            self.addSat(characteristic: characteristic)
+//        }
+//        
+//        if characteristic == navCharacteristic {
+//            self.getNavSat(characteristic: characteristic)
+//        }
+//        
+//        if characteristic == pvtCharacteristic {
+//            self.getNavPvt(characteristic: characteristic)
+//        }
+//        
+//        if characteristic == telCharacteristic {
+//            self.getTelemetry(characteristic: characteristic)
+//        }
+    }
+    
+    func matchesNmea( in text: String) -> [String] {
+
+        do {
+            let results = nmeaRegex.matches(in: text,
+                                        range: NSRange(text.startIndex..., in: text))
+            return results.map {
+                String(text[Range($0.range, in: text)!])
+            }
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
-        
        //NO
     }
     
@@ -685,17 +761,45 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
-        myCharacteristic = characteristics[0]
-        telCharacteristic = characteristics[1]
-        navCharacteristic = characteristics[2]
-        pvtCharacteristic = characteristics[3]
-        
-        myPeripheal?.setNotifyValue(true, for: myCharacteristic!)
-        myPeripheal?.setNotifyValue(true, for: telCharacteristic!)
-        myPeripheal?.setNotifyValue(true, for: navCharacteristic!)
-        myPeripheal?.setNotifyValue(true, for: pvtCharacteristic!)
+    
+        for characteristic in characteristics {
+            if(characteristic.uuid == gnssBLECharacteristicUUID)
+            {
+                gnssBleCharacteristic = characteristic
+                myPeripheal?.setNotifyValue(true, for: gnssBleCharacteristic!)
+            }
 
+        }
+        
+        //        myCharacteristic = characteristics[0]
+        //        telCharacteristic = characteristics[1]
+        //        navCharacteristic = characteristics[2]
+        //        pvtCharacteristic = characteristics[3]
+        //
+        //        myPeripheal?.setNotifyValue(true, for: myCharacteristic!)
+        //        myPeripheal?.setNotifyValue(true, for: telCharacteristic!)
+        //        myPeripheal?.setNotifyValue(true, for: navCharacteristic!)
+        //        myPeripheal?.setNotifyValue(true, for: pvtCharacteristic!)
 
     }
-}*/
+    
+    func showToast(message : String, font: UIFont) {
+
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 65, y: self.view.frame.size.height-100, width: 200, height: 35))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.textAlignment = .center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+             toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
+}
 
