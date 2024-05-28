@@ -663,79 +663,67 @@ extension CameraViewController: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        if(characteristic == gnssBleCharacteristic){
-            
+        if characteristic == gnssBleCharacteristic {
             let str = String(decoding: characteristic.value!, as: UTF8.self)
             let data = Data(str.utf8)
-            
 
-            if(str.contains("*")){
-
-                let finalStr =  mainGNSSString + str
+            if str.contains("*") {
+                let finalStr = mainGNSSString + str
                 let matched = matchesNmea(in: finalStr)
-                if(!matched.isEmpty){
+                if !matched.isEmpty {
                     for stringItem in matched {
                         mainGNSSString = mainGNSSString.replacingOccurrences(of: stringItem, with: "")
                         showToast(message: "NEMA : \(stringItem) ", font: .systemFont(ofSize: 6.0))
                         print("NEMA : \(stringItem)")
                         let parsedItem = NMEASentenceParser.shared.parse(stringItem)
-                        if(parsedItem != nil){
-                            if (parsedItem is NMEASentenceParser.GPGGA){
-                                let gga = (parsedItem as? NMEASentenceParser.GPGGA)
-                                self.latitudeLabel.text = "\(gga?.latitude?.coordinate) \(gga?.latitude?.direction)" ?? ""
-                                
-                                self.longitudeLabel.text = "\(gga?.longitude?.coordinate) \(gga?.longitude?.direction)" ?? ""
-                                
-                                self.altitudeLabel.text = "\(gga?.mslAltitude)" ?? ""
-                                
-                                self.accuracyLabel.text = "\(gga?.horizontalDilutionOfPosition)" ?? ""
-
-                                
-                            }
-                            
-                            else if (parsedItem is NMEASentenceParser.GPGSA){
-                                let gga = (parsedItem as? NMEASentenceParser.GPGSA)
-
-                                self.accuracyLabel.text = "\(gga?.hdop)" ?? ""
-
-
-                            }
-                            else if (parsedItem is NMEASentenceParser.GPGSV){
-
-
+                        if let parsedItem = parsedItem {
+                            if let gga = parsedItem as? NMEASentenceParser.GPGGA {
+                                self.latitudeLabel.text = gga.latitude?.coordinate?.description
+                                //"\(gga.latitude?.direction?.rawValue)"
+                                self.longitudeLabel.text = gga.longitude?.coordinate?.description
+                        
+                                self.altitudeLabel.text = gga.mslAltitude?.description
+                                self.accuracyLabel.text = gga.horizontalDilutionOfPosition?.description
+                            } else if let gsa = parsedItem as? NMEASentenceParser.GPGSA {
+                                self.accuracyLabel.text = gsa.hdop?.description
+                            } else if let rmc = parsedItem as? NMEASentenceParser.GPRMC {
+                                self.latitudeLabel.text = rmc.latitude?.description
+                                self.longitudeLabel.text = rmc.longitude?.description
+//                                self.altitudeLabel.text = rmc.mslAltitude?.description
+//                                self.accuracyLabel.text = rmc.horizontalDilutionOfPosition?.description
+//                                self.speedLabel.text = rmc.speedOverGround?.description
+//                                self.courseLabel.text = rmc.courseOverGround?.description
+                            } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
+                                // Handle GPGSV parsing if necessary
                             }
                         }
-
                     }
                 }
-
-            }
-            else {
+            } else {
                 mainGNSSString = mainGNSSString + str
             }
-           
-            
-            
             return
         }
-        
-//        if characteristic == myCharacteristic {
-//            print("update sfrbx")
-//            self.addSat(characteristic: characteristic)
-//        }
-//        
-//        if characteristic == navCharacteristic {
-//            self.getNavSat(characteristic: characteristic)
-//        }
-//        
-//        if characteristic == pvtCharacteristic {
-//            self.getNavPvt(characteristic: characteristic)
-//        }
-//        
-//        if characteristic == telCharacteristic {
-//            self.getTelemetry(characteristic: characteristic)
-//        }
+
+        // Uncomment and implement these as needed
+        // if characteristic == myCharacteristic {
+        //     print("update sfrbx")
+        //     self.addSat(characteristic: characteristic)
+        // }
+        //
+        // if characteristic == navCharacteristic {
+        //     self.getNavSat(characteristic: characteristic)
+        // }
+        //
+        // if characteristic == pvtCharacteristic {
+        //     self.getNavPvt(characteristic: characteristic)
+        // }
+        //
+        // if characteristic == telCharacteristic {
+        //     self.getTelemetry(characteristic: characteristic)
+        // }
     }
+
     
     func matchesNmea( in text: String) -> [String] {
 
