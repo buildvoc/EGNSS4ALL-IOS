@@ -19,7 +19,7 @@ class TaskViewController: UIViewController {
     var waitAlert:UIAlertController!
     var photosToSend = [PersistPhoto]()
     let localStorage = UserDefaults.standard
-
+    
     @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
@@ -49,7 +49,7 @@ class TaskViewController: UIViewController {
         updateDetail()
         updateSendButton()
         loadPhoto()
-
+        
         // Do any additional setup after loading the view.
     }
     
@@ -89,23 +89,23 @@ class TaskViewController: UIViewController {
         }
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
     @IBAction func noteButton(_ sender: UIButton) {
         //1. Create the alert controller.
         let alert = UIAlertController(title: "Task note", message: "", preferredStyle: .alert)
-
+        
         //2. Add the text field. You can configure it however you need.
         alert.addTextField { (textField) in
             textField.text = self.persistTask.note
         }
-
+        
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
@@ -120,7 +120,7 @@ class TaskViewController: UIViewController {
             
             self.updateDetail()
         }))
-
+        
         // 4. Present the alert.
         self.present(alert, animated: true, completion: nil)
     }
@@ -134,7 +134,11 @@ class TaskViewController: UIViewController {
     }
     
     @IBAction func cameraButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "ShowTaskCamera", sender: self)
+        guard let cameraVC = UIStoryboard(name: "Camera", bundle: nil).instantiateViewController(identifier: "CameraViewController") as? CameraViewController else { return  }
+        cameraVC.taskid = persistTask.id
+        cameraVC.manageObjectContext = manageObjectContext
+        cameraVC.delegate = self
+        self.navigationController?.pushViewController(cameraVC, animated: true)
     }
     
     @IBAction func prevButton(_ sender: Any) {
@@ -165,7 +169,7 @@ class TaskViewController: UIViewController {
     
     func changeStatus() {
         if persistTask.status == "new" {
-             persistTask.status = "open"
+            persistTask.status = "open"
             do {
                 try self.manageObjectContext.save()
             } catch {
@@ -194,7 +198,7 @@ class TaskViewController: UIViewController {
         }
         loadPhoto()
         updateSendButton()
-                
+        
         do {
             try self.manageObjectContext.save()
         } catch {
@@ -245,7 +249,7 @@ class TaskViewController: UIViewController {
         if let dueDate = persistTask.task_due_date {
             dueLabel.text = df.string(from: dueDate)
         }
-
+        
         textView.text = persistTask.text
         returnLabel.text = persistTask.text_returned
         noteLabel.text = persistTask.note
@@ -404,7 +408,7 @@ class TaskViewController: UIViewController {
             var status: String
             var error_msg: String?
         }
-
+        
         let jsonData = data.data(using: .utf8)!
         let answer = try! JSONDecoder().decode(Answer.self, from: jsonData)
         
@@ -427,19 +431,19 @@ class TaskViewController: UIViewController {
         do {
             let statusString = "data provided"
             let noteString = persistTask.note ?? ""
-                        
+            
             // Prepare URL
             let urlStr = Configuration.baseURLString + ApiEndPoint.status
             print("------------------------------------------")
             print(urlStr)
             print("------------------------------------------")
             let url = URL(string: urlStr)
-
+            
             guard let requestUrl = url else { fatalError() }
             // Prepare URL Request Object
             var request = URLRequest(url: requestUrl)
             request.httpMethod = "POST"
-             
+            
             // HTTP Request Parameters which will be sent in HTTP Request Body
             let postString = "task_id="+String(persistTask.id)+"&status="+statusString+"&note="+noteString
             // Set HTTP Request Body
@@ -473,7 +477,7 @@ class TaskViewController: UIViewController {
             var status: String
             var error_msg: String?
         }
-
+        
         let jsonData = data.data(using: .utf8)!
         let answer = try! JSONDecoder().decode(Answer.self, from: jsonData)
         
@@ -500,7 +504,7 @@ class TaskViewController: UIViewController {
         let alert = UIAlertController(title: "Sending error", message: "Connection error", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
-    
+        
         updateDetail()
         updateSendButton()
         loadPhoto()
@@ -528,3 +532,13 @@ class TaskViewController: UIViewController {
 }
 
 // Created for the GSA in 2020-2021. Project management: SpaceTec Partners, software development: www.foxcom.eu
+
+
+extension TaskViewController: CameraViewControllerDelegate {
+    func didCompletePhoto() {
+        loadPersistPhotos()
+        currentPhotoIndex = persistPhotos.count - 1
+        loadPhoto()
+        updateSendButton()
+    }
+}

@@ -79,7 +79,8 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tabBarController?.tabBar.isHidden = true
+        addMenuButton()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()

@@ -10,18 +10,31 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
     let sendDQ = DispatchQueue(label: "sendDQ")
     let sendDB = DB()
     let c = DB().privateMOC
+    var isFromMenu: Bool = true
     
     let localStorage = UserDefaults.standard
     
+    @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var sendButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if #available(iOS 16.0, *) {
+            menuButton.isHidden = !isFromMenu
+        } else {
+            // Fallback on earlier versions
+        }
         tableView.tableFooterView = UIView()
         
         loadPaths()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if isFromMenu {
+            tabBarController?.tabBar.isHidden = true
+        }
     }
     
     func loadPaths() {
@@ -66,6 +79,10 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
         selectedPath = paths[indexPath.row]
         performSegue(withIdentifier: "ShowPathInMap", sender: self)
         
+    }
+    
+    @IBAction func menu(_ sender: UIBarButtonItem) {
+        self.sideMenuController?.revealMenu()
     }
     
     @objc func kmlBtnTapped(_ sender: UIButton) {

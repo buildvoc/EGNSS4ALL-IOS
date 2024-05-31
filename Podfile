@@ -7,6 +7,7 @@ target 'PIC2BIM' do
 
   # Pods for EGNSS4ALL
   pod 'lottie-ios'
+  pod 'SideMenuSwift'
 
 end
 

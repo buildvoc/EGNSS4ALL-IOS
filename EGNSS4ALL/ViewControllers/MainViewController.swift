@@ -10,6 +10,7 @@ import CoreLocation
 import CoreData
 import CoreBluetooth
 import Lottie
+import SideMenuSwift
 
 var myPeripheal:CBPeripheral?
 var myCharacteristic:CBCharacteristic?
@@ -60,6 +61,12 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let items = self.tabBarController?.tabBar.items {
+            items[3].image = UIImage(named: "unselect_record")
+            items[3].selectedImage = UIImage(named: "select_record")
+        }
+        
         let bounds = CGRect(x: 0, y: 0, width: animView.frame.width, height: animView.frame.height)
         
        
@@ -121,7 +128,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
-        
+        tabBarController?.tabBar.isHidden = false
         updateLoggedUser()
         updateBasicInfo()
     }
@@ -179,6 +186,11 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         //updateLoggedUser()
         
         checkLoggedUser()
+    }
+    
+    @IBAction func menu(_ sender: UIBarButtonItem) {
+        tabBarController?.tabBar.isHidden = true
+        self.sideMenuController?.revealMenu()
     }
     
     //MARK: - Other Helpers -
@@ -505,7 +517,12 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         let isLogged = UserStorage.exists(key: UserStorage.Key.userID)
         
         if isLogged != true {
-            performSegue(withIdentifier: "ShowLoginScreen", sender: self)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let loginNavCon = storyboard.instantiateViewController(withIdentifier: "LoginNavigationController") as? UINavigationController {
+                loginNavCon.modalPresentationStyle = .fullScreen
+                present(loginNavCon, animated: true)
+            }
+//            performSegue(withIdentifier: "ShowLoginScreen", sender: self)
         }
     }
     

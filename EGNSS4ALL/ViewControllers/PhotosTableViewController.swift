@@ -8,6 +8,7 @@
 import UIKit
 import CoreData
 import CryptoKit
+import SideMenuSwift
 
 extension Digest {
     var bytes: [UInt8] { Array(makeIterator()) }
@@ -49,7 +50,10 @@ class PhotosTableViewController: UITableViewController {
     }
     
     @IBAction func newPhoto(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "ShowCamera", sender: self)
+        guard let cameraVC = UIStoryboard(name: "Camera", bundle: nil).instantiateViewController(identifier: "CameraViewController") as? CameraViewController else { return  }
+        cameraVC.manageObjectContext = manageObjectContext
+        cameraVC.delegate = self
+        self.navigationController?.pushViewController(cameraVC, animated: true)
     }
     
     @IBAction func unwindToTableView(sender: UIStoryboardSegue) {
@@ -96,12 +100,17 @@ class PhotosTableViewController: UITableViewController {
                 scrollToBottom()
             }
         }
+        tabBarController?.tabBar.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
     }
     
+    @IBAction func menu(_ sender: UIBarButtonItem) {
+        tabBarController?.tabBar.isHidden = true
+        self.sideMenuController?.revealMenu()
+    }
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -430,7 +439,7 @@ extension PhotosTableViewController {
     
     
     func processResponsePhotoData(data: String, idPhoto: String) {
-               
+        
         let jsonData = data.data(using: .utf8)!
         let answer = try! JSONDecoder().decode(GetPhotoResponse.self, from: jsonData)
         
@@ -493,7 +502,7 @@ extension PhotosTableViewController {
                 var photos_ids: [String]
                 
             }
-                        
+            
             let jsonData = data.data(using: .utf8)!
             let answer = try! JSONDecoder().decode(Answer.self, from: jsonData)
             
@@ -524,5 +533,13 @@ extension PhotosTableViewController {
                 
             }
         }
+    }
+}
+
+
+extension PhotosTableViewController: CameraViewControllerDelegate {
+    func didCompletePhoto() {
+        loadPersistPhotos()
+        openDetail = true
     }
 }
