@@ -163,6 +163,8 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.tintColor = .white
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -720,17 +722,9 @@ extension CameraViewController {
     
     func setUpNavigation() {
         let image = UIImage(named: "cross")
-        
-        self.title = "Camera"
-        navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.tintColor = .white
-        
         let crossBarButton = UIBarButtonItem(image: image, style: .plain, target: self, action:  #selector(didTapCrossButton))
         crossBarButton.tintColor = .white
         navigationItem.rightBarButtonItem = crossBarButton
-        let navAppearance = UINavigationBarAppearance()
-        navAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationItem.standardAppearance = navAppearance
     }
     
     @objc

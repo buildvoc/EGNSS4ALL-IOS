@@ -72,7 +72,10 @@ class PhotosTableViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.tableFooterView = UIView()
-        
+        if let items = self.tabBarController?.tabBar.items {
+            items[3].image = UIImage(named: "unselect_record")
+            items[3].selectedImage = UIImage(named: "select_record")
+        }
         
         
         manageObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -100,7 +103,7 @@ class PhotosTableViewController: UITableViewController {
                 scrollToBottom()
             }
         }
-        tabBarController?.tabBar.isHidden = true
+        tabBarController?.tabBar.isHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -108,8 +111,13 @@ class PhotosTableViewController: UITableViewController {
     }
     
     @IBAction func menu(_ sender: UIBarButtonItem) {
-        tabBarController?.tabBar.isHidden = true
         self.sideMenuController?.revealMenu()
+    }
+    
+    @IBAction func homeDidTap(_ sender: UIBarButtonItem) {
+        let homeStoryboard = UIStoryboard(name: "Home", bundle: nil)
+        guard let homeVc = homeStoryboard.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController else { return }
+        self.navigationController?.pushViewController(homeVc, animated: true)
     }
     // MARK: - Table view data source
     

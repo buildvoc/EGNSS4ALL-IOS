@@ -121,5 +121,10 @@ extension AppDelegate {
         }
         UITabBar.appearance().standardAppearance = appearance
         
+        let navAppearance = UINavigationBarAppearance()
+         navAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navAppearance.backgroundColor = .red
+        UINavigationController().navigationItem.standardAppearance = navAppearance
+        
     }
 }

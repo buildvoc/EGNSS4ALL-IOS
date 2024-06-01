@@ -75,10 +75,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EeA-9R-183">
-                                <rect key="frame" x="0.0" y="155" width="393" height="648"/>
+                                <rect key="frame" x="0.0" y="155" width="393" height="599"/>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iOQ-Gh-kSS" userLabel="Path">
-                                <rect key="frame" x="307" y="713" width="70" height="40"/>
+                                <rect key="frame" x="307" y="664" width="70" height="40"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="Dis-rQ-gAo"/>
@@ -99,7 +99,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5GO-bB-dwE" userLabel="Record">
-                                <rect key="frame" x="207" y="713" width="90" height="40"/>
+                                <rect key="frame" x="207" y="664" width="90" height="40"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="U7g-WE-4M5"/>
@@ -120,7 +120,7 @@
                                 </connections>
                             </button>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tPm-ID-vBt">
-                                <rect key="frame" x="207" y="638" width="170" height="65"/>
+                                <rect key="frame" x="207" y="589" width="170" height="65"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Showing Path" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vL-ml-ocq">
                                         <rect key="frame" x="43.666666666666657" y="5" width="83" height="15"/>
@@ -169,7 +169,7 @@
                                 </connections>
                             </segmentedControl>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="D8m-zz-9TH">
-                                <rect key="frame" x="57" y="708" width="140" height="45"/>
+                                <rect key="frame" x="57" y="659" width="140" height="45"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="cIh-JI-BLG"/>
@@ -190,7 +190,7 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ckW-Fj-2Ay">
-                                <rect key="frame" x="57" y="628" width="140" height="30"/>
+                                <rect key="frame" x="57" y="579" width="140" height="30"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="140" id="0Qp-d2-mt6"/>
@@ -211,7 +211,7 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FyX-F2-Hwx">
-                                <rect key="frame" x="67" y="668" width="130" height="30"/>
+                                <rect key="frame" x="67" y="619" width="130" height="30"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="130" id="NhF-EJ-FNw"/>
@@ -232,7 +232,7 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7hI-69-Jzr">
-                                <rect key="frame" x="87" y="588" width="110" height="30"/>
+                                <rect key="frame" x="87" y="539" width="110" height="30"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="YV6-FV-UKO"/>
@@ -413,7 +413,16 @@
                             <constraint firstItem="iOQ-Gh-kSS" firstAttribute="top" secondItem="tPm-ID-vBt" secondAttribute="bottom" constant="10" id="wpg-iT-QjE"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Map" id="nS4-aC-pD7"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Map" id="nS4-aC-pD7">
+                        <barButtonItem key="leftBarButtonItem" image="unselect_home" id="xsp-In-cva">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="homeDidTap:" destination="pCd-D6-ePc" id="gCY-OK-553"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="_mkMapView" destination="EeA-9R-183" id="n0B-mt-Qpt"/>
                         <outlet property="actAccLabel" destination="LUb-PH-nGg" id="1qe-VT-eES"/>
@@ -633,8 +642,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="menuIcon" width="48" height="48"/>
+        <image name="menuIcon" width="19" height="19"/>
         <image name="select_map" width="19" height="19"/>
+        <image name="unselect_home" width="19" height="19"/>
         <image name="unselect_map" width="19" height="19"/>
         <namedColor name="Primary">
             <color red="0.19607843137254902" green="0.67843137254901964" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -646,7 +656,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

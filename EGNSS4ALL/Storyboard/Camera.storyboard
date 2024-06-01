@@ -13,7 +13,7 @@
         <!--Camera-->
         <scene sceneID="IGx-ai-cY7">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="o96-hJ-lbb" userLabel="Camera" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="CameraNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="o96-hJ-lbb" userLabel="Camera" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="unselect_camera" selectedImage="select_camera" id="xbo-bf-GtH">
                         <inset key="imageInsets" minX="-10" minY="-10" maxX="-10" maxY="-10"/>
                     </tabBarItem>

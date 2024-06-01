@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zWx-Im-kDe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kT5-Dw-qYV">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -13,7 +13,7 @@
         <!--PIC2BIM-->
         <scene sceneID="n0f-0e-9Qp">
             <objects>
-                <viewController id="4bC-Tr-WYt" customClass="MainViewController" customModule="PIC2BIM" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" id="4bC-Tr-WYt" customClass="MainViewController" customModule="PIC2BIM" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Map-cs-kPG">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -279,9 +279,6 @@
                                                     <constraint firstAttribute="height" constant="30" id="hO0-Ti-1Sj"/>
                                                 </constraints>
                                                 <state key="normal" title="About"/>
-                                                <connections>
-                                                    <action selector="aboutButton:" destination="4bC-Tr-WYt" eventType="touchUpInside" id="48N-w2-xXo"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HyJ-Nw-ND9">
                                                 <rect key="frame" x="248" y="10" width="90" height="30"/>
@@ -290,9 +287,6 @@
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="90" id="hA1-QR-30l"/>
                                                 </constraints>
                                                 <state key="normal" title="Settings"/>
-                                                <connections>
-                                                    <action selector="settingsButton:" destination="4bC-Tr-WYt" eventType="touchUpInside" id="Rwj-jk-C7H"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iTH-RX-48L">
                                                 <rect key="frame" x="119" y="10" width="50" height="30"/>
@@ -301,9 +295,6 @@
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="lcu-er-kvy"/>
                                                 </constraints>
                                                 <state key="normal" title="Map"/>
-                                                <connections>
-                                                    <action selector="mapButton:" destination="4bC-Tr-WYt" eventType="touchUpInside" id="HiY-6m-lda"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" pointerInteraction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b0m-pb-jRJ">
                                                 <rect key="frame" x="5" y="10" width="60" height="30"/>
@@ -313,9 +304,6 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <state key="normal" title="Photos"/>
-                                                <connections>
-                                                    <action selector="photosButton:" destination="4bC-Tr-WYt" eventType="touchUpInside" id="XE3-a6-Vki"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uiO-QN-08b">
                                                 <rect key="frame" x="61" y="10" width="60" height="30"/>
@@ -324,9 +312,6 @@
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="rb4-wq-Myr"/>
                                                 </constraints>
                                                 <state key="normal" title="Tasks"/>
-                                                <connections>
-                                                    <action selector="tasksButton:" destination="4bC-Tr-WYt" eventType="touchUpInside" id="OoX-Gg-Tu5"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w3F-sw-fi3">
                                                 <rect key="frame" x="191" y="10" width="55" height="30"/>
@@ -335,9 +320,6 @@
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="bZl-Jb-E4H"/>
                                                 </constraints>
                                                 <state key="normal" title="SkyMap"/>
-                                                <connections>
-                                                    <action selector="skyMapButton:" destination="4bC-Tr-WYt" eventType="touchUpInside" id="SpN-Z7-r7U"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" name="Primary"/>
@@ -447,17 +429,7 @@
                             <constraint firstItem="4Rv-hU-24y" firstAttribute="top" secondItem="Bmt-85-1iZ" secondAttribute="top" id="wmh-B5-x79"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="PIC2BIM" id="o6S-38-36y">
-                        <barButtonItem key="backBarButtonItem" title="PIC2BIM" id="Czo-Od-6HC" userLabel="PIC2BIM">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="menuIcon" id="mZv-OL-1Nk">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <connections>
-                                <action selector="menu:" destination="4bC-Tr-WYt" id="Jp8-MV-H38"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="PIC2BIM" id="o6S-38-36y"/>
                     <connections>
                         <outlet property="animView" destination="4Rv-hU-24y" id="r46-4W-ZWw"/>
                         <outlet property="basicInfoView" destination="O2D-1i-zcW" id="ZyO-T0-BGr"/>
@@ -476,67 +448,9 @@
             </objects>
             <point key="canvasLocation" x="59" y="70"/>
         </scene>
-        <!--Menu View Controller-->
-        <scene sceneID="qtJ-T4-9Vh">
-            <objects>
-                <viewController storyboardIdentifier="ESPMenuViewController" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="1Dh-ck-jzr" customClass="MenuViewController" customModule="PIC2BIM" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Y38-ZR-Oz4">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kdd-R1-Xei">
-                                <rect key="frame" x="20" y="109" width="373" height="743"/>
-                                <color key="backgroundColor" name="Primary"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="1Dh-ck-jzr" id="wrs-Br-ftF"/>
-                                    <outlet property="delegate" destination="1Dh-ck-jzr" id="kpP-0g-TyL"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="Lak-Pn-v4G"/>
-                        <color key="backgroundColor" name="Primary"/>
-                        <constraints>
-                            <constraint firstItem="kdd-R1-Xei" firstAttribute="trailing" secondItem="Lak-Pn-v4G" secondAttribute="trailing" id="2bn-xK-sma"/>
-                            <constraint firstItem="kdd-R1-Xei" firstAttribute="leading" secondItem="Lak-Pn-v4G" secondAttribute="leading" constant="20" id="IdX-3c-EJh"/>
-                            <constraint firstAttribute="bottom" secondItem="kdd-R1-Xei" secondAttribute="bottom" id="g6a-QX-b8w"/>
-                            <constraint firstItem="kdd-R1-Xei" firstAttribute="top" secondItem="Lak-Pn-v4G" secondAttribute="top" constant="50" id="n4o-O4-YXk"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="uI5-yU-4CQ"/>
-                    <connections>
-                        <outlet property="tableViewMenu" destination="kdd-R1-Xei" id="5HG-85-Dkz"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tnX-C9-hDr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-883" y="725"/>
-        </scene>
-        <!--Side Menu Controller-->
-        <scene sceneID="oZu-4U-w8U">
-            <objects>
-                <viewController storyboardIdentifier="SideMenuController" modalPresentationStyle="fullScreen" id="zWx-Im-kDe" customClass="SideMenuController" customModule="SideMenuSwift" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="eXs-RP-41D">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="NY9-Q3-lqo"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="unselect_home" selectedImage="select_home" id="PlY-VY-eHd"/>
-                    <navigationItem key="navigationItem" id="tU4-cB-HIB"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <segue destination="kT5-Dw-qYV" kind="custom" identifier="SideMenu.Content" customClass="SideMenuSegue" customModule="SideMenuSwift" id="Unr-mm-3Ck"/>
-                        <segue destination="1Dh-ck-jzr" kind="custom" identifier="SideMenu.Menu" customClass="SideMenuSegue" customModule="SideMenuSwift" id="nyG-0B-pMV"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="A4E-xR-Ji0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1731" y="592"/>
-        </scene>
         <!--Home-->
         <scene sceneID="n1M-G2-ivZ">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bL9-zn-5Sb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="HomeNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="kT5-Dw-qYV" userLabel="Home" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
@@ -564,6 +478,7 @@
                         <segue destination="4bC-Tr-WYt" kind="relationship" relationship="rootViewController" id="xze-8t-LZh"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bL9-zn-5Sb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-926" y="70"/>
         </scene>
@@ -575,9 +490,6 @@
         <image name="green_circle" width="128" height="128"/>
         <image name="logged_icon" width="80" height="80"/>
         <image name="logo_login" width="172" height="188"/>
-        <image name="menuIcon" width="48" height="48"/>
-        <image name="select_home" width="19" height="19"/>
-        <image name="unselect_home" width="19" height="19"/>
         <namedColor name="Dark">
             <color red="0.17647058823529413" green="0.19215686274509805" blue="0.25882352941176473" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -23,6 +23,15 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         }
         super.viewDidLoad()
         
+        let isLogged = UserStorage.exists(key: UserStorage.Key.userID)
+        
+        if isLogged {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let tabbarCon = storyboard.instantiateViewController(withIdentifier: "TabBarController") as? UITabBarController {
+                tabbarCon.modalPresentationStyle = .overFullScreen
+                present(tabbarCon, animated: true)
+            }
+        }
 
         // Do any additional setup after loading the view.
         self.isModalInPresentation = true
@@ -123,7 +132,11 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             UserStorage.userName = (answer.user?.name)!
             UserStorage.userSurname = (answer.user?.surname)!       
                 
-            performSegue(withIdentifier: "unwindToMainView", sender: self)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let tabbarCon = storyboard.instantiateViewController(withIdentifier: "TabBarController") as? UITabBarController {
+                tabbarCon.modalPresentationStyle = .overFullScreen
+                present(tabbarCon, animated: true)
+            }
         } else {
             showLoginError()
         }

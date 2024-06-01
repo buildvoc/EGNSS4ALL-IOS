@@ -50,8 +50,11 @@ extension TabBarController: UITabBarControllerDelegate {
                 guard let vc = sb.instantiateViewController(identifier: "CameraViewController") as? CameraViewController else { return false }
                 vc.isPresented = true
                 vc.manageObjectContext = manageObjectContext
-                let navController = UINavigationController(rootViewController: vc)
-                topVC.present(navController, animated: true)
+                if let navController = sb.instantiateViewController(identifier: "CameraNavigationController") as? UINavigationController {
+                    navController.setViewControllers([vc], animated: true)
+                    navController.modalPresentationStyle = .fullScreen
+                    topVC.present(navController, animated: true)
+                }
                 return false
             }
         } else if selectedIndex == 3 {
@@ -67,3 +70,15 @@ extension TabBarController: UITabBarControllerDelegate {
     }
 }
 
+
+extension UINavigationController {
+    func hideVisualEffectBackdropView() {
+        if let navigationBar = self.navigationBar as? UINavigationBar {
+            for view in navigationBar.subviews {
+                if view.isKind(of: NSClassFromString("_UIVisualEffectBackdropView")!) {
+                    view.isHidden = true
+                }
+            }
+        }
+    }
+}

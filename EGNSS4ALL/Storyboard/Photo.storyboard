@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XfJ-XM-E56">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -160,8 +160,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Photos" id="i3C-O4-chW">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="Lia-eq-ObV">
+                        <barButtonItem key="leftBarButtonItem" image="unselect_home" id="8zj-TS-HJi">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="homeDidTap:" destination="Lf4-Jx-xtW" id="6hE-NH-4j5"/>
+                            </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem image="menuIcon" id="zBc-Fh-vPC">
@@ -458,12 +461,72 @@
             </objects>
             <point key="canvasLocation" x="2642" y="-587"/>
         </scene>
+        <!--Menu View Controller-->
+        <scene sceneID="J8f-Yi-9jP">
+            <objects>
+                <viewController storyboardIdentifier="ESPMenuViewController" modalPresentationStyle="fullScreen" hidesBottomBarWhenPushed="YES" id="amL-we-i3M" customClass="MenuViewController" customModule="PIC2BIM" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wNv-ic-dkM">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gLa-JB-Uac">
+                                <rect key="frame" x="20" y="109" width="373" height="743"/>
+                                <color key="backgroundColor" name="Primary"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="amL-we-i3M" id="an4-tA-RAf"/>
+                                    <outlet property="delegate" destination="amL-we-i3M" id="Stu-LT-ghX"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="QUw-gU-vtN"/>
+                        <color key="backgroundColor" name="Primary"/>
+                        <constraints>
+                            <constraint firstItem="gLa-JB-Uac" firstAttribute="trailing" secondItem="QUw-gU-vtN" secondAttribute="trailing" id="AOR-h9-waw"/>
+                            <constraint firstAttribute="bottom" secondItem="gLa-JB-Uac" secondAttribute="bottom" id="Kka-M5-xbU"/>
+                            <constraint firstItem="gLa-JB-Uac" firstAttribute="leading" secondItem="QUw-gU-vtN" secondAttribute="leading" constant="20" id="Zhk-Om-i3X"/>
+                            <constraint firstItem="gLa-JB-Uac" firstAttribute="top" secondItem="QUw-gU-vtN" secondAttribute="top" constant="50" id="raz-4C-nzJ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="GdR-D2-ENJ"/>
+                    <connections>
+                        <outlet property="tableViewMenu" destination="gLa-JB-Uac" id="3iL-R2-JDb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rWb-km-9Mh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1311" y="154"/>
+        </scene>
+        <!--Side Menu Controller-->
+        <scene sceneID="XHb-PO-tWO">
+            <objects>
+                <viewController storyboardIdentifier="SideMenuController" modalPresentationStyle="fullScreen" id="XfJ-XM-E56" customClass="SideMenuController" customModule="SideMenuSwift" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="syM-Ph-kWh">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="9a1-w9-IXD"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="unselect_photo" selectedImage="select_photo" id="Io7-v9-Nzw"/>
+                    <navigationItem key="navigationItem" id="Y66-an-2Wm"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="amL-we-i3M" kind="custom" identifier="SideMenu.Menu" customClass="SideMenuSegue" customModule="SideMenuSwift" id="ejY-Yc-EmQ"/>
+                        <segue destination="e6b-fb-Cbr" kind="custom" identifier="SideMenu.Content" customClass="SideMenuSegue" customModule="SideMenuSwift" id="Epa-dR-3D8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dfd-jU-VAM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1312" y="-670"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="2dc-zg-CT6"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="menuIcon" width="48" height="48"/>
+        <image name="menuIcon" width="19" height="19"/>
+        <image name="select_photo" width="19" height="19"/>
+        <image name="unselect_home" width="19" height="19"/>
+        <image name="unselect_photo" width="19" height="19"/>
         <namedColor name="Primary">
             <color red="0.19607843137254902" green="0.67843137254901964" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -474,7 +537,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

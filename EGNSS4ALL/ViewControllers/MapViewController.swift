@@ -249,6 +249,13 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
+    
+    @IBAction func homeDidTap(_ sender: UIBarButtonItem) {
+        let homeStoryboard = UIStoryboard(name: "Home", bundle: nil)
+        guard let homeVc = homeStoryboard.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController else { return }
+        self.navigationController?.pushViewController(homeVc, animated: true)
+    }
+    
     private func customAnnotationView(in mapView: MKMapView, for annotation: MKAnnotation) -> CustomAnnotationView {
         let identifier = "CustomAnnotationViewID"
 

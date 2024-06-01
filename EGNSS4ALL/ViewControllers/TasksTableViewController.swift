@@ -40,6 +40,12 @@ class TasksTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
     }
+    
+    @IBAction func homeDidTap(_ sender: UIBarButtonItem) {
+        let homeStoryboard = UIStoryboard(name: "Home", bundle: nil)
+        guard let homeVc = homeStoryboard.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController else { return }
+        self.navigationController?.pushViewController(homeVc, animated: true)
+    }
 
     // MARK: - Table view data source
 

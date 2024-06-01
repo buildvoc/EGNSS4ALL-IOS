@@ -16,7 +16,7 @@ class MenuViewController: UIViewController {
     
     // MARK: - Properties -
     
-    var arrayMenuText: [String] = ["Home","Photos", "Paths", "Skymaps", "Settings", "About", "Logout"]
+    var arrayMenuText: [String] = ["Photos", "Paths", "Skymaps", "Settings", "About", "Logout"]
     
     // MARK: - ViewLifeCycle -
     
@@ -30,35 +30,32 @@ class MenuViewController: UIViewController {
         let mapStoryboard = UIStoryboard(name: "Map", bundle: nil)
         let homeStoryboard = UIStoryboard(name: "Home", bundle: nil)
         
-        sideMenuController?.cache(viewControllerGenerator: {
-            homeStoryboard.instantiateViewController(withIdentifier: "HomeNavigationController")
-        }, with: "0")
         
         sideMenuController?.cache(viewControllerGenerator: {
             storyboard.instantiateViewController(withIdentifier: "PhotoNavigationController")
-        }, with: "1")
+        }, with: "0")
 
         
         sideMenuController?.cache(viewControllerGenerator: {
             mapStoryboard.instantiateViewController(withIdentifier: "MapNavigationController")
-        }, with: "2")
+        }, with: "1")
         
         
         sideMenuController?.cache(viewControllerGenerator: {
             mainStoryboard.instantiateViewController(withIdentifier: "SkyMapNavigationController")
-        }, with: "3")
+        }, with: "2")
         
         sideMenuController?.cache(viewControllerGenerator: {
             mainStoryboard.instantiateViewController(withIdentifier: "SettingNavigationController")
-        }, with: "4")
+        }, with: "3")
         
         sideMenuController?.cache(viewControllerGenerator: {
             mainStoryboard.instantiateViewController(withIdentifier: "AboutNavigationController")
-        }, with: "5")
+        }, with: "4")
         
         sideMenuController?.cache(viewControllerGenerator: {
-            self.storyboard?.instantiateViewController(withIdentifier: "HomeNavigationController")
-        }, with: "6")
+            homeStoryboard.instantiateViewController(withIdentifier: "HomeNavigationController")
+        }, with: "5")
         
                 
         sideMenuController?.delegate = self
@@ -91,29 +88,27 @@ extension MenuViewController: UITableViewDelegate {
         }
         switch indexPath.row {
         case 0:
-            dismiss(animated: true, completion: nil)
-        case 1:
            if let vc = UIStoryboard(name: "Photo", bundle: nil).instantiateViewController(identifier: "PhotosTableViewController") as? PhotosTableViewController  {
                self.navigationController?.pushViewController(vc, animated: true)
            }
-        case 2:
+        case 1:
             if let vc = UIStoryboard(name: "Map", bundle: nil).instantiateViewController(identifier: "PathTrackTableViewController") as? PathTrackTableViewController {
                 vc.loadPaths()
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-        case 3:
+        case 2:
             if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "SkyViewVC") as? SkyViewVC {
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-        case 4:
+        case 3:
             if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "SettingViewController") as? SettingViewController {
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-        case 5:
+        case 4:
             if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "AboutViewController") as? AboutViewController {
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-        case 6:
+        case 5:
             UserStorage.removeObject(key: UserStorage.Key.userID)
             UserStorage.removeObject(key: UserStorage.Key.login)
             UserStorage.removeObject(key: UserStorage.Key.userName)

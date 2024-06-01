@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wcm-db-P3O">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wcm-db-P3O">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -132,9 +132,16 @@
                             <outlet property="delegate" destination="VvD-dr-bP6" id="bfV-Ey-dSj"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Tasks" id="MPc-rE-9uf">
-                        <barButtonItem key="backBarButtonItem" title="Tasks" id="vQb-eP-bNL"/>
+                        <barButtonItem key="leftBarButtonItem" image="unselect_home" id="RjN-AF-3Ug">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="homeDidTap:" destination="VvD-dr-bP6" id="R6Q-ox-0Oe"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rcg-X0-ah7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -149,7 +156,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kHD-S0-rRz">
-                                <rect key="frame" x="0.0" y="155" width="393" height="614"/>
+                                <rect key="frame" x="0.0" y="155" width="393" height="565"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ag7-CS-YlK">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="1002.3333333333334"/>
@@ -1000,7 +1007,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mqz-av-tTt" userLabel="Button Left">
-                                <rect key="frame" x="20" y="697" width="52" height="52"/>
+                                <rect key="frame" x="20" y="648" width="52" height="52"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="0aF-f4-u64"/>
                                     <constraint firstAttribute="width" constant="52" id="klY-Nw-38k"/>
@@ -1011,7 +1018,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rqb-lA-iM5" userLabel="Button Right">
-                                <rect key="frame" x="321" y="697" width="52" height="52"/>
+                                <rect key="frame" x="321" y="648" width="52" height="52"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52" id="qPn-G9-0HE"/>
                                     <constraint firstAttribute="width" constant="52" id="qXe-s1-m3J"/>
@@ -1022,7 +1029,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l4z-Ad-jSi">
-                                <rect key="frame" x="146.66666666666666" y="697" width="100" height="52"/>
+                                <rect key="frame" x="146.66666666666666" y="648" width="100" height="52"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0/0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thk-ZR-iLV">
                                         <rect key="frame" x="37" y="15.666666666666629" width="26" height="21"/>
@@ -1131,6 +1138,7 @@
         <image name="select_task" width="19" height="21"/>
         <image name="status_provided" width="22" height="22"/>
         <image name="task_icon" width="24" height="24"/>
+        <image name="unselect_home" width="19" height="19"/>
         <image name="unselect_task" width="19" height="19"/>
         <namedColor name="Light">
             <color red="0.9137254901960784" green="0.92156862745098034" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
