@@ -162,8 +162,8 @@ class NMEASentenceParser {
 
             time = String(splittedSentence[1])
             status = Character(String(splittedSentence[2]))
-            latitude = parseCoordinate(String(splittedSentence[3]), direction: Character(String(splittedSentence[4])))
-            longitude = parseCoordinate(String(splittedSentence[5]), direction: Character(String(splittedSentence[6])))
+            latitude = parseCoordinate(String(splittedSentence[3]), direction: String(String(splittedSentence[4])))
+            longitude = parseCoordinate(String(splittedSentence[5]), direction: String(String(splittedSentence[6])))
             speedOverGround = Float(splittedSentence[7])
             courseOverGround = Float(splittedSentence[8])
             date = String(splittedSentence[9])
@@ -181,20 +181,6 @@ class NMEASentenceParser {
         var courseOverGround: Float?
         var date: String?
 
-        private func parseCoordinate(_ value: String, direction: Character) -> Double? {
-            guard !value.isEmpty else { return nil }
-
-            let degrees = Double(value.prefix(2)) ?? 0
-            let minutes = Double(value.suffix(value.count - 2)) ?? 0
-
-            var coordinate = degrees + (minutes / 60)
-
-            if direction == "S" || direction == "W" {
-                coordinate = -coordinate
-            }
-
-            return coordinate
-        }
 
     }
 
@@ -203,8 +189,10 @@ class NMEASentenceParser {
         var direction: Direction?
 
         init?(_ coordinate: Substring, _ direction: Substring) {
-            self.coordinate = Float(coordinate)
-            self.direction = Direction(String(direction))
+            self.coordinate =
+            Float(parseCoordinate(String(coordinate),direction: String(direction))?.description ?? "0.0")
+            //Float(coordinate) "ˀ
+             self.direction = Direction(String(direction))
 
             guard self.coordinate != nil, self.direction != nil else {
                 return nil
@@ -282,4 +270,21 @@ extension UInt8 {
     var hexValue: String {
         return (self < 16 ? "0" : "") + String(self, radix: 16, uppercase: true)
     }
+}
+
+
+
+private func parseCoordinate(_ value: String, direction: String) -> Double? {
+    guard !value.isEmpty else { return nil }
+
+    let degrees = Double(value.prefix(2)) ?? 0
+    let minutes = Double(value.suffix(value.count - 2)) ?? 0
+
+    var coordinate = degrees + (minutes / 60)
+
+    if direction == "S" || direction == "W" {
+        coordinate = -coordinate
+    }
+
+    return coordinate
 }

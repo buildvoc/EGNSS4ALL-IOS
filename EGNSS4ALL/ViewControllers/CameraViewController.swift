@@ -678,22 +678,17 @@ extension CameraViewController: CBPeripheralDelegate {
                         let parsedItem = NMEASentenceParser.shared.parse(stringItem)
                         if let parsedItem = parsedItem {
                             if let gga = parsedItem as? NMEASentenceParser.GPGGA {
-                                self.latitudeLabel.text = gga.latitude?.coordinate?.description
-                                //"\(gga.latitude?.direction?.rawValue)"
-                                self.longitudeLabel.text = gga.longitude?.coordinate?.description
-                        
+                                
+                                self.latitudeLabel.text="\(gga.latitude?.coordinate?.description ?? "") ° \(gga.latitude?.direction?.rawValue.description ?? "")"
+                                self.longitudeLabel.text = "\(gga.longitude?.coordinate?.description ?? "") ° \(gga.longitude?.direction?.rawValue.description ?? "")"
                                 self.altitudeLabel.text = gga.mslAltitude?.description
                                 self.accuracyLabel.text = gga.horizontalDilutionOfPosition?.description
                             } else if let gsa = parsedItem as? NMEASentenceParser.GPGSA {
                                 self.accuracyLabel.text = gsa.hdop?.description
                             } else if let rmc = parsedItem as? NMEASentenceParser.GPRMC {
                                 self.latitudeLabel.text = rmc.latitude?.description
-                                self.longitudeLabel.text = rmc.longitude?.description
-//                                self.altitudeLabel.text = rmc.mslAltitude?.description
-//                                self.accuracyLabel.text = rmc.horizontalDilutionOfPosition?.description
-//                                self.speedLabel.text = rmc.speedOverGround?.description
-//                                self.courseLabel.text = rmc.courseOverGround?.description
-                            } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
+                                self.longitudeLabel.text =  rmc.longitude?.description
+                                 } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
                                 // Handle GPGSV parsing if necessary
                             }
                         }
