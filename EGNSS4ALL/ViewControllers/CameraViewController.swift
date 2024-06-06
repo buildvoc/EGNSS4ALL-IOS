@@ -663,18 +663,21 @@ extension CameraViewController: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        
         if characteristic == gnssBleCharacteristic {
             let str = String(decoding: characteristic.value!, as: UTF8.self)
             let data = Data(str.utf8)
 
             if str.contains("*") {
                 let finalStr = mainGNSSString + str
+                self.showToast(message: "NEMA : \(finalStr) ", font: .systemFont(ofSize: 12.0))
+
                 let matched = matchesNmea(in: finalStr)
                 if !matched.isEmpty {
                     for stringItem in matched {
                         mainGNSSString = mainGNSSString.replacingOccurrences(of: stringItem, with: "")
-                        showToast(message: "NEMA : \(stringItem) ", font: .systemFont(ofSize: 6.0))
-                        print("NEMA : \(stringItem)")
+                        //showToast(message: "NEMA : \(stringItem) ", font: .systemFont(ofSize: 6.0))
+                        print("NEMA Parsed: \(stringItem)")
                         let parsedItem = NMEASentenceParser.shared.parse(stringItem)
                         if let parsedItem = parsedItem {
                             if let gga = parsedItem as? NMEASentenceParser.GPGGA {
