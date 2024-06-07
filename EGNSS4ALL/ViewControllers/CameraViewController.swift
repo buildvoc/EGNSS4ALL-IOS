@@ -209,7 +209,17 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
         self.photoDataController.stop()
         self.takingPhotoTimer?.invalidate()
         self.timerNavPvt.invalidate()
+        
+        disConnectBLEDevice()
     }
+    
+    //discConnectBLEDevice
+    func disConnectBLEDevice()  {
+        if myPeripheal != nil {
+            manager?.cancelPeripheralConnection(myPeripheal!)
+        }
+    }
+    
     
     private func didRotate(notification: Notification) {
         //adjustStillImageOutput()
@@ -670,7 +680,7 @@ extension CameraViewController: CBPeripheralDelegate {
 
             if str.contains("*") {
                 let finalStr = mainGNSSString + str
-                self.showToast(message: "NEMA : \(finalStr) ", font: .systemFont(ofSize: 12.0))
+                //self.showToast(message: "NEMA : \(finalStr) ", font: .systemFont(ofSize: 12.0))
 
                 let matched = matchesNmea(in: finalStr)
                 if !matched.isEmpty {

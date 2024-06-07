@@ -146,6 +146,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
+        disConnectBLEDevice()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -156,6 +157,14 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         }
         
     }
+    
+    //discConnectBLEDevice
+    func disConnectBLEDevice()  {
+        if myPeripheal != nil {
+            manager?.cancelPeripheralConnection(myPeripheal!)
+        }
+    }
+    
     
     //MARK: - IBActions -
     

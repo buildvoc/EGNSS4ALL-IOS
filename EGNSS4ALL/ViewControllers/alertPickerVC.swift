@@ -138,6 +138,10 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        disConnectBLEDevice()
+    }
+    
 
     /*
     // MARK: - Navigation
@@ -309,6 +313,14 @@ extension alertPickerVC: CBPeripheralDelegate {
             toastLabel.removeFromSuperview()
         })
     }
+    
+    //discConnectBLEDevice
+    func disConnectBLEDevice()  {
+        if myPeripheal != nil {
+            manager?.cancelPeripheralConnection(myPeripheal!)
+        }
+    }
+    
 
 }
 
