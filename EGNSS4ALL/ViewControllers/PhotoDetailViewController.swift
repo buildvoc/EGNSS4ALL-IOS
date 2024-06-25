@@ -222,6 +222,9 @@ class PhotoDetailViewController: UIViewController {
         
         updateDetail()
         updateSendBUtton()
+        
+        print(latitudeApp)
+        print(longitudeApp)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -244,8 +247,18 @@ class PhotoDetailViewController: UIViewController {
     
     func updateDetail() {
         photoImageView.image = UIImage(data: persistPhoto.photo!)
-        latValueLabel.text = persistPhoto.lat.description
-        lngValueLabel.text = persistPhoto.lng.description
+        print(persistPhoto.lat)
+        print(persistPhoto.lng)
+        if persistPhoto.lat == 0{
+            latValueLabel.text = latitudeApp
+            lngValueLabel.text = longitudeApp
+        }else{
+                    latValueLabel.text = persistPhoto.lat.description
+                    lngValueLabel.text =  persistPhoto.lng.description
+
+        }
+//        latValueLabel.text = latitudeApp || persistPhoto.lat.description
+//        lngValueLabel.text = longitudeApp|| persistPhoto.lng.description
         /* DEBUGCOM
         latValueLabel.text = persistPhoto.centroidLat.description
         lngValueLabel.text = persistPhoto.centroidLng.description

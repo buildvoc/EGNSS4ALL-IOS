@@ -215,7 +215,9 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         let str = "getNavPvt"
         
         let data = Data(str.utf8)
-        if myPeripheal == nil { return }
+        if myPeripheal == nil {
+            return
+        }
         if pvtCharacteristic == nil { return }
         
         myPeripheal!.writeValue(data, for: pvtCharacteristic!, type: .withResponse)
@@ -397,7 +399,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                 if let jsonDictionary = NetworkService.parseJSONFromData(data as Data) {
                     
                     let dictionary = jsonDictionary["result"]
-                    let satId: Int = dictionary!["svId"] as? Int ?? 0
+                    let _: Int = dictionary!["svId"] as? Int ?? 0
                     let esitoValidazione: Bool = dictionary!["valid"] as! Bool
                     let osnmaStr = dictionary!["osnma"] as! String
                     let validTimeStamp = dictionary!["timestamp"] as? Int ?? 0

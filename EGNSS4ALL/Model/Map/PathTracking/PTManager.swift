@@ -232,7 +232,7 @@ class PTManager: NSObject, CLLocationManagerDelegate {
             locationManager.stopUpdatingLocation()
             
             let ptPath = self.ptPath!
-            if ptPath.points?.count ?? 0 > 0 {
+	            if ptPath.points?.count ?? 0 > 0 {
                 ptPath.end = Date()
             } else {
                 locationDB.privateMOC.delete(ptPath)

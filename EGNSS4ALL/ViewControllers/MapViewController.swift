@@ -1,3 +1,4 @@
+
 //
 //  MapViewController.swift
 //  EGNSS4CAP
@@ -11,7 +12,7 @@ import MapKit
 import CoreBluetooth
 
 
-class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate, CLLocationManagerDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate, CLLocationManagerDelegate,CBCentralManagerDelegate {
     
     
     private static let ptManagerIdentifier = "MapViewController"
@@ -66,25 +67,26 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        manager = CBCentralManager(delegate: self, queue: nil)
+
         
         let extGSP = localStorage.bool(forKey: "externalGPS")
         let perUUID = localStorage.string(forKey: "periphealUUID")
         
         if extGSP {
             self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
-                self.setExternalLocation()
+//                self.setExternalLocation()
                 
             })
-            recordPathButton.isHidden = true
+           // recordPathButton.isHidden = true
             periphealUUID = CBUUID(string: perUUID ?? "00000000-0000-0000-0000-000000000000")
         } else {
-            recordPathButton.isHidden = false
-            setupLocationManager()
-            setupUserLocation()
+          //  recordPathButton.isHidden = false
+            
         }
         
-      
+        setupLocationManager()
+        setupUserLocation()
         
         mkMapView.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         mkMapView.register(PhotoMKAnnotationView.self, forAnnotationViewWithReuseIdentifier: PhotoMKAnnotation.photoAnnotationIndetifier)
@@ -158,9 +160,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        
-        
+        disConnectBLEDevice()
+    }
+    func disConnectBLEDevice()  {
+        if myPeripheal != nil {
+            manager?.cancelPeripheralConnection(myPeripheal!)
+        }
     }
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
@@ -169,8 +174,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         let lng = round(userLocation.coordinate.longitude * 10000000) / 10000000
         let acc = round((userLocation.location?.horizontalAccuracy ?? 0) * 10) / 10
         
-        self.actLatLabel.text = lat.description
-        self.actLonLabel.text = lng.description
+//        self.actLatLabel.text = lat.description
+//        self.actLonLabel.text = lng.description
         if (acc > 0) {
             self.actAccLabel.text = acc.description
         } else {
@@ -201,8 +206,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         //self._mkMapView.setRegion(region, animated: true)
         self._mkMapView.setCenter(center, animated: false)
         
-        self.actLatLabel.text = String(latitude)
-        self.actLonLabel.text = String(longitude)
+//        self.actLatLabel.text = String(latitude)
+//        self.actLonLabel.text = String(longitude)
         self.actAccLabel.text = String(accuracyH)
         var numValidSats = 0
         print(satelliti.count)
@@ -534,7 +539,16 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     }
     
     
-    
+    func matchesNmea( in text: String) -> [String] {
+
+        do {
+            let results = nmeaRegex.matches(in: text,
+                                        range: NSRange(text.startIndex..., in: text))
+            return results.map {
+                String(text[Range($0.range, in: text)!])
+            }
+        }
+    }
    
     
     
@@ -549,7 +563,62 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     */
 
 }
+extension MapViewController {
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        print(peripheral.debugDescription)
+        
+        if peripheral.identifier.uuidString == periphealUUID.uuidString {
+            myPeripheal = peripheral
+            myPeripheal?.delegate = self
+            manager?.connect(myPeripheal!, options: nil)
+            manager?.stopScan()
+        }
+    }
+    
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        switch central.state {
+        case .poweredOff:
+            
+            print("Bluetooth disattivato")
+        case .poweredOn:
+            let extGPS = localStorage.bool(forKey: "externalGPS")
+            
+            
+            if extGPS {
+               // manager?.scanForPeripherals(withServices:[gnssBLEServiceUUID], options: nil)
+                manager?.scanForPeripherals(withServices:nil, options: nil)
 
+            }
+            
+            print("Bluetooth attivo")
+        case .unsupported:
+           
+            print("Bluetooth non è supportato")
+        default:
+            
+            print("Stato sconosciuto")
+        }
+    }
+    
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        peripheral.discoverServices([gnssBLEServiceUUID])
+        print("Connesso a " +  peripheral.name!)
+       
+    
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        print("Disconnesso da " +  peripheral.name!)
+        self.alertStandard(titolo: "WARNING", testo: "External GNSS Disconnected")
+        myPeripheal = nil
+        myCharacteristic = nil
+    
+    }
+    
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        print(error!)
+    }
+}
 
 
 class CustomAnnotationView: MKAnnotationView {
@@ -584,5 +653,149 @@ class CustomAnnotationView: MKAnnotationView {
 }
 
 
+extension MapViewController: CBPeripheralDelegate {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        guard let services = peripheral.services else { return }
 
+        for service in services {
+            if(service.uuid == gnssBLEServiceUUID)
+            {
+                peripheral.discoverCharacteristics([gnssBLECharacteristicUUID], for: service)
+            }
+
+        }
+
+    }
+
+
+
+    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+        print(characteristic.debugDescription)
+        ///NO
+    }
+
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+
+        if characteristic == gnssBleCharacteristic {
+            let str = String(decoding: characteristic.value!, as: UTF8.self)
+            let data = Data(str.utf8)
+
+            if str.contains("*") {
+                let finalStr = mainGNSSString + str
+                //self.showToast(message: "NEMA : \(finalStr) ", font: .systemFont(ofSize: 12.0))
+
+                let matched = matchesNmea(in: finalStr)
+                if !matched.isEmpty {
+                    for stringItem in matched {
+                        mainGNSSString = mainGNSSString.replacingOccurrences(of: stringItem, with: "")
+                        //showToast(message: "NEMA : \(stringItem) ", font: .systemFont(ofSize: 6.0))
+                        print("NEMA Parsed: \(stringItem)")
+                        let parsedItem = NMEASentenceParser.shared.parse(stringItem)
+                        if let parsedItem = parsedItem {
+                            if let gga = parsedItem as? NMEASentenceParser.GPGGA {
+                                self.actLatLabel.text = "\(gga.latitude?.coordinate?.description ?? "") ° \(gga.latitude?.direction?.rawValue.description ?? "")"
+                                self.actLonLabel.text = "\(gga.longitude?.coordinate?.description ?? "") ° \(gga.longitude?.direction?.rawValue.description ?? "")"
+                                
+                                print("\(gga.latitude?.coordinate?.description ?? "") ° \(gga.latitude?.direction?.rawValue.description ?? "")")
+                                print("\(gga.longitude?.coordinate?.description ?? "") ° \(gga.longitude?.direction?.rawValue.description ?? "")")
+                           //     self.setExternalLocation()
+                            } else if let gsa = parsedItem as? NMEASentenceParser.GPGSA {
+                                //self.accuracyLabel.text = gsa.hdop?.description
+                            } else if let rmc = parsedItem as? NMEASentenceParser.GPRMC {
+//                                self.photolat = Double(rmc.latitude?.description ?? "0.0") ?? 0.0
+//                                self.photolng = Double(rmc.longitude?.description ?? "0.0") ?? 0.0
+                                print(rmc.latitude?.description)
+                                print(rmc.longitude?.description)
+                                self.actLatLabel.text = "\(rmc.latitude?.description ?? "")"
+                                self.actLonLabel.text = "\(rmc.longitude?.description ?? "")"
+                             //   self.setExternalLocation()
+                                 } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
+                                // Handle GPGSV parsing if necessary
+                            }
+                        }
+                    }
+                }
+            } else {
+                mainGNSSString = mainGNSSString + str
+            }
+            return
+        }
+
+        // Uncomment and implement these as needed
+        // if characteristic == myCharacteristic {
+        //     print("update sfrbx")
+        //     self.addSat(characteristic: characteristic)
+        // }
+        //
+        // if characteristic == navCharacteristic {
+        //     self.getNavSat(characteristic: characteristic)
+        // }
+        //
+        // if characteristic == pvtCharacteristic {
+        //     self.getNavPvt(characteristic: characteristic)
+        // }
+        //
+        // if characteristic == telCharacteristic {
+        //     self.getTelemetry(characteristic: characteristic)
+        // }
+    }
+
+
+   
+
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
+        print("didUpdateValueFor")
+       //NO
+    }
+
+
+
+    func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+        print(characteristic.debugDescription)
+    }
+
+
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        guard let characteristics = service.characteristics else { return }
+
+        for characteristic in characteristics {
+            if(characteristic.uuid == gnssBLECharacteristicUUID)
+            {
+                gnssBleCharacteristic = characteristic
+                myPeripheal?.setNotifyValue(true, for: gnssBleCharacteristic!)
+            }
+
+        }
+
+        //        myCharacteristic = characteristics[0]
+        //        telCharacteristic = characteristics[1]
+        //        navCharacteristic = characteristics[2]
+        //        pvtCharacteristic = characteristics[3]
+        //
+        //        myPeripheal?.setNotifyValue(true, for: myCharacteristic!)
+        //        myPeripheal?.setNotifyValue(true, for: telCharacteristic!)
+        //        myPeripheal?.setNotifyValue(true, for: navCharacteristic!)
+        //        myPeripheal?.setNotifyValue(true, for: pvtCharacteristic!)
+
+    }
+
+    func showToast(message : String, font: UIFont) {
+
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 65, y: self.view.frame.size.height-100, width: 200, height: 35))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.textAlignment = .center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+             toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
+}
 // Created for the GSA in 2020-2021. Project management: SpaceTec Partners, software development: www.foxcom.eu

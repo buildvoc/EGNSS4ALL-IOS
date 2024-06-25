@@ -67,7 +67,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
     
     var taskid:Int64 = -1
     
-    //var persistPhotos = [PersistPhoto]()
+   // var persistPhotos = [PersistPhoto]()
     var manageObjectContext: NSManagedObjectContext!
     
 
@@ -75,6 +75,8 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
     
     var manager:CBCentralManager?
 
+    var photolat = Double()
+    var photolng = Double()
     
     
     override func viewDidLoad() {
@@ -123,12 +125,14 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
 //                self.longitudeLabel.text = String(navPVTData["longitudine"] as? Double ?? 0.000000) + "°E"
 //                self.altitudeLabel.text = String(navPVTData["msl"] as? Double ?? 0.0)
 //                self.accuracyLabel.text = String(navPVTData["accH"] as? Double ?? 0.0)
-//                
+//
             } else {
                 self.latitudeLabel.text = String(format: "%f", location.coordinate.latitude)
                 self.longitudeLabel.text = String(format: "%f", location.coordinate.longitude)
                 self.altitudeLabel.text = String(format: "%.0f", location.altitude)
                 self.accuracyLabel.text = String(format: "%.2f", location.horizontalAccuracy)
+                self.photolat = location.coordinate.latitude
+                self.photolng = location.coordinate.longitude
             }
            
         }
@@ -509,6 +513,9 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
                 persistPhoto.accuracy = location.horizontalAccuracy
             }
         }
+
+        persistPhoto.lat = self.photolat
+        persistPhoto.lng = self.photolng
         
         if let azim = photoDataController.getLastHeading() {
             persistPhoto.azimuth = azim.magneticHeading
@@ -536,7 +543,10 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
         let digest_string1 = "bfb576892e43b763731a1596c428987893b2e76ce1be10f733_" + photo_hash_string + "_" + stringDate + "_" + userID
         persistPhoto.digest = SHA256.hash(data: digest_string1.data(using: .utf8)!).hexStr.lowercased()
         
-        //persistPhotos += [persistPhoto]
+       // persistPhotosApp += [persistPhoto]
+        
+        latitudeApp = latitudeLabel.text!
+        longitudeApp = longitudeLabel.text!
         do {
             try self.manageObjectContext.save()
         } catch {
@@ -562,7 +572,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
     
     // MARK: - Data Checking
     
-    private func dataChecking() {
+    private func  dataChecking() {
         DispatchQueue(label: "dataCheckingDQ").asyncAfter(deadline: .now() + .milliseconds(Self.dataCheckIntervalMils), execute: {
             DispatchQueue.main.async {
                 if self.photoDataController.isDataLocationCorrect() {
@@ -640,11 +650,12 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+     */
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//
+//
+//    }
+
 
 }
 
@@ -691,7 +702,9 @@ extension CameraViewController: CBPeripheralDelegate {
                         let parsedItem = NMEASentenceParser.shared.parse(stringItem)
                         if let parsedItem = parsedItem {
                             if let gga = parsedItem as? NMEASentenceParser.GPGGA {
-                                
+                                 
+                                self.photolat = Double(gga.latitude?.coordinate?.description ?? "0.0") ?? 0.0
+                                self.photolng = Double(gga.longitude?.coordinate?.description ?? "0.0") ?? 0.0
                                 self.latitudeLabel.text="\(gga.latitude?.coordinate?.description ?? "") ° \(gga.latitude?.direction?.rawValue.description ?? "")"
                                 self.longitudeLabel.text = "\(gga.longitude?.coordinate?.description ?? "") ° \(gga.longitude?.direction?.rawValue.description ?? "")"
                                 self.altitudeLabel.text = gga.mslAltitude?.description
@@ -699,6 +712,8 @@ extension CameraViewController: CBPeripheralDelegate {
                             } else if let gsa = parsedItem as? NMEASentenceParser.GPGSA {
                                 self.accuracyLabel.text = gsa.hdop?.description
                             } else if let rmc = parsedItem as? NMEASentenceParser.GPRMC {
+                                self.photolat = Double(rmc.latitude?.description ?? "0.0") ?? 0.0
+                                self.photolng = Double(rmc.longitude?.description ?? "0.0") ?? 0.0
                                 self.latitudeLabel.text = rmc.latitude?.description
                                 self.longitudeLabel.text =  rmc.longitude?.description
                                  } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
