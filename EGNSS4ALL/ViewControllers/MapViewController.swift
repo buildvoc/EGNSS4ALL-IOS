@@ -64,6 +64,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     @IBOutlet weak var actValidSatsLabel: UILabel!
     
     var navPVTData = [String: Any]()
+    
+    var doDisconnect  = true
 
     
     override func viewDidLoad() {
@@ -106,6 +108,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         showPathsButton.layer.shadowOffset = CGSize(width: 3, height: 3)
         showPathsButton.layer.shadowOpacity = 0.3
         showPathsButton.layer.shadowRadius = 2.0*/
+        showPathsButton.addTarget(self, action: #selector(showPathsClicked), for: .touchUpInside)
+
         
         shownPathInfoView.layer.cornerRadius = 10
         /*shownPathInfoView.layer.shadowColor = UIColor.black.cgColor
@@ -121,6 +125,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         
         setPathTrackState(isTracking: ptManager.isTracking)
     }
+    
+    @objc func showPathsClicked(){
+        doDisconnect = false
+    }
+
     
     func setupLocationManager() {
         locationManager.requestWhenInUseAuthorization()
@@ -140,7 +149,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     
     override func viewWillDisappear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
-        self.timer.invalidate()
+        if doDisconnect {
+            self.timer.invalidate()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -161,7 +172,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        disConnectBLEDevice()
+        
+        if(doDisconnect)
+        {
+            disConnectBLEDevice()
+        }else {
+            doDisconnect = true
+        }
+        
     }
     func disConnectBLEDevice()  {
         if myPeripheal != nil {
@@ -174,9 +192,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         let lat = round(userLocation.coordinate.latitude * 10000000) / 10000000
         let lng = round(userLocation.coordinate.longitude * 10000000) / 10000000
         let acc = round((userLocation.location?.horizontalAccuracy ?? 0) * 10) / 10
-        
-//        self.actLatLabel.text = lat.description
-//        self.actLonLabel.text = lng.description
+
+        let extGSP = localStorage.bool(forKey: "externalGPS")
+
+        if !extGSP {
+            self.actLatLabel.text = lat.description
+            self.actLonLabel.text = lng.description
+        }
+
+
         if (acc > 0) {
             self.actAccLabel.text = acc.description
         } else {
@@ -706,9 +730,6 @@ extension MapViewController: CBPeripheralDelegate {
                             
                                 navPVTData["latitudine"] = Double(gga.latitude?.coordinate ?? 0.0)
                                 navPVTData["longitudine"] = Double(gga.longitude?.coordinate ?? 0.0)
-                                //self.altitudeLabel.text = gga.mslAltitude
-                                navPVTData["accH"] =  Double(gga.horizontalDilutionOfPosition ?? 0.0)
-                                navPVTData["accV"] =  Double(gga.mslAltitude ?? 0.0)
                                 navPVTData["msl"] = Double(gga.mslAltitude ?? 0.0)
                                 navPVTData["validsat"] = gga.numberOfSatellites
                             
@@ -716,6 +737,9 @@ extension MapViewController: CBPeripheralDelegate {
                                 print("\(gga.longitude?.coordinate?.description ?? "") ° \(gga.longitude?.direction?.rawValue.description ?? "")")
                                // self.setExternalLocation()
                             } else if let gsa = parsedItem as? NMEASentenceParser.GPGSA {
+                                navPVTData["accV"] =  Double(gsa.vdop ?? 0.0)
+                                navPVTData["accH"] =  Double(gsa.hdop ?? 0.0)
+
                                 //self.accuracyLabel.text = gsa.hdop?.description
                             } else if let rmc = parsedItem as? NMEASentenceParser.GPRMC {
 //                                self.photolat = Double(rmc.latitude?.description ?? "0.0") ?? 0.0
@@ -731,6 +755,9 @@ extension MapViewController: CBPeripheralDelegate {
                                 
                              //   self.setExternalLocation()
                                  } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
+                                     navPVTData["siv"] = gsv.numberOfSatellitesInView
+
+                                     
                                 // Handle GPGSV parsing if necessary
                             }
                         }

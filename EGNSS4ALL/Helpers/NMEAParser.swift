@@ -139,11 +139,16 @@ class NMEASentenceParser {
             )
 
             // Add appropriate parsing for GPGSV sentence
+            numberOfSatellitesInView = Int(splittedSentence[2])
+
 
             if [].atleastOneIsNil() {
                 return nil
             }
         }
+        
+        var numberOfSatellitesInView: Int?
+
     }
 
     class GPRMC: NMEASentence {
