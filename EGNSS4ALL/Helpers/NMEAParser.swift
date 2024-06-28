@@ -80,7 +80,7 @@ class NMEASentenceParser {
             if [utcTime, latitude, longitude, fixQuality,
                 numberOfSatellites, horizontalDilutionOfPosition, mslAltitude, mslAltitudeUnit,
                 heightOfGeoid, heightOfGeoidUnit].atleastOneIsNil() {
-                return nil
+               // return nil
             }
         }
 
@@ -116,7 +116,7 @@ class NMEASentenceParser {
             vdop = Float(splittedSentence[17])
 
             if [fixSelectionMode, threeDFixMode, hdop, vdop, pdop].atleastOneIsNil() {
-                return nil
+               // return nil
             }
         }
 
@@ -169,7 +169,7 @@ class NMEASentenceParser {
             date = String(splittedSentence[9])
 
             if [time, status, latitude, longitude, speedOverGround, courseOverGround, date].atleastOneIsNil() {
-                return nil
+               // return nil
             }
         }
 

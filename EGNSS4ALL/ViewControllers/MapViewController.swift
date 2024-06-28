@@ -63,7 +63,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     @IBOutlet weak var actSivLabel: UILabel!
     @IBOutlet weak var actValidSatsLabel: UILabel!
     
-    
+    var navPVTData = [String: Any]()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +76,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         
         if extGSP {
             self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
-//                self.setExternalLocation()
+               self.setExternalLocation()
                 
             })
            // recordPathButton.isHidden = true
@@ -206,18 +207,18 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         //self._mkMapView.setRegion(region, animated: true)
         self._mkMapView.setCenter(center, animated: false)
         
-//        self.actLatLabel.text = String(latitude)
-//        self.actLonLabel.text = String(longitude)
-        self.actAccLabel.text = String(accuracyH)
-        var numValidSats = 0
-        print(satelliti.count)
+       self.actLatLabel.text = String(latitude)
+       self.actLonLabel.text = String(longitude)
+       self.actAccLabel.text = String(accuracyH)
+        var numValidSats = navPVTData["validsat"] as? Int ?? 0
+       /* print(satelliti.count)
         if satelliti.count != 0 {
             for i in 0...satelliti.count - 1 {
                 if satelliti[i].stato! {
                     numValidSats += 1
                 }
             }
-        }
+        }*/
         
         self.actValidSats.text = String(numValidSats)
         self.actSivLabel.text = String(siv)
@@ -536,6 +537,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         point.title = "lat: \(latitude), lon: \(longitude)"
         point.subtitle = "accH: \(accuracyH), accV: \(accuracyV), msl: \(msl)"
         self.mkMapView.addAnnotation(point)
+       
+        
+        if extGPS {
+            
+            let clLocation = CLLocationCoordinate2D( latitude: latitude, longitude: longitude)
+            let newLocation = CLLocation( coordinate: clLocation, altitude: msl, horizontalAccuracy: accuracyH, verticalAccuracy: accuracyV, timestamp: Date())
+            ptManager.extGpsTrackPoint(mLocation: newLocation)
+        }
+        
     }
     
     
@@ -693,12 +703,18 @@ extension MapViewController: CBPeripheralDelegate {
                         let parsedItem = NMEASentenceParser.shared.parse(stringItem)
                         if let parsedItem = parsedItem {
                             if let gga = parsedItem as? NMEASentenceParser.GPGGA {
-                                self.actLatLabel.text = "\(gga.latitude?.coordinate?.description ?? "") ° \(gga.latitude?.direction?.rawValue.description ?? "")"
-                                self.actLonLabel.text = "\(gga.longitude?.coordinate?.description ?? "") ° \(gga.longitude?.direction?.rawValue.description ?? "")"
-                                
+                            
+                                navPVTData["latitudine"] = Double(gga.latitude?.coordinate ?? 0.0)
+                                navPVTData["longitudine"] = Double(gga.longitude?.coordinate ?? 0.0)
+                                //self.altitudeLabel.text = gga.mslAltitude
+                                navPVTData["accH"] =  Double(gga.horizontalDilutionOfPosition ?? 0.0)
+                                navPVTData["accV"] =  Double(gga.mslAltitude ?? 0.0)
+                                navPVTData["msl"] = Double(gga.mslAltitude ?? 0.0)
+                                navPVTData["validsat"] = gga.numberOfSatellites
+                            
                                 print("\(gga.latitude?.coordinate?.description ?? "") ° \(gga.latitude?.direction?.rawValue.description ?? "")")
                                 print("\(gga.longitude?.coordinate?.description ?? "") ° \(gga.longitude?.direction?.rawValue.description ?? "")")
-                           //     self.setExternalLocation()
+                               // self.setExternalLocation()
                             } else if let gsa = parsedItem as? NMEASentenceParser.GPGSA {
                                 //self.accuracyLabel.text = gsa.hdop?.description
                             } else if let rmc = parsedItem as? NMEASentenceParser.GPRMC {
@@ -708,6 +724,11 @@ extension MapViewController: CBPeripheralDelegate {
                                 print(rmc.longitude?.description)
                                 self.actLatLabel.text = "\(rmc.latitude?.description ?? "")"
                                 self.actLonLabel.text = "\(rmc.longitude?.description ?? "")"
+                                
+                                navPVTData["latitudine"] = Double(rmc.latitude ?? 0.0)
+                                navPVTData["longitudine"] = Double(rmc.longitude ?? 0.0)
+                             
+                                
                              //   self.setExternalLocation()
                                  } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
                                 // Handle GPGSV parsing if necessary

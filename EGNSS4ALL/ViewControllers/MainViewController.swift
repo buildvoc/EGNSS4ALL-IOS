@@ -244,7 +244,9 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
             
             
             if extGPS {
-                manager?.scanForPeripherals(withServices:nil, options: nil)
+                
+                //Uncomment below line if wnats to Enable connection on home screen
+               // manager?.scanForPeripherals(withServices:nil, options: nil)
             }
             
             print("Bluetooth attivo")
