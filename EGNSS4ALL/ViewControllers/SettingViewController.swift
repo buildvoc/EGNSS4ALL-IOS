@@ -1,8 +1,6 @@
 import UIKit
 import CoreBluetooth
 
-
-
 class SettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, alertPickerDelegate {
     func onCancel() {
         self.tableView.reloadData()
@@ -13,14 +11,23 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
     var satellites = [Satellite]()
     private var alertController = UIAlertController()
     private var tblView = UITableView()
- 
     
     let localStorage = UserDefaults.standard
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.tableFooterView = UIView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        self.tableView.reloadData()
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return SESection.allCases.count
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -69,26 +76,11 @@ class SettingViewController: UIViewController, UITableViewDelegate, UITableViewD
             if (myPeripheal != nil) {
                 manager?.cancelPeripheralConnection(myPeripheal!)
             }
-            
         }
-        
     }
     
     
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.tableFooterView = UIView()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-       
-        self.tableView.reloadData()
-    }
+  
     
 }
 

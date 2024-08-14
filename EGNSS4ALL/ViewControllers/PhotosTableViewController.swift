@@ -25,10 +25,12 @@ class PhotosTableViewController: UITableViewController {
     
     var openDetail = false
     var scrollDown = false
-    let localStorage = UserDefaults.standard
-    var photoQueue: [String] = []
+    
     let waitAlert = UIAlertController(title: nil, message: "Loading, please wait...", preferredStyle: .alert)
     let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 5, width: 50, height: 50))
+    var photoQueue: [String] = []
+    
+    var emptyLabel = UILabel()
     
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var newButton: UIBarButtonItem!
@@ -52,6 +54,11 @@ class PhotosTableViewController: UITableViewController {
         performSegue(withIdentifier: "ShowCamera", sender: self)
     }
     
+    
+    @IBAction func syncTap(_ sender: Any) {
+        getNewPhotos()
+    }
+    
     @IBAction func unwindToTableView(sender: UIStoryboardSegue) {
         loadPersistPhotos()
         openDetail = true
@@ -66,15 +73,13 @@ class PhotosTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupEmptyLabel()
         tableView.tableFooterView = UIView()
-        
-        
         
         manageObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
         loadPersistPhotos()
-        getNewPhotos()
+        //  getNewPhotos()
         /*
          if persistPhotos.count == 0 {
          loadSamplePhotos()
@@ -83,7 +88,7 @@ class PhotosTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated:Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
-        
+        //   loadPersistPhotos()
         if openDetail == true {
             openDetail = false
             scrollDown = true
@@ -102,11 +107,30 @@ class PhotosTableViewController: UITableViewController {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
     }
     
+    func setupEmptyLabel(){
+        let rect = CGRect(origin: CGPoint(x: 0,y :0), size: CGSize(width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+        let messageLabel = UILabel(frame: rect)
+        messageLabel.text = "You don't have any photos yet.\n Tap to sync photos."
+        messageLabel.textColor = UIColor.white
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center;
+        messageLabel.font = .systemFont(ofSize: 15)
+        messageLabel.sizeToFit()
+        emptyLabel = messageLabel
+        self.tableView.backgroundView = emptyLabel
+        self.tableView.separatorStyle = .none
+    }
+    
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        
-        return 1
+        if persistPhotos.count > 0 {
+            emptyLabel.isHidden = true
+            return 1
+        } else {
+            emptyLabel.isHidden = false
+            return 0
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -116,7 +140,6 @@ class PhotosTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cellIdentifier = "PhotoTableViewCell"
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? PhotoTableViewCell  else {
@@ -128,8 +151,6 @@ class PhotosTableViewController: UITableViewController {
         cell.latValueLabel.text = photo.lat.description
         cell.lngValueLabel.text = photo.lng.description
         cell.backgroundColor = .clear
-        cell.selectedBackgroundView = UIView()
-        cell.selectedBackgroundView?.backgroundColor = .clear
         
         let df = MyDateFormatter.yyyyMMdd
         
@@ -142,7 +163,6 @@ class PhotosTableViewController: UITableViewController {
         }
         
         cell.noteValueLabel.text = photo.note
-        
         cell.photoImage.image = UIImage(data: photo.photo!)
         
         return cell
@@ -162,10 +182,14 @@ class PhotosTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            
             manageObjectContext.delete(persistPhotos[indexPath.row] as NSManagedObject)
             persistPhotos.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            if persistPhotos.isEmpty {
+                tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
+            } else {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+            //tableView.deleteRows(at: [indexPath], with: .fade)
             
             do {
                 try self.manageObjectContext.save()
@@ -314,10 +338,10 @@ class PhotosTableViewController: UITableViewController {
 // Created for the GSA in 2020-2021. Project management: SpaceTec Partners, software development: www.foxcom.eu
 
 
+
 extension PhotosTableViewController {
     
     func getNewPhotos() {
-        
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.style = .medium
         loadingIndicator.startAnimating();
@@ -329,7 +353,7 @@ extension PhotosTableViewController {
         
         do {
             // Prepare URL
-            let urlStr = Configuration.baseURLString + ApiEndPoint.unassigned
+            let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_unassigned.php"
             print("------------------------------------------")
             print(urlStr)
             print("------------------------------------------")
@@ -341,7 +365,7 @@ extension PhotosTableViewController {
             request.httpMethod = "POST"
             
             // HTTP Request Parameters which will be sent in HTTP Request Body
-            let postString = "user_id="+userID
+            let postString = "user_id=" + userID
             // Set HTTP Request Body
             request.httpBody = postString.data(using: String.Encoding.utf8);
             // Perform HTTP Request
@@ -370,7 +394,6 @@ extension PhotosTableViewController {
         } catch {
             print(error)
         }
-        
     }
     
     func downloadPhoto(idPhoto: String) {
@@ -379,7 +402,7 @@ extension PhotosTableViewController {
         
         do {
             // Prepare URL
-            let urlStr = Configuration.baseURLString + ApiEndPoint.getPhoto
+            let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_get_photo.php"
             print("------------------------------------------")
             print(urlStr)
             print("------------------------------------------")
@@ -408,7 +431,6 @@ extension PhotosTableViewController {
                 // Convert HTTP Response Data to a String
                 if let data = data, let dataString = String(data: data, encoding: .utf8) {
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-                        
                         print("Photo downloaded from server.")
                         print(dataString)
                         self.processResponsePhotoData(data: dataString, idPhoto: idPhoto)
@@ -419,6 +441,7 @@ extension PhotosTableViewController {
                     }
                 }
             }
+            
             task.resume()
             
         } catch {
@@ -430,7 +453,7 @@ extension PhotosTableViewController {
     
     
     func processResponsePhotoData(data: String, idPhoto: String) {
-               
+        
         let jsonData = data.data(using: .utf8)!
         let answer = try! JSONDecoder().decode(GetPhotoResponse.self, from: jsonData)
         
@@ -493,7 +516,7 @@ extension PhotosTableViewController {
                 var photos_ids: [String]
                 
             }
-                        
+            
             let jsonData = data.data(using: .utf8)!
             let answer = try! JSONDecoder().decode(Answer.self, from: jsonData)
             
@@ -526,3 +549,11 @@ extension PhotosTableViewController {
         }
     }
 }
+
+
+//extension PhotosTableViewController: CameraViewControllerDelegate {
+//    func didCompletePhoto() {
+//        loadPersistPhotos()
+//        openDetail = true
+//    }
+//}

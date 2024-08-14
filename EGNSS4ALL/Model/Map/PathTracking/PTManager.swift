@@ -14,8 +14,6 @@ class PTManager: NSObject, CLLocationManagerDelegate {
     
     let kEarthRadius = 6378137.0
     
-    let localStorage = UserDefaults.standard
-    
     private static var managers: [String: PTManager] = [:]
     
     static func acquire(indetifier: String, ptManagerDelegate: PTManagerDelegate) -> PTManager {
@@ -96,95 +94,59 @@ class PTManager: NSObject, CLLocationManagerDelegate {
             self.isLocationUpdated = true
             self.lastLocation = newLocation
             
-            let extGPS = self.localStorage.bool(forKey: "externalGPS")
-            
-            if !extGPS {
-                self.setTrackPoint( newLocation: newLocation )
-            }
-        }
-    }
-    
-    func extGpsTrackPoint( mLocation: CLLocation? ) {
-        locationDQ.async {
-            
-                guard self._isTracking else {
-                return
-                }
-                guard !self.isLocationUpdated else {
-                    return
-                }
-                guard let newLocation = mLocation else {
-                    return
-                }
-                if self.lastLocation != nil && self.lastLocation!.timestamp == newLocation.timestamp {
-                  return
-                }
-                if self.centroid && self.lastLocation != nil && self.lastLocation!.coordinate.latitude == newLocation.coordinate.latitude {
-                  return
+            if (self.centroid) {
+                self.locations.append(newLocation)
+                DispatchQueue.main.async {
+                    self.centroidWaitAlert.message = self.locations.count.description + "/" + SEStorage.centroidCount.description
                 }
                 
-                self.isLocationUpdated = true
-                self.lastLocation = newLocation
-               
-                self.setTrackPoint( newLocation: newLocation )
-            
-        }
-    }
-    
-    func setTrackPoint(newLocation : CLLocation) {
-        if (self.centroid) {
-            self.locations.append(newLocation)
-            DispatchQueue.main.async {
-                self.centroidWaitAlert.message = self.locations.count.description + "/" + SEStorage.centroidCount.description
-            }
-            
-            if (self.locations.count == SEStorage.centroidCount) {
-                DispatchQueue.main.async {
-                    var points: [CHPoint] = []
-                    let cluster = CHCluster()
-                    for loc in self.locations {
-                        points.append(CHPoint(x: loc.coordinate.latitude, y: loc.coordinate.longitude))
-                    }
-                    cluster.points = points
-                    var lastPerimeter: [CHPoint]? = nil
-                    let centroidPoint = cluster.computeCentroid(lastPerimeter: &lastPerimeter)
-                    
-                    let centroidPointX = centroidPoint?.x ?? -1000
-                    let centroidPointY = centroidPoint?.y ?? -1000
-                    
-                    if (centroidPointX > -1000 && centroidPointY > -1000) {
-                        let ptPoint = PTPoint(context: self.locationDB.privateMOC)
-                        ptPoint.lat = centroidPointX
-                        ptPoint.lng = centroidPointY
-                        ptPoint.created = newLocation.timestamp
-                        ptPoint.path = self.ptPath
-
-                        DispatchQueue.main.async {
-                            self.ptDrawer.drawPoint(ptPoint: self.acquirePTPointMainThread(ptPoint: ptPoint)!)
+                if (self.locations.count == SEStorage.centroidCount) {                    
+                    DispatchQueue.main.async {
+                        var points: [CHPoint] = []
+                        let cluster = CHCluster()
+                        for loc in self.locations {
+                            points.append(CHPoint(x: loc.coordinate.latitude, y: loc.coordinate.longitude))
                         }
+                        cluster.points = points
+                        var lastPerimeter: [CHPoint]? = nil
+                        let centroidPoint = cluster.computeCentroid(lastPerimeter: &lastPerimeter)
+                        
+                        let centroidPointX = centroidPoint?.x ?? -1000
+                        let centroidPointY = centroidPoint?.y ?? -1000
+                        
+                        if (centroidPointX > -1000 && centroidPointY > -1000) {
+                            let ptPoint = PTPoint(context: self.locationDB.privateMOC)
+                            ptPoint.lat = centroidPointX
+                            ptPoint.lng = centroidPointY
+                            ptPoint.created = newLocation.timestamp
+                            ptPoint.path = self.ptPath
+
+                            DispatchQueue.main.async {
+                                self.ptDrawer.drawPoint(ptPoint: self.acquirePTPointMainThread(ptPoint: ptPoint)!)
+                            }
+                        }
+                        self.centroidWaitAlert.dismiss(animated: true, completion: nil)
+                        self.centroid = false
                     }
-                    self.centroidWaitAlert.dismiss(animated: true, completion: nil)
-                    self.centroid = false
+                    
+                } else {
+                    DispatchQueue.main.async {
+                        self.centroidTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.centroidGetPoint), userInfo: nil, repeats: false)
+                    }
                 }
                 
             } else {
+                let ptPoint = PTPoint(context: self.locationDB.privateMOC)
+                ptPoint.lat = newLocation.coordinate.latitude
+                ptPoint.lng = newLocation.coordinate.longitude
+                ptPoint.created = newLocation.timestamp
+                ptPoint.path = self.ptPath
+
                 DispatchQueue.main.async {
-                    self.centroidTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.centroidGetPoint), userInfo: nil, repeats: false)
+                    self.ptDrawer.drawPoint(ptPoint: self.acquirePTPointMainThread(ptPoint: ptPoint)!)
                 }
             }
-            
-        } else {
-            let ptPoint = PTPoint(context: self.locationDB.privateMOC)
-            ptPoint.lat = newLocation.coordinate.latitude
-            ptPoint.lng = newLocation.coordinate.longitude
-            ptPoint.created = newLocation.timestamp
-            ptPoint.path = self.ptPath
-
-            DispatchQueue.main.async {
-                self.ptDrawer.drawPoint(ptPoint: self.acquirePTPointMainThread(ptPoint: ptPoint)!)
-            }
         }
-        
     }
     
     private func savePath() {
@@ -270,7 +232,7 @@ class PTManager: NSObject, CLLocationManagerDelegate {
             locationManager.stopUpdatingLocation()
             
             let ptPath = self.ptPath!
-	            if ptPath.points?.count ?? 0 > 0 {
+            if ptPath.points?.count ?? 0 > 0 {
                 ptPath.end = Date()
             } else {
                 locationDB.privateMOC.delete(ptPath)
