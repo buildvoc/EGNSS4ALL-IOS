@@ -172,7 +172,7 @@ class TasksTableViewController: UITableViewController {
         
         let userID = String(UserStorage.userID)
         
-        let urlStr = Configuration.baseURLString + "/comm_tasks.php"
+        let urlStr = Configuration.baseURLString + ApiEndPoint.tasks
         print("------------------------------------------")
         print(urlStr)
         print("------------------------------------------")
@@ -306,7 +306,7 @@ class TasksTableViewController: UITableViewController {
     func photoLoad(photoID: String?, taskId: String, completion: (() -> Void)?) {
         guard let photoID = photoID else { return }
         
-        let urlStr = Configuration.baseURLString + "/comm_get_photo.php"
+        let urlStr = Configuration.baseURLString + ApiEndPoint.getPhoto
         print("------------------------------------------")
         print(urlStr)
         print("------------------------------------------")
@@ -336,7 +336,7 @@ class TasksTableViewController: UITableViewController {
             let userId = String(UserStorage.userID)
 
             let persistPhotoRequest: NSFetchRequest<PersistPhoto> = PersistPhoto.fetchRequest()
-            persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %@ AND digest == %@", String(UserStorage.userID), taskId, photo.digest)
+            persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %@ AND digest == %@ AND id == %@", String(UserStorage.userID), taskId, photo.digest,photoID)
             
             var persistPhoto = PersistPhoto(context: self.manageObjectContext)
 
@@ -345,6 +345,7 @@ class TasksTableViewController: UITableViewController {
                     persistPhoto = perPhoto
                 }
                 
+                persistPhoto.id = photoID
                 persistPhoto.userid = Int64(userId) ?? 0
                 persistPhoto.taskid = Int64(taskId) ?? 0
                 persistPhoto.note = photo.note

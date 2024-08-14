@@ -17,8 +17,10 @@ class PathTrackTableViewCell: UITableViewCell {
     @IBOutlet weak var areaLabel: UILabel!
     @IBOutlet weak var sentLabel: UILabel!
     
+    @IBOutlet weak var kmlBtn: UIButton!
     override func awakeFromNib() {
-        super.awakeFromNib()
+        kmlBtn.layer.borderWidth = 1.0
+        kmlBtn.layer.borderColor = UIColor.black.cgColor
         // Initialization code
     }
 
