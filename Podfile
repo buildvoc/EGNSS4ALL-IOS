@@ -7,7 +7,6 @@ target 'PIC2BIM' do
 
   # Pods for EGNSS4ALL
   pod 'lottie-ios'
-	pod 'AAInfographics', :git => 'https://github.com/AAChartModel/AAChartKit-Swift.git'
 
 end
 

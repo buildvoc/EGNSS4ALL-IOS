@@ -2857,16 +2857,52 @@
                                     <action selector="startTakingPhoto:" destination="IFj-A6-SZ2" eventType="touchUpInside" id="jHA-mO-dlh"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o3M-tV-FgF">
+                                <rect key="frame" x="294" y="810" width="68" height="68"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1aj-xy-Bdj">
+                                        <rect key="frame" x="12" y="12.999999999999996" width="44" height="42.333333333333329"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SW4-hh-NNo">
+                                        <rect key="frame" x="0.0" y="0.0" width="68" height="68"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <connections>
+                                            <segue destination="Lt9-rr-76n" kind="push" id="ahd-b5-uU5"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" name="Primary"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="1aj-xy-Bdj" secondAttribute="bottom" constant="12" id="80S-xX-Usq"/>
+                                    <constraint firstItem="SW4-hh-NNo" firstAttribute="top" secondItem="o3M-tV-FgF" secondAttribute="top" id="RR0-Zt-Kfg"/>
+                                    <constraint firstItem="SW4-hh-NNo" firstAttribute="leading" secondItem="o3M-tV-FgF" secondAttribute="leading" id="WmV-1q-NhO"/>
+                                    <constraint firstItem="1aj-xy-Bdj" firstAttribute="leading" secondItem="o3M-tV-FgF" secondAttribute="leading" constant="12" id="XTX-xM-sfp"/>
+                                    <constraint firstAttribute="bottom" secondItem="SW4-hh-NNo" secondAttribute="bottom" id="f9C-fN-76D"/>
+                                    <constraint firstAttribute="width" constant="68" id="fQT-LA-un2"/>
+                                    <constraint firstAttribute="trailing" secondItem="SW4-hh-NNo" secondAttribute="trailing" id="lYm-9a-ydQ"/>
+                                    <constraint firstAttribute="height" constant="68" id="pqZ-ts-zdD"/>
+                                    <constraint firstItem="1aj-xy-Bdj" firstAttribute="top" secondItem="o3M-tV-FgF" secondAttribute="top" constant="12" id="rCj-vh-YPA"/>
+                                    <constraint firstAttribute="trailing" secondItem="1aj-xy-Bdj" secondAttribute="trailing" constant="12" id="vGr-Aa-qQW"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="34"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="fbo-ix-pPf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="o3M-tV-FgF" firstAttribute="leading" secondItem="fxi-Zr-QxK" secondAttribute="trailing" constant="45" id="0Tw-Ne-W1J"/>
                             <constraint firstItem="fbo-ix-pPf" firstAttribute="bottom" secondItem="fxi-Zr-QxK" secondAttribute="bottom" constant="20" id="5WG-rB-9Nx"/>
                             <constraint firstItem="fbo-ix-pPf" firstAttribute="trailing" secondItem="atB-4J-Ufv" secondAttribute="trailing" constant="20" id="6JY-lZ-2Su"/>
                             <constraint firstItem="atB-4J-Ufv" firstAttribute="leading" secondItem="fbo-ix-pPf" secondAttribute="leading" constant="20" id="8Eo-jm-Trp"/>
                             <constraint firstItem="fxi-Zr-QxK" firstAttribute="centerX" secondItem="fbo-ix-pPf" secondAttribute="centerX" id="8dh-3d-MeH"/>
                             <constraint firstItem="fbo-ix-pPf" firstAttribute="trailing" secondItem="dgZ-9j-s5P" secondAttribute="trailing" id="ADY-la-Jd9"/>
                             <constraint firstItem="fbo-ix-pPf" firstAttribute="trailing" secondItem="doa-XJ-PJ2" secondAttribute="trailing" multiplier="1.5" constant="20" id="HJO-j9-UR5"/>
+                            <constraint firstItem="o3M-tV-FgF" firstAttribute="centerY" secondItem="fxi-Zr-QxK" secondAttribute="centerY" id="J1c-8c-ILG"/>
                             <constraint firstItem="dgZ-9j-s5P" firstAttribute="leading" secondItem="fbo-ix-pPf" secondAttribute="leading" id="Qhi-43-7Ae"/>
                             <constraint firstItem="sGR-ZZ-T2S" firstAttribute="centerY" secondItem="fbo-ix-pPf" secondAttribute="centerY" id="YXk-6N-0Q2"/>
                             <constraint firstItem="doa-XJ-PJ2" firstAttribute="leading" secondItem="fbo-ix-pPf" secondAttribute="leading" constant="20" id="ZBd-1u-DIe"/>
@@ -3895,6 +3931,7 @@ Galileo capacity check: green light if this device is capable to use Galileo.</s
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="ahd-b5-uU5"/>
         <segue reference="RZU-VQ-uz0"/>
         <segue reference="fPr-1p-8Ps"/>
     </inferredMetricsTieBreakers>
@@ -3918,6 +3955,7 @@ Galileo capacity check: green light if this device is capable to use Galileo.</s
         <image name="login_background" width="1080" height="1920"/>
         <image name="login_bottom" width="375" height="405"/>
         <image name="logo_login" width="172" height="188"/>
+        <image name="map" catalog="system" width="128" height="112"/>
         <image name="photos_icon" width="24" height="24"/>
         <image name="sign_back" width="346" height="44"/>
         <image name="status_provided" width="22" height="22"/>
