@@ -11,6 +11,8 @@ import CoreData
 import CryptoKit
 import CoreLocation
 import CoreBluetooth
+import CoreMotion
+
 
 class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCentralManagerDelegate {
     
@@ -33,7 +35,8 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
     var timerNavPvt = Timer()
     
     let localStorage = UserDefaults.standard
-    
+    private let motionManager = CMMotionManager()
+
     @IBOutlet weak var latitudeLabel: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var altitudeLabel: UILabel!
@@ -81,10 +84,9 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
     
     override func viewDidLoad() {
         
-        
-        
-        
         super.viewDidLoad()
+        startMotionUpdates()
+
         manager = CBCentralManager(delegate: self, queue: nil)
 
         /*snapshotButton.layer.cornerRadius = 10
@@ -137,7 +139,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
            
         }
         photoDataController.headingReceiver = { heading in
-            self.azimuthLabel.text = String(format: "%.0f", self.photoDataController.computePhotoHeading() ?? "unknown")
+//            self.azimuthLabel.text = String(format: "%.0f", self.photoDataController.computePhotoHeading() ?? "unknown")
         }
         photoDataController.motionReceiver = { attitude in
             let tilt = self.photoDataController.computeTilt()
@@ -214,8 +216,67 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
         self.takingPhotoTimer?.invalidate()
         self.timerNavPvt.invalidate()
         
+        // Stop updates when the view disappears
+        motionManager.stopMagnetometerUpdates()
+        motionManager.stopAccelerometerUpdates()
+        motionManager.stopDeviceMotionUpdates()
+
         disConnectBLEDevice()
     }
+    
+    private func startMotionUpdates() {
+        guard motionManager.isMagnetometerAvailable, motionManager.isAccelerometerAvailable else {
+            print("Magnetometer or Accelerometer not available")
+            return
+        }
+        
+        motionManager.magnetometerUpdateInterval = 0.1
+        motionManager.accelerometerUpdateInterval = 0.1
+        motionManager.deviceMotionUpdateInterval = 0.1
+        
+        motionManager.startMagnetometerUpdates()
+        motionManager.startAccelerometerUpdates()
+        motionManager.startDeviceMotionUpdates(to: .main) { [weak self] (data, error) in
+            if let data = data {
+                self?.calculateAzimuth(magnetometerData: self?.motionManager.magnetometerData, deviceMotion: data)
+            } else if let error = error {
+                print("Device motion update error: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    private func calculateAzimuth(magnetometerData: CMMagnetometerData?, deviceMotion: CMDeviceMotion) {
+        guard let magnetometerData = magnetometerData else {
+            print("Magnetometer data not available")
+            return
+        }
+        
+        let magneticField = magnetometerData.magneticField
+        
+        // Get rotation matrix
+        let rotationMatrix = deviceMotion.attitude.rotationMatrix
+        
+        let m11 = rotationMatrix.m11
+        let m12 = rotationMatrix.m12
+        let m13 = rotationMatrix.m13
+        let m21 = rotationMatrix.m21
+        let m22 = rotationMatrix.m22
+        let m23 = rotationMatrix.m23
+
+        // Apply rotation matrix to magnetic field
+        let x = m11 * magneticField.x + m12 * magneticField.y + m13 * magneticField.z
+        let y = m21 * magneticField.x + m22 * magneticField.y + m23 * magneticField.z
+
+        // Calculate azimuth
+        let azimuth = atan2(y, x) * 180 / .pi
+        
+        // Normalize azimuth to be between 0 and 360 degrees
+        let normalizedAzimuth = azimuth >= 0 ? azimuth : azimuth + 360
+        
+        print("Azimuth: \(normalizedAzimuth) degrees")
+        self.azimuthLabel.text = "\(Int(normalizedAzimuth))"
+    }
+
     
     //discConnectBLEDevice
     func disConnectBLEDevice()  {
@@ -716,8 +777,9 @@ extension CameraViewController: CBPeripheralDelegate {
                                 self.photolng = Double(rmc.longitude?.description ?? "0.0") ?? 0.0
                                 self.latitudeLabel.text = rmc.latitude?.description
                                 self.longitudeLabel.text =  rmc.longitude?.description
-                                 } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
+                            } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
                                 // Handle GPGSV parsing if necessary
+//                                self.azimuthLabel.text = gsv.azimuth?.description
                             }
                         }
                     }
