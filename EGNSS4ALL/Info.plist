@@ -23,11 +23,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Capture GPS Data for localize photo</string>
+	<string>Capture GPS Data for localise photo</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Capture GPS Data for localize photo</string>
+	<string>Capture GPS Data for localise photo</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Allows the user to take a picture of the required land lot.</string>
+	<string>Allows the user to take a picture.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>To taking geotagged photos you must enable location services.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

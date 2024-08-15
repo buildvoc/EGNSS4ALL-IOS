@@ -2,10 +2,10 @@
 //  Answer.swift
 //  PIC2BIM
 //
-//  Created by DREAMWORLD on 12/08/24.
+//  Created by Mayur Shrivas on 06/05/24.
 //
 
-import Foundation
+import UIKit
 
 struct Answer: Decodable {
     var status: String

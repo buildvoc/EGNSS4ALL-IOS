@@ -23,7 +23,9 @@ class GalleryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         loadPhoto()
+
         // Do any additional setup after loading the view.
     }
     

@@ -16,13 +16,12 @@ class TasksTableViewController: UITableViewController {
 
     let localStorage = UserDefaults.standard
     var emptyLabel = UILabel()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupEmptyLabel()
         manageObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
-       // getNewTasks()
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -33,6 +32,7 @@ class TasksTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated:Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
+
         loadPersistTasks()
         tableView.reloadData()
     }
@@ -41,11 +41,11 @@ class TasksTableViewController: UITableViewController {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
     }
     
+    
     @IBAction func syncTap(_ sender: Any) {
         getNewTasks()
     }
     
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -57,6 +57,20 @@ class TasksTableViewController: UITableViewController {
             emptyLabel.isHidden = false
             return 0
         }
+    }
+    
+    func setupEmptyLabel(){
+        let rect = CGRect(origin: CGPoint(x: 0,y :0), size: CGSize(width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+        let messageLabel = UILabel(frame: rect)
+        messageLabel.text = "You don't have any task yet.\n Tap to sync task."
+        messageLabel.textColor = UIColor.white
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center;
+        messageLabel.font = .systemFont(ofSize: 15)
+        messageLabel.sizeToFit()
+        emptyLabel = messageLabel
+        self.tableView.backgroundView = emptyLabel
+        self.tableView.separatorStyle = .none
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -154,20 +168,6 @@ class TasksTableViewController: UITableViewController {
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
         }
     }
-    
-    func setupEmptyLabel(){
-        let rect = CGRect(origin: CGPoint(x: 0,y :0), size: CGSize(width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-        let messageLabel = UILabel(frame: rect)
-        messageLabel.text = "You don't have any task yet.\n Tap to sync task."
-        messageLabel.textColor = UIColor.white
-        messageLabel.numberOfLines = 0
-        messageLabel.textAlignment = .center;
-        messageLabel.font = .systemFont(ofSize: 15)
-        messageLabel.sizeToFit()
-        emptyLabel = messageLabel
-        self.tableView.backgroundView = emptyLabel
-        self.tableView.separatorStyle = .none
-    }
 
 // here
     private func loadPersistTasks() {
@@ -197,7 +197,7 @@ class TasksTableViewController: UITableViewController {
         
         let userID = String(UserStorage.userID)
         
-        let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_tasks.php"
+        let urlStr = Configuration.baseURLString + ApiEndPoint.tasks
         print("------------------------------------------")
         print(urlStr)
         print("------------------------------------------")
@@ -331,7 +331,7 @@ class TasksTableViewController: UITableViewController {
     func photoLoad(photoID: String?, taskId: String, completion: (() -> Void)?) {
         guard let photoID = photoID else { return }
         
-        let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_get_photo.php"
+        let urlStr = Configuration.baseURLString + ApiEndPoint.getPhoto
         print("------------------------------------------")
         print(urlStr)
         print("------------------------------------------")
@@ -361,7 +361,7 @@ class TasksTableViewController: UITableViewController {
             let userId = String(UserStorage.userID)
 
             let persistPhotoRequest: NSFetchRequest<PersistPhoto> = PersistPhoto.fetchRequest()
-            persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %@ AND digest == %@", String(UserStorage.userID), taskId, photo.digest)
+            persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %@ AND digest == %@ AND id == %@", String(UserStorage.userID), taskId, photo.digest,photoID)
             
             var persistPhoto = PersistPhoto(context: self.manageObjectContext)
 
@@ -370,6 +370,7 @@ class TasksTableViewController: UITableViewController {
                     persistPhoto = perPhoto
                 }
                 
+                persistPhoto.id = photoID
                 persistPhoto.userid = Int64(userId) ?? 0
                 persistPhoto.taskid = Int64(taskId) ?? 0
                 persistPhoto.note = photo.note

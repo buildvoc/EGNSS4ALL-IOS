@@ -1,7 +1,7 @@
 import UIKit
 import CoreData
 
-class PathTrackTableViewController: UITableViewController {
+class PathTrackTableViewController: UITableViewController, UIDocumentPickerDelegate {
     
     let db = DB()
     
@@ -42,6 +42,8 @@ class PathTrackTableViewController: UITableViewController {
         cell.endLabel.text = Util.prettyDate(date: path.end!) + " " + Util.prettyTime(date: path.end!)
         cell.areaLabel.text = path.area.description
         cell.sentLabel.text = path.sent ? "Yes" : "No"
+        cell.selectionStyle = .none
+        cell.kmlBtn.addTarget(self, action: #selector(kmlBtnTapped(_:)), for: .touchUpInside)
         cell.backgroundColor = .clear
         
         return cell
@@ -63,7 +65,23 @@ class PathTrackTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedPath = paths[indexPath.row]
         performSegue(withIdentifier: "ShowPathInMap", sender: self)
-
+        
+    }
+    
+    @objc func kmlBtnTapped(_ sender: UIButton) {
+        guard let indexPath = tableView.indexPath(for: sender.superview?.superview?.superview as! PathTrackTableViewCell) else {
+            return
+        }
+        let selectedRow = indexPath.row
+        selectedPath = paths[selectedRow]
+        var groups = [DispatchGroup]()
+        let dispatchGroup = DispatchGroup()
+        groups.append(dispatchGroup)
+        dispatchGroup.enter()
+        if !self.genPathKML(ptPath: selectedPath!, dispatchGroup: dispatchGroup) {
+            dispatchGroup.leave()
+        }
+        
     }
     
     @IBAction func editTable(_ sender: UIBarButtonItem) {
@@ -131,6 +149,162 @@ class PathTrackTableViewController: UITableViewController {
         }
     }
     
+    func genPathKML(ptPath: PTPath, dispatchGroup: DispatchGroup) -> Bool {
+        guard let ptPointsSet = ptPath.points else {
+            return false
+        }
+        
+        let ptPoints = ptPointsSet.array as! [PTPoint]
+        
+        let df = MyDateFormatter.yyyyMMdd
+        struct RPoint: Codable {
+            var lat: Double
+            var lng: Double
+            var created: String
+        }
+        var rPoints = [RPoint]()
+        var coordinates:  [(latitude: Double, longitude: Double)] = []
+        for p in ptPoints {
+            coordinates.append((latitude: p.lat, longitude: p.lng))
+            rPoints.append(RPoint(lat: p.lat, lng: p.lng, created: df.string(from: p.created!)))
+        }
+        let pointData: JSONEncoder.Output
+        do {
+            pointData = try JSONEncoder().encode(rPoints)
+        } catch {
+            print("Error encoding path to JSON: \(error.localizedDescription)" )
+            return false
+        }
+        
+        let jsonPointsString = String(data: pointData, encoding: .utf8)!
+        let params: [String: String] = [
+            "user_id": String(UserStorage.userID),
+            "name": ptPath.name!,
+            "start": df.string(from: ptPath.start!),
+            "end": df.string(from: ptPath.end!),
+            "area": ptPath.area.description,
+            "points": jsonPointsString
+        ]
+        print(jsonPointsString)
+        
+        
+        
+        
+        let polygon: [String: Any] = ["type": "Polygon", "coordinates": [coordinates]]
+        
+        let feature: [String: Any] = ["type": "Feature", "geometry": polygon, "properties": [:]]
+        
+        let geojson: [String: Any] = ["type": "FeatureCollection", "features": [feature]]
+        
+        print(coordinates)
+        
+        let kmlData = createKMLFromPolygon(coordinates: coordinates)
+        
+        if let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            print("\(ptPath.name!).kml")
+            let fileURL = url.appendingPathComponent("\(ptPath.name!).kml")
+            do {
+                try kmlData.write(to: fileURL)
+                print("File salvato con successo in \(fileURL.path)")
+                
+                let documentPicker = UIDocumentPickerViewController(url: fileURL, in: .exportToService)
+                documentPicker.delegate = self
+                present(documentPicker, animated: true)
+            } catch {
+                print("Errore durante il salvataggio del file: \(error.localizedDescription)")
+            }
+        }
+        
+        /*if let jsonData = try? JSONSerialization.data(withJSONObject: geojson, options: []) {
+         if let jsonString = String(data: jsonData, encoding: .utf8) {
+         
+         
+         
+         
+         if let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+         print("\(ptPath.name!).geojson")
+         let fileURL = url.appendingPathComponent("\(ptPath.name!).geojson")
+         do {
+         try jsonString.write(to: fileURL, atomically: true, encoding: .utf8)
+         print("File salvato con successo in \(fileURL.path)")
+         
+         let documentPicker = UIDocumentPickerViewController(url: fileURL, in: .exportToService)
+         documentPicker.delegate = self
+         present(documentPicker, animated: true)
+         } catch {
+         print("Errore durante il salvataggio del file: \(error.localizedDescription)")
+         }
+         }
+         }
+         }*/
+        
+        
+        
+        return true
+    }
+    
+    func createKMLFromPolygon(coordinates: [(latitude: Double, longitude: Double)]) -> Data {
+        guard coordinates.count >= 3 else {
+            fatalError("A polygon must have at least 3 coordinates.")
+        }
+        
+        var kmlString = """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <kml xmlns="http://www.opengis.net/kml/2.2">
+        <Document>
+        <Placemark>
+        <Polygon>
+        <outerBoundaryIs><LinearRing>
+        <coordinates>
+        """
+        
+        for coordinate in coordinates {
+            kmlString += "\(coordinate.longitude),\(coordinate.latitude),0 "
+        }
+        
+        kmlString += """
+        </coordinates>
+        </LinearRing></outerBoundaryIs>
+        </Polygon>
+        </Placemark>
+        </Document>
+        </kml>
+        """
+        
+        return kmlString.data(using: .utf8) ?? Data()
+    }
+    
+    
+    func createKMLFromCoordinates(coordinates: [(latitude: Double, longitude: Double)]) -> String {
+        var kmlString = """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <kml xmlns="http://www.opengis.net/kml/2.2">
+        <Document>
+        """
+        
+        for (index, coordinate) in coordinates.enumerated() {
+            let name = "Point \(index + 1)"
+            let description = "Coordinate: \(coordinates[0]), \(coordinate.longitude)"
+            
+            kmlString += """
+                <Placemark>
+                    <name>\(name)</name>
+                    <description>\(description)</description>
+                    <Point>
+                        <coordinates>\(coordinate.longitude),\(coordinate.latitude),0</coordinates>
+                    </Point>
+                </Placemark>
+            """
+        }
+        
+        kmlString += """
+            </Document>
+        </kml>
+        """
+        
+        return kmlString
+    }
+    
     func sendPath(ptPath: PTPath, dispatchGroup: DispatchGroup) -> Bool {
         guard let ptPointsSet = ptPath.points else {
             return false
@@ -139,7 +313,7 @@ class PathTrackTableViewController: UITableViewController {
         let ptPoints = ptPointsSet.array as! [PTPoint]
         
         let df = MyDateFormatter.yyyyMMdd
-     
+        
         struct RPoint: Codable {
             var lat: Double
             var lng: Double
@@ -168,7 +342,7 @@ class PathTrackTableViewController: UITableViewController {
         ]
         
         // Prepare URL
-        let urlStr = Configuration.baseURLString + "/egnss4allservices/comm_path.php"
+        let urlStr = Configuration.baseURLString + ApiEndPoint.path
         print("------------------------------------------")
         print(urlStr)
         print("------------------------------------------")
@@ -197,7 +371,7 @@ class PathTrackTableViewController: UITableViewController {
             var status: String
             var error_msg: String?
         }
-
+        
         let jsonData = data.data(using: .utf8)!
         let answer: Answer
         do {

@@ -28,6 +28,8 @@ class Satellite
     var cno: Int?
     var valid: Bool?
     
+    
+    
     func validate(state: Bool) {
         self.stato = state
     }
@@ -74,9 +76,6 @@ class Satellite
         dwrd.append(dwrd7)
         
         self.dwrd = dwrd
-        
-        
-        
         
     }
     
@@ -260,41 +259,24 @@ class Satellite
         return sat
     }
     
-    static func downloadAllSatsSkyView(datiJson: NSData, type:String) -> [Satellite]
+    static func downloadAllSatsSkyView(datiJson: NSData) -> [Satellite]
     {
         var sats = [Satellite]()
         
         if let jsonArray = NetworkService.parseJSONFromData(datiJson as Data) {
             print(jsonArray)
-            if jsonArray.keys.first == "error"{
-               
-                return []
-            }
+            
             
             for i in jsonArray.keys {
+                
                 let id = i
-                var actualSatId = 0
-                if type == "GLONASS"{
-                    if let Iid = Int(id){
-                        actualSatId = Iid
-                    }
-                }else if type == "GPS" || type == "BEIDOU"{
-                    if let Iid = Int(id.dropFirst()){
-                        actualSatId = Iid
-                    }
-                }else if type == "GALILEO"{
-                    if let spaceIndex = id.firstIndex(of: " ") {
-                        let prefix = String(id[..<spaceIndex])
-                        if let Iid = Int(prefix) {
-                            actualSatId = Iid
-                        }
-                    }
-                }
-                 //actualSatId = id.dropFirst()
+                
+               
+                let actualSatId = id.dropFirst()
                 let azimuth = jsonArray[i]!["azimuth"] as! Double
                 let elevation = jsonArray[i]!["elevation"] as! Double
    
-                let singleSat = Satellite.init(id: actualSatId, gnssId: 2, timestamp: 0, validTimeStamp: 0, source: "skyView", numWords: 0, versione: 0, iTow: 0, manufacturer: "none", model: "none", dwrd: [], stato: false, checked: 0, osnma: "Validating...", azim: Int(azimuth), elev: Int(elevation), cno: 0, valid: false)
+                let singleSat = Satellite.init(id: (Int(actualSatId) ?? Int(i)) ?? 0, gnssId: 2, timestamp: 0, validTimeStamp: 0, source: "skyView", numWords: 0, versione: 0, iTow: 0, manufacturer: "none", model: "none", dwrd: [], stato: false, checked: 0, osnma: "Validating...", azim: Int(azimuth), elev: Int(elevation), cno: 0, valid: false)
                 sats.append(singleSat)
             }
         }
