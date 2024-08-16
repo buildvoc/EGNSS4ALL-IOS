@@ -100,12 +100,10 @@ class TaskViewController: UIViewController {
     @IBAction func noteButton(_ sender: UIButton) {
         //1. Create the alert controller.
         let alert = UIAlertController(title: "Task note", message: "", preferredStyle: .alert)
-
         //2. Add the text field. You can configure it however you need.
         alert.addTextField { (textField) in
             textField.text = self.persistTask.note
         }
-
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.

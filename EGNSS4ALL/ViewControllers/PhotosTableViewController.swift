@@ -68,14 +68,8 @@ class PhotosTableViewController: UITableViewController {
         super.viewDidLoad()
         setupEmptyLabel()
         tableView.tableFooterView = UIView()
-        
-        
-        
         manageObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
-       
-       
-        /*
+         /*
          if persistPhotos.count == 0 {
          loadSamplePhotos()
          }*/
@@ -202,9 +196,10 @@ class PhotosTableViewController: UITableViewController {
                 print("Could not save data: \(error.localizedDescription)")
             }
             
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
+//        else if editingStyle == .insert {
+//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//        }
     }
     
     

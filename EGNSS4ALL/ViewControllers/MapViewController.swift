@@ -669,7 +669,6 @@ class CustomAnnotationView: MKAnnotationView {
         self.backgroundColor = .clear
         let pinImage = UIImage(named: "point")!
         self.image = pinImage
-        //self.addSubview(pinImage)
     }
 
     required init?(coder aDecoder: NSCoder) {
