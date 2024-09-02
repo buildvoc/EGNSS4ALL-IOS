@@ -7,7 +7,7 @@
 
 import UIKit
 import CoreData
-import CryptoKit
+//import CryptoKit
 
 class TasksTableViewController: UITableViewController {
     
@@ -31,7 +31,6 @@ class TasksTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated:Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
-        
         loadPersistTasks()
         tableView.reloadData()
     }
@@ -82,7 +81,8 @@ class TasksTableViewController: UITableViewController {
         let cellIdentifier = "TaskTableViewCell"
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? TasksTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of MealTableViewCell.")
+            return UITableViewCell()
+            // fatalError("The dequeued cell is not an instance of MealTableViewCell.")
         }
         
         let task = persistTasks[indexPath.row]
@@ -335,7 +335,7 @@ class TasksTableViewController: UITableViewController {
         print(urlStr)
         print("------------------------------------------")
         let url = URL(string: urlStr)
-        guard let requestUrl = url else { fatalError() }
+        guard let requestUrl = url else { return }
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
         let postString = "photo_id=" + photoID

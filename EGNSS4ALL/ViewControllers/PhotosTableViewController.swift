@@ -7,16 +7,9 @@
 
 import UIKit
 import CoreData
-import CryptoKit
+//import CryptoKit
+//
 
-extension Digest {
-    var bytes: [UInt8] { Array(makeIterator()) }
-    var data: Data { Data(bytes) }
-    
-    var hexStr: String {
-        bytes.map { String(format: "%02X", $0) }.joined()
-    }
-}
 
 class PhotosTableViewController: UITableViewController {
     
@@ -284,54 +277,54 @@ class PhotosTableViewController: UITableViewController {
         }
     }
     
-    private func loadSamplePhotos() {
-        let img1 = UIImage(named: "tree")
-        let img2 = UIImage(named: "tree")
-        
-        let userID = String(UserStorage.userID)
-        let df = MyDateFormatter.yyyyMMdd
-        
-        
-        let persistPhoto1 = PersistPhoto(context: manageObjectContext)
-        
-        persistPhoto1.userid = Int64(userID) ?? 0
-        persistPhoto1.lat = 1.0
-        persistPhoto1.lng = 1.1
-        persistPhoto1.created = Date()
-        persistPhoto1.sended = false
-        persistPhoto1.note = "pozn1"
-        persistPhoto1.photo = img1?.jpegData(compressionQuality: 1)
-        
-        let stringDate1 = df.string(from: persistPhoto1.created!)
-        let photo_hash_string1 = SHA256.hash(data: persistPhoto1.photo!).hexStr.lowercased()
-        let digest_string1 = "bfb576892e43b763731a1596c428987893b2e76ce1be10f733_" + photo_hash_string1 + "_" + stringDate1 + "_" + userID
-        persistPhoto1.digest = SHA256.hash(data: digest_string1.data(using: .utf8)!).hexStr.lowercased()
-        
-        let persistPhoto2 = PersistPhoto(context: manageObjectContext)
-        
-        persistPhoto2.userid = Int64(userID) ?? 0
-        persistPhoto2.lat = 2.0
-        persistPhoto2.lng = 2.1
-        persistPhoto2.created = Date()
-        persistPhoto2.sended = false
-        persistPhoto2.note = "pozn2"
-        persistPhoto2.photo = img2?.jpegData(compressionQuality: 1)
-        
-        let stringDate2 = df.string(from: persistPhoto2.created!)
-        let photo_hash_string2 = SHA256.hash(data: persistPhoto2.photo!).hexStr.lowercased()
-        let digest_string2 = "bfb576892e43b763731a1596c428987893b2e76ce1be10f733_" + photo_hash_string2 + "_" + stringDate2 + "_" + userID
-        persistPhoto2.digest = SHA256.hash(data: digest_string2.data(using: .utf8)!).hexStr.lowercased()
-        
-        persistPhotos += [persistPhoto1, persistPhoto2]
-        
-        do {
-            try self.manageObjectContext.save()
-        } catch {
-            print("Could not save data: \(error.localizedDescription)")
-        }
-        
-        print("Sample data loaded.")
-    }
+//    private func loadSamplePhotos() {
+//        let img1 = UIImage(named: "tree")
+//        let img2 = UIImage(named: "tree")
+//        
+//        let userID = String(UserStorage.userID)
+//        let df = MyDateFormatter.yyyyMMdd
+//        
+//        
+//        let persistPhoto1 = PersistPhoto(context: manageObjectContext)
+//        
+//        persistPhoto1.userid = Int64(userID) ?? 0
+//        persistPhoto1.lat = 1.0
+//        persistPhoto1.lng = 1.1
+//        persistPhoto1.created = Date()
+//        persistPhoto1.sended = false
+//        persistPhoto1.note = "pozn1"
+//        persistPhoto1.photo = img1?.jpegData(compressionQuality: 1)
+//        
+//        let stringDate1 = df.string(from: persistPhoto1.created!)
+//        let photo_hash_string1 = SHA256.hash(data: persistPhoto1.photo!).hexStr.lowercased()
+//        let digest_string1 = "bfb576892e43b763731a1596c428987893b2e76ce1be10f733_" + photo_hash_string1 + "_" + stringDate1 + "_" + userID
+//        persistPhoto1.digest = SHA256.hash(data: digest_string1.data(using: .utf8)!).hexStr.lowercased()
+//        
+//        let persistPhoto2 = PersistPhoto(context: manageObjectContext)
+//        
+//        persistPhoto2.userid = Int64(userID) ?? 0
+//        persistPhoto2.lat = 2.0
+//        persistPhoto2.lng = 2.1
+//        persistPhoto2.created = Date()
+//        persistPhoto2.sended = false
+//        persistPhoto2.note = "pozn2"
+//        persistPhoto2.photo = img2?.jpegData(compressionQuality: 1)
+//        
+//        let stringDate2 = df.string(from: persistPhoto2.created!)
+//        let photo_hash_string2 = SHA256.hash(data: persistPhoto2.photo!).hexStr.lowercased()
+//        let digest_string2 = "bfb576892e43b763731a1596c428987893b2e76ce1be10f733_" + photo_hash_string2 + "_" + stringDate2 + "_" + userID
+//        persistPhoto2.digest = SHA256.hash(data: digest_string2.data(using: .utf8)!).hexStr.lowercased()
+//        
+//        persistPhotos += [persistPhoto1, persistPhoto2]
+//        
+//        do {
+//            try self.manageObjectContext.save()
+//        } catch {
+//            print("Could not save data: \(error.localizedDescription)")
+//        }
+//        
+//        print("Sample data loaded.")
+//    }
     
 }
 

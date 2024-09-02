@@ -7,7 +7,6 @@ class PhotoMKAnnotation: NSObject, MKAnnotation {
     static let photoAnnotationIndetifier = "photoAnnotationIndetifier"
     
     let coordinate: CLLocationCoordinate2D
-    
     weak var parentViewController: UIViewController?
     let photoMapInfoView: PhotoMapInfoView
     let persistPhoto: PersistPhoto

@@ -300,6 +300,7 @@ class PhotoDetailViewController: UIViewController {
         struct Answer: Decodable {
             var status: String
             var error_msg: String?
+            var photo_id: Int?
         }
 
         let jsonData = data.data(using: .utf8)!
@@ -309,7 +310,7 @@ class PhotoDetailViewController: UIViewController {
             showSendingSuccess()
             
             persistPhoto.sended = true
-            
+            persistPhoto.id = "\(answer.photo_id ?? 0)"
             do {
                 try self.manageObjectContext.save()
             } catch {
@@ -323,10 +324,6 @@ class PhotoDetailViewController: UIViewController {
         }
     }
     
-     
-    
-    
-
     /*
     // MARK: - Navigation
 

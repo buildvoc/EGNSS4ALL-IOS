@@ -70,6 +70,7 @@ class SkyViewVC: UIViewController, CLLocationManagerDelegate, UIPickerViewDelega
             
         }
     }
+    
     let locationManager = CLLocationManager()
     let localStorage = UserDefaults.standard
     

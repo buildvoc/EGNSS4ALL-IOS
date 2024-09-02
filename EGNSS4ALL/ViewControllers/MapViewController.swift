@@ -16,9 +16,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     
     
     private static let ptManagerIdentifier = "MapViewController"
-    
     var firstAppear = true
-    
     let db = DB()
     var persistPhotos: [PersistPhoto]?
     

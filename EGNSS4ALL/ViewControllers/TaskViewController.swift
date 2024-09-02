@@ -359,7 +359,7 @@ class TaskViewController: UIViewController {
                 print(urlStr)
                 print("------------------------------------------")
                 let url = URL(string: urlStr)
-                guard let requestUrl = url else { fatalError() }
+                guard let requestUrl = url else { return }
                 // Prepare URL Request Object
                 var request = URLRequest(url: requestUrl)
                 request.httpMethod = "POST"

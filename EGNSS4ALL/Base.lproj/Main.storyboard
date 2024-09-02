@@ -590,7 +590,7 @@
                             <barButtonItem image="info.circle" catalog="system" id="29u-6j-VXJ">
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
-                                    <segue destination="qO6-Vb-RM0" kind="push" id="GgZ-bX-VzK"/>
+                                    <action selector="aboutButton:" destination="BYZ-38-t0r" id="FFr-Rh-REe"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -2307,7 +2307,7 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="eNP-i2-wrb"/>
-                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                        <color key="backgroundColor" name="Primary"/>
                         <constraints>
                             <constraint firstItem="eNP-i2-wrb" firstAttribute="bottom" secondItem="5WA-jo-1i7" secondAttribute="bottom" constant="-34" id="1kY-Pz-kbQ"/>
                             <constraint firstItem="1LU-3f-O1T" firstAttribute="top" secondItem="eNP-i2-wrb" secondAttribute="top" constant="10" id="Bva-Mo-7Dt"/>
@@ -4077,7 +4077,6 @@ Galileo capacity check: green light if this device is capable to use Galileo.</s
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="GgZ-bX-VzK"/>
         <segue reference="xTh-uZ-EyI"/>
         <segue reference="RZU-VQ-uz0"/>
         <segue reference="fPr-1p-8Ps"/>

