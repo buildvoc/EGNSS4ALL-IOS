@@ -291,11 +291,9 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                             let actSat = satelliti.first(where: { $0.gnssId == sat.gnssId && $0.id == sat.id })
                             if  actSat != nil {
                                 if (Int(Date().timeIntervalSince1970) > actSat!.timestamp! + 310 || actSat?.stato == false)  {
-                                    
                                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                                         let uuidSmartphone = UIDevice.current.identifierForVendor!.uuidString
                                         let json = ["uuid": uuidSmartphone, "uuidExt": "DVLGNSS2A001", "svId": sat.id!, "gnssId": 2, "source": "client", "numWords": 8, "version": sat.versione, "iTow": sat.iTow!, "timestamp": sat.timestamp, "manufacturer": sat.manufacturer!, "model": sat.model, "dwrd0": sat.dwrd![0], "dwrd1": sat.dwrd![1], "dwrd2": sat.dwrd![2], "dwrd3": sat.dwrd![3], "dwrd4": sat.dwrd![4], "dwrd5": sat.dwrd![5], "dwrd6": sat.dwrd![6], "dwrd7": sat.dwrd![7]] as [String : Any]
-                                        
                                         if NetworkManager.shared.isNetworkAvailable() {
                                             print("Network ok")
                                             if sfrbxArray.count != 0 {
@@ -307,8 +305,6 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                                             sfrbxArray.add(json)
                                             return
                                         }
-                                        
-                                        
                                     })
                                 }
                             } else {

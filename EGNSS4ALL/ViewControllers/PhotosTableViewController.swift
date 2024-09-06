@@ -78,7 +78,6 @@ class PhotosTableViewController: UITableViewController {
             performSegue(withIdentifier: "ShowPhotoDetailManual", sender: self)
         } else {
             tableView.reloadData()
-            
             if scrollDown == true {
                 scrollDown = false
                 scrollToBottom()

