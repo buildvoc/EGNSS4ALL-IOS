@@ -100,12 +100,10 @@ class TaskViewController: UIViewController {
     @IBAction func noteButton(_ sender: UIButton) {
         //1. Create the alert controller.
         let alert = UIAlertController(title: "Task note", message: "", preferredStyle: .alert)
-
         //2. Add the text field. You can configure it however you need.
         alert.addTextField { (textField) in
             textField.text = self.persistTask.note
         }
-
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
@@ -324,7 +322,6 @@ class TaskViewController: UIViewController {
         
         if (photosToSend.count > 0) {
             let userID = String(UserStorage.userID)
-            
             struct Photo:Codable {
                 var lat:Double
                 var lng:Double
@@ -341,6 +338,10 @@ class TaskViewController: UIViewController {
                 var note:String
                 var photo:String
                 var digest:String
+                var deviceManufacture:String
+                var deviceModel:String
+                var devicePlatform:String
+                var deviceVersion:String
             }
             
             let df = MyDateFormatter.yyyyMMdd
@@ -349,7 +350,7 @@ class TaskViewController: UIViewController {
             let data:Data = photosToSend[0].photo!
             let base64String:String = data.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue:0))
             
-            let photo = Photo(lat:photosToSend[0].lat, lng:photosToSend[0].lng, altitude: photosToSend[0].altitude, bearing: photosToSend[0].bearing, magnetic_azimuth: photosToSend[0].azimuth, photo_heading: photosToSend[0].photoHeading, accuracy: photosToSend[0].accuracy, orientation: photosToSend[0].orientation, pitch: photosToSend[0].pitch, roll: photosToSend[0].roll, photo_angle: photosToSend[0].tilt, created: stringDate, note: photosToSend[0].note ?? "", photo: base64String, digest:photosToSend[0].digest!)
+            let photo = Photo(lat:photosToSend[0].lat, lng:photosToSend[0].lng, altitude: photosToSend[0].altitude, bearing: photosToSend[0].bearing, magnetic_azimuth: photosToSend[0].azimuth, photo_heading: photosToSend[0].photoHeading, accuracy: photosToSend[0].accuracy, orientation: photosToSend[0].orientation, pitch: photosToSend[0].pitch, roll: photosToSend[0].roll, photo_angle: photosToSend[0].tilt, created: stringDate, note: photosToSend[0].note ?? "", photo: base64String, digest:photosToSend[0].digest!,deviceManufacture: deviceManufacturer ,deviceModel: deviceModel ,devicePlatform:devicePlatform, deviceVersion: deviceVersion)
             
             do {
                 let jsonData = try JSONEncoder().encode(photo)
@@ -361,11 +362,11 @@ class TaskViewController: UIViewController {
                 print(urlStr)
                 print("------------------------------------------")
                 let url = URL(string: urlStr)
-                guard let requestUrl = url else { fatalError() }
+                guard let requestUrl = url else { return }
                 // Prepare URL Request Object
                 var request = URLRequest(url: requestUrl)
                 request.httpMethod = "POST"
-                
+                print(request)
                 // HTTP Request Parameters which will be sent in HTTP Request Body
                 let postString = "user_id="+userID+"&task_id="+String(persistTask.id)+"&photo="+jsonString
                 

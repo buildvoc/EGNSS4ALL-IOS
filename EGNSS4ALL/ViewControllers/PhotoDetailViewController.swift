@@ -64,7 +64,6 @@ class PhotoDetailViewController: UIViewController {
         waitAlert.view.addSubview(loadingIndicator)
         
         self.present(waitAlert, animated: true, completion: nil)
-        
         let userID = String(UserStorage.userID)
         
         struct Photo:Codable {
@@ -83,6 +82,10 @@ class PhotoDetailViewController: UIViewController {
             var note:String
             var photo:String
             var digest:String
+            var deviceManufacture:String
+            var deviceModel:String
+            var devicePlatform:String
+            var deviceVersion:String
         }
         
         let df = MyDateFormatter.yyyyMMdd
@@ -92,7 +95,8 @@ class PhotoDetailViewController: UIViewController {
         let data:Data = persistPhoto.photo!
         let base64String:String = data.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue:0))
         
-        let photo = Photo(lat:persistPhoto.lat, lng:persistPhoto.lng, altitude: persistPhoto.altitude, bearing: persistPhoto.bearing, magnetic_azimuth: persistPhoto.azimuth, photo_heading: persistPhoto.photoHeading, accuracy: persistPhoto.accuracy, orientation: persistPhoto.orientation, pitch: persistPhoto.pitch, roll: persistPhoto.roll, photo_angle: persistPhoto.tilt, created: stringDate, note: persistPhoto.note ?? "", photo: base64String, digest:persistPhoto.digest!)
+        
+        let photo = Photo(lat:persistPhoto.lat, lng:persistPhoto.lng, altitude: persistPhoto.altitude, bearing: persistPhoto.bearing, magnetic_azimuth: persistPhoto.azimuth, photo_heading: persistPhoto.photoHeading, accuracy: persistPhoto.accuracy, orientation: persistPhoto.orientation, pitch: persistPhoto.pitch, roll: persistPhoto.roll, photo_angle: persistPhoto.tilt, created: stringDate, note: persistPhoto.note ?? "", photo: base64String, digest:persistPhoto.digest! ,deviceManufacture: deviceManufacturer ,deviceModel: deviceModel ,devicePlatform:devicePlatform, deviceVersion: deviceVersion)
         
         do {
             let jsonData = try JSONEncoder().encode(photo)
@@ -108,7 +112,7 @@ class PhotoDetailViewController: UIViewController {
             // Prepare URL Request Object
             var request = URLRequest(url: requestUrl)
             request.httpMethod = "POST"
-             
+            print(request)
             // HTTP Request Parameters which will be sent in HTTP Request Body
             let postString = "user_id="+userID+"&photo="+jsonString
             // Set HTTP Request Body
@@ -300,6 +304,7 @@ class PhotoDetailViewController: UIViewController {
         struct Answer: Decodable {
             var status: String
             var error_msg: String?
+            var photo_id: Int?
         }
 
         let jsonData = data.data(using: .utf8)!
@@ -307,9 +312,8 @@ class PhotoDetailViewController: UIViewController {
         
         if answer.status == "ok" {
             showSendingSuccess()
-            
             persistPhoto.sended = true
-            
+            persistPhoto.id = "\(answer.photo_id ?? 0)"
             do {
                 try self.manageObjectContext.save()
             } catch {
@@ -323,10 +327,6 @@ class PhotoDetailViewController: UIViewController {
         }
     }
     
-     
-    
-    
-
     /*
     // MARK: - Navigation
 

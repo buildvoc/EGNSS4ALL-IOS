@@ -16,9 +16,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     
     
     private static let ptManagerIdentifier = "MapViewController"
-    
     var firstAppear = true
-    
     let db = DB()
     var persistPhotos: [PersistPhoto]?
     
@@ -574,7 +572,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     
     
     func matchesNmea( in text: String) -> [String] {
-
         do {
             let results = nmeaRegex.matches(in: text,
                                         range: NSRange(text.startIndex..., in: text))
@@ -617,11 +614,9 @@ extension MapViewController {
         case .poweredOn:
             let extGPS = localStorage.bool(forKey: "externalGPS")
             
-            
             if extGPS {
                // manager?.scanForPeripherals(withServices:[gnssBLEServiceUUID], options: nil)
                 manager?.scanForPeripherals(withServices:nil, options: nil)
-
             }
             
             print("Bluetooth attivo")
@@ -669,7 +664,6 @@ class CustomAnnotationView: MKAnnotationView {
         self.backgroundColor = .clear
         let pinImage = UIImage(named: "point")!
         self.image = pinImage
-        //self.addSubview(pinImage)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -696,11 +690,8 @@ extension MapViewController: CBPeripheralDelegate {
             {
                 peripheral.discoverCharacteristics([gnssBLECharacteristicUUID], for: service)
             }
-
         }
-
     }
-
 
 
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {

@@ -9,7 +9,6 @@ class NMEASentenceParser {
         if nmeaSentence.isEmpty {
             return nil
         }
-
         if nmeaSentence.contains("GGA") {
             return GPGGA(nmeaSentence)
         } else if nmeaSentence.contains("GSA") {
@@ -22,7 +21,6 @@ class NMEASentenceParser {
         else if nmeaSentence.contains("GSV") {
             return GPGSV(nmeaSentence)
         }
-
         return nil
     }
 

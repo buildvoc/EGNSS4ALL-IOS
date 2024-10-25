@@ -7,70 +7,94 @@
 
 import UIKit
 import CoreData
-import CryptoKit
+//import CryptoKit
 
 class TasksTableViewController: UITableViewController {
-
+    
     var persistTasks = [PersistTask]()
     var manageObjectContext: NSManagedObjectContext!
-
+    
     let localStorage = UserDefaults.standard
-
+    var emptyLabel = UILabel()
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setupEmptyLabel()
         manageObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
-        getNewTasks()
-
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-
+    
     override func viewWillAppear(_ animated:Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
-
         loadPersistTasks()
         tableView.reloadData()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
     }
-
+    
+    
+    @IBAction func syncTap(_ sender: Any) {
+        getNewTasks()
+    }
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        if persistTasks.count > 0 {
+            emptyLabel.isHidden = true
+            return 1
+        } else {
+            emptyLabel.isHidden = false
+            return 0
+        }
     }
-
+    
+    func setupEmptyLabel(){
+        let rect = CGRect(origin: CGPoint(x: 0,y :0), size: CGSize(width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+        let messageLabel = UILabel(frame: rect)
+        messageLabel.text = "You don't have any task yet.\n Tap to sync task."
+        messageLabel.textColor = UIColor.white
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center;
+        messageLabel.font = .systemFont(ofSize: 15)
+        messageLabel.sizeToFit()
+        emptyLabel = messageLabel
+        self.tableView.backgroundView = emptyLabel
+        self.tableView.separatorStyle = .none
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return persistTasks.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         let cellIdentifier = "TaskTableViewCell"
-
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? TasksTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of MealTableViewCell.")
+            return UITableViewCell()
+            // fatalError("The dequeued cell is not an instance of MealTableViewCell.")
         }
-
+        
         let task = persistTasks[indexPath.row]
-
+        
         cell.nameLabel.text = task.name
         cell.statusLabel.text = task.status
         cell.backgroundColor = .clear
-
+        
         if let dateCreated = task.date_created  {
             cell.createdLabel.text = MyDateFormatter.yyyyMMdd.string(from: dateCreated)
         }
-
+        
         if let taskDueDate = task.task_due_date {
             cell.dueLabel.text = MyDateFormatter.yyyyMMdd.string(from: taskDueDate)
             if (taskDueDate < Date()) {
@@ -79,11 +103,11 @@ class TasksTableViewController: UITableViewController {
                 cell.dueLabel.textColor = UIColor.systemGreen
             }
         }
-
+        
         if task.status == "data checked" {
             cell.statusImage.image = UIImage(named: "green_circle")
         }
-         else if task.status == "new" {
+        else if task.status == "new" {
             cell.statusImage.image = UIImage(named: "status_new")
         } else if task.status == "open"{
             cell.statusImage.image = UIImage(named: "status_open")
@@ -92,9 +116,8 @@ class TasksTableViewController: UITableViewController {
         } else {
             cell.statusImage.image = UIImage(named: "status_provided")
         }
-
+        
         var persistPhotos = [PersistPhoto]()
-
         let persistPhotoRequest: NSFetchRequest<PersistPhoto> = PersistPhoto.fetchRequest()
         persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %i", String(UserStorage.userID), task.id)
         do {
@@ -103,9 +126,9 @@ class TasksTableViewController: UITableViewController {
         catch {
             print("Could not load save data: \(error.localizedDescription)")
         }
-
+        
         //cell.countLabel.text = String(persistPhotos.count) + " photos"
-
+        
         if let photoCount = task.photoCount {
             cell.countLabel.text = "\(photoCount) photos"
         } else {
@@ -116,35 +139,35 @@ class TasksTableViewController: UITableViewController {
         }
         return cell
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         super.prepare(for: segue, sender: sender)
         switch(segue.identifier ?? "") {
-
+            
         case "ShowTaskDetail":
             guard let taskViewController = segue.destination as? TaskViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-
+            
             guard let selectedTaskCell = sender as? TasksTableViewCell else {
                 fatalError("Unexpected sender: \(String(describing: sender))")
             }
-
+            
             guard let indexPath = tableView.indexPath(for: selectedTaskCell) else {
                 fatalError("The selected cell is not being displayed by the table")
             }
-
+            
             let selectedTask = persistTasks[indexPath.row]
             taskViewController.persistTask = selectedTask
             taskViewController.manageObjectContext = manageObjectContext
-
+            
         default:
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
         }
     }
-
-// here
+    
+    // here
     private func loadPersistTasks() {
         let persistTaskRequest: NSFetchRequest<PersistTask> = PersistTask.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "date_created", ascending: false)
@@ -159,7 +182,7 @@ class TasksTableViewController: UITableViewController {
             print("Could not load save data: \(error.localizedDescription)")
         }
     }
-
+    
     func getNewTasks() {
         let waitAlert = UIAlertController(title: nil, message: "Loading, please wait...", preferredStyle: .alert)
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 5, width: 50, height: 50))
@@ -257,6 +280,7 @@ class TasksTableViewController: UITableViewController {
                         print("Could not load save data: \(error.localizedDescription)")
                     }
                 }
+                
                 if task.status == "returned" {
                     
                     let persistTaskRequest: NSFetchRequest<PersistTask> = PersistTask.fetchRequest()
@@ -311,7 +335,7 @@ class TasksTableViewController: UITableViewController {
         print(urlStr)
         print("------------------------------------------")
         let url = URL(string: urlStr)
-        guard let requestUrl = url else { fatalError() }
+        guard let requestUrl = url else { return }
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
         let postString = "photo_id=" + photoID
@@ -334,12 +358,12 @@ class TasksTableViewController: UITableViewController {
                 return
             }
             let userId = String(UserStorage.userID)
-
+            
             let persistPhotoRequest: NSFetchRequest<PersistPhoto> = PersistPhoto.fetchRequest()
             persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %@ AND digest == %@ AND id == %@", String(UserStorage.userID), taskId, photo.digest,photoID)
             
             var persistPhoto = PersistPhoto(context: self.manageObjectContext)
-
+            
             do {
                 if let perPhoto = try self.manageObjectContext.fetch(persistPhotoRequest).first {
                     persistPhoto = perPhoto
@@ -362,14 +386,14 @@ class TasksTableViewController: UITableViewController {
             } catch {
                 print("Could not save data: \(error.localizedDescription)")
             }
-                        
+            
             DispatchQueue.main.async {
                 completion?()
             }
         }
         task.resume()
     }
-
+    
     func displayPhoto(data: Data) {
         print("Photo data received: \(data)")
     }

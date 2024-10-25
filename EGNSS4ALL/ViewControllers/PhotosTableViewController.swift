@@ -7,16 +7,9 @@
 
 import UIKit
 import CoreData
-import CryptoKit
+//import CryptoKit
+//
 
-extension Digest {
-    var bytes: [UInt8] { Array(makeIterator()) }
-    var data: Data { Data(bytes) }
-    
-    var hexStr: String {
-        bytes.map { String(format: "%02X", $0) }.joined()
-    }
-}
 
 class PhotosTableViewController: UITableViewController {
     
@@ -29,7 +22,7 @@ class PhotosTableViewController: UITableViewController {
     var photoQueue: [String] = []
     let waitAlert = UIAlertController(title: nil, message: "Loading, please wait...", preferredStyle: .alert)
     let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 5, width: 50, height: 50))
-    
+    var emptyLabel = UILabel()
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var newButton: UIBarButtonItem!
     
@@ -66,22 +59,17 @@ class PhotosTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupEmptyLabel()
         tableView.tableFooterView = UIView()
-        
-        
-        
         manageObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
-        loadPersistPhotos()
-        getNewPhotos()
-        /*
+         /*
          if persistPhotos.count == 0 {
          loadSamplePhotos()
          }*/
     }
     
     override func viewWillAppear(_ animated:Bool) {
+        loadPersistPhotos()
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
         
         if openDetail == true {
@@ -90,7 +78,6 @@ class PhotosTableViewController: UITableViewController {
             performSegue(withIdentifier: "ShowPhotoDetailManual", sender: self)
         } else {
             tableView.reloadData()
-            
             if scrollDown == true {
                 scrollDown = false
                 scrollToBottom()
@@ -102,11 +89,35 @@ class PhotosTableViewController: UITableViewController {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
     }
     
+    
+    @IBAction func syncTap(_ sender: Any) {
+        getNewPhotos()
+    }
+    
     // MARK: - Table view data source
     
+    func setupEmptyLabel(){
+        let rect = CGRect(origin: CGPoint(x: 0,y :0), size: CGSize(width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+        let messageLabel = UILabel(frame: rect)
+        messageLabel.text = "You don't have any photos yet.\n Tap to sync photos."
+        messageLabel.textColor = UIColor.white
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center;
+        messageLabel.font = .systemFont(ofSize: 15)
+        messageLabel.sizeToFit()
+        emptyLabel = messageLabel
+        self.tableView.backgroundView = emptyLabel
+        self.tableView.separatorStyle = .none
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        
-        return 1
+        if persistPhotos.count > 0 {
+            emptyLabel.isHidden = true
+            return 1
+        } else {
+            emptyLabel.isHidden = false
+            return 0
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -162,10 +173,14 @@ class PhotosTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            
             manageObjectContext.delete(persistPhotos[indexPath.row] as NSManagedObject)
             persistPhotos.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            if persistPhotos.isEmpty {
+                tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
+            } else {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+            //tableView.deleteRows(at: [indexPath], with: .fade)
             
             do {
                 try self.manageObjectContext.save()
@@ -173,9 +188,10 @@ class PhotosTableViewController: UITableViewController {
                 print("Could not save data: \(error.localizedDescription)")
             }
             
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
+//        else if editingStyle == .insert {
+//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//        }
     }
     
     
@@ -260,54 +276,54 @@ class PhotosTableViewController: UITableViewController {
         }
     }
     
-    private func loadSamplePhotos() {
-        let img1 = UIImage(named: "tree")
-        let img2 = UIImage(named: "tree")
-        
-        let userID = String(UserStorage.userID)
-        let df = MyDateFormatter.yyyyMMdd
-        
-        
-        let persistPhoto1 = PersistPhoto(context: manageObjectContext)
-        
-        persistPhoto1.userid = Int64(userID) ?? 0
-        persistPhoto1.lat = 1.0
-        persistPhoto1.lng = 1.1
-        persistPhoto1.created = Date()
-        persistPhoto1.sended = false
-        persistPhoto1.note = "pozn1"
-        persistPhoto1.photo = img1?.jpegData(compressionQuality: 1)
-        
-        let stringDate1 = df.string(from: persistPhoto1.created!)
-        let photo_hash_string1 = SHA256.hash(data: persistPhoto1.photo!).hexStr.lowercased()
-        let digest_string1 = "bfb576892e43b763731a1596c428987893b2e76ce1be10f733_" + photo_hash_string1 + "_" + stringDate1 + "_" + userID
-        persistPhoto1.digest = SHA256.hash(data: digest_string1.data(using: .utf8)!).hexStr.lowercased()
-        
-        let persistPhoto2 = PersistPhoto(context: manageObjectContext)
-        
-        persistPhoto2.userid = Int64(userID) ?? 0
-        persistPhoto2.lat = 2.0
-        persistPhoto2.lng = 2.1
-        persistPhoto2.created = Date()
-        persistPhoto2.sended = false
-        persistPhoto2.note = "pozn2"
-        persistPhoto2.photo = img2?.jpegData(compressionQuality: 1)
-        
-        let stringDate2 = df.string(from: persistPhoto2.created!)
-        let photo_hash_string2 = SHA256.hash(data: persistPhoto2.photo!).hexStr.lowercased()
-        let digest_string2 = "bfb576892e43b763731a1596c428987893b2e76ce1be10f733_" + photo_hash_string2 + "_" + stringDate2 + "_" + userID
-        persistPhoto2.digest = SHA256.hash(data: digest_string2.data(using: .utf8)!).hexStr.lowercased()
-        
-        persistPhotos += [persistPhoto1, persistPhoto2]
-        
-        do {
-            try self.manageObjectContext.save()
-        } catch {
-            print("Could not save data: \(error.localizedDescription)")
-        }
-        
-        print("Sample data loaded.")
-    }
+//    private func loadSamplePhotos() {
+//        let img1 = UIImage(named: "tree")
+//        let img2 = UIImage(named: "tree")
+//        
+//        let userID = String(UserStorage.userID)
+//        let df = MyDateFormatter.yyyyMMdd
+//        
+//        
+//        let persistPhoto1 = PersistPhoto(context: manageObjectContext)
+//        
+//        persistPhoto1.userid = Int64(userID) ?? 0
+//        persistPhoto1.lat = 1.0
+//        persistPhoto1.lng = 1.1
+//        persistPhoto1.created = Date()
+//        persistPhoto1.sended = false
+//        persistPhoto1.note = "pozn1"
+//        persistPhoto1.photo = img1?.jpegData(compressionQuality: 1)
+//        
+//        let stringDate1 = df.string(from: persistPhoto1.created!)
+//        let photo_hash_string1 = SHA256.hash(data: persistPhoto1.photo!).hexStr.lowercased()
+//        let digest_string1 = "bfb576892e43b763731a1596c428987893b2e76ce1be10f733_" + photo_hash_string1 + "_" + stringDate1 + "_" + userID
+//        persistPhoto1.digest = SHA256.hash(data: digest_string1.data(using: .utf8)!).hexStr.lowercased()
+//        
+//        let persistPhoto2 = PersistPhoto(context: manageObjectContext)
+//        
+//        persistPhoto2.userid = Int64(userID) ?? 0
+//        persistPhoto2.lat = 2.0
+//        persistPhoto2.lng = 2.1
+//        persistPhoto2.created = Date()
+//        persistPhoto2.sended = false
+//        persistPhoto2.note = "pozn2"
+//        persistPhoto2.photo = img2?.jpegData(compressionQuality: 1)
+//        
+//        let stringDate2 = df.string(from: persistPhoto2.created!)
+//        let photo_hash_string2 = SHA256.hash(data: persistPhoto2.photo!).hexStr.lowercased()
+//        let digest_string2 = "bfb576892e43b763731a1596c428987893b2e76ce1be10f733_" + photo_hash_string2 + "_" + stringDate2 + "_" + userID
+//        persistPhoto2.digest = SHA256.hash(data: digest_string2.data(using: .utf8)!).hexStr.lowercased()
+//        
+//        persistPhotos += [persistPhoto1, persistPhoto2]
+//        
+//        do {
+//            try self.manageObjectContext.save()
+//        } catch {
+//            print("Could not save data: \(error.localizedDescription)")
+//        }
+//        
+//        print("Sample data loaded.")
+//    }
     
 }
 

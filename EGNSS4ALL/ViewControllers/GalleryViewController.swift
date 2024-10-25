@@ -8,7 +8,7 @@
 import UIKit
 
 class GalleryViewController: UIViewController {
-
+    
     @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var orderLabel: UILabel!
     @IBOutlet weak var latLabel: UILabel!
@@ -23,9 +23,7 @@ class GalleryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         loadPhoto()
-
         // Do any additional setup after loading the view.
     }
     
@@ -35,16 +33,16 @@ class GalleryViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
-    }   
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
-    */
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
     @IBAction func leftButton(_ sender: UIButton) {
         if currentPhotoIndex > 0 {
             currentPhotoIndex = currentPhotoIndex - 1
@@ -64,15 +62,12 @@ class GalleryViewController: UIViewController {
         orderLabel.text = String(currentPhotoIndex + 1)
         latLabel.text = persistPhotos[currentPhotoIndex].lat.description
         longLabel.text = persistPhotos[currentPhotoIndex].lng.description
-        
         let df = MyDateFormatter.yyyyMMdd
         createdLabel.text = df.string(from: persistPhotos[currentPhotoIndex].created!)
-        
         photoImage.image = UIImage(data: persistPhotos[currentPhotoIndex].photo!)
-        
         counterLabel.text = String(currentPhotoIndex+1) + "/" + String(persistPhotos.count)
     }
-
+    
 }
 
 // Created for the GSA in 2020-2021. Project management: SpaceTec Partners, software development: www.foxcom.eu
