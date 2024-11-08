@@ -366,6 +366,8 @@ class TaskViewController: UIViewController {
                 // Prepare URL Request Object
                 var request = URLRequest(url: requestUrl)
                 request.httpMethod = "POST"
+                          request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+
                 print(request)
                 // HTTP Request Parameters which will be sent in HTTP Request Body
                 let postString = "user_id="+userID+"&task_id="+String(persistTask.id)+"&photo="+jsonString
@@ -440,7 +442,8 @@ class TaskViewController: UIViewController {
             // Prepare URL Request Object
             var request = URLRequest(url: requestUrl)
             request.httpMethod = "POST"
-             
+                         request.httpMethod = "POST"
+                    request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
             // HTTP Request Parameters which will be sent in HTTP Request Body
             let postString = "task_id="+String(persistTask.id)+"&status="+statusString+"&note="+noteString
             // Set HTTP Request Body

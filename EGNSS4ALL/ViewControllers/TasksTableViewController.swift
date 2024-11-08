@@ -207,7 +207,6 @@ class TasksTableViewController: UITableViewController {
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
             // Set Authorization Header with Bearer Token
-        let bearerToken = "9|rVIXySqwNcrAWSODLM6Ty7fwjXDKLEUVDiOWnIl5a237e6ba" // Replace with your actual bearer token
         request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
 
         // HTTP Request Parameters which will be sent in HTTP Request Body
@@ -343,6 +342,9 @@ class TasksTableViewController: UITableViewController {
         guard let requestUrl = url else { return }
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
+                    // Set Authorization Header with Bearer Token
+        request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+
         let postString = "photo_id=" + String(photoID)
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
