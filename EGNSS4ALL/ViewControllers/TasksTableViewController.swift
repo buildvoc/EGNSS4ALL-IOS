@@ -380,9 +380,9 @@ class TasksTableViewController: UITableViewController {
                 persistPhoto.userid = Int64(userId) ?? 0
                 persistPhoto.taskid = Int64(taskId) ?? 0
                 persistPhoto.note = photo.note
-                persistPhoto.lat = Double(photo.lat ?? "") ?? 0
-                persistPhoto.lng = Double(photo.lng ?? "") ?? 0
-                persistPhoto.photoHeading = Double(photo.photo_heading ?? "") ?? 0
+                persistPhoto.lat = Double(photo.lat ?? 0) ?? 0
+                persistPhoto.lng = Double(photo.lng ?? 0) ?? 0
+                persistPhoto.photoHeading = Double(photo.photo_heading ?? 0) ?? 0
                 persistPhoto.digest = photo.digest
                 persistPhoto.created = MyDateFormatter.yyyyMMdd.date(from: photo.created)
                 if let base64Photo = photo.photo {

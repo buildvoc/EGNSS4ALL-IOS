@@ -461,9 +461,9 @@ extension PhotosTableViewController {
             persistPhoto.userid = Int64(userID) ?? 0
             persistPhoto.id = idPhoto
             persistPhoto.note = answer.photo?.note
-            persistPhoto.lat = Double(answer.photo?.lat ?? "0.0") ?? 0.0
-            persistPhoto.lng = Double(answer.photo?.lng ?? "0.0") ?? 0.0
-            persistPhoto.photoHeading = Double(answer.photo?.photo_heading ?? "") ?? 0.0
+            persistPhoto.lat = Double(answer.photo?.lat ?? 0) ?? 0.0
+            persistPhoto.lng = Double(answer.photo?.lng ?? 0) ?? 0.0
+            persistPhoto.photoHeading = Double(answer.photo?.photo_heading ?? 0) ?? 0.0
             persistPhoto.taskid = -1
             persistPhoto.digest = answer.photo?.digest
             
