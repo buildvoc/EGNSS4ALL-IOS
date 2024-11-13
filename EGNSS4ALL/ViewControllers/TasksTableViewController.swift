@@ -367,7 +367,7 @@ class TasksTableViewController: UITableViewController {
             let userId = String(UserStorage.userID)
             
             let persistPhotoRequest: NSFetchRequest<PersistPhoto> = PersistPhoto.fetchRequest()
-            persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %@ AND digest == %@ AND id == %@", String(UserStorage.userID), taskId, photo.digest,photoID)
+            persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %@ AND digest == %@ AND id == %@", String(UserStorage.userID), String(taskId), photo.digest,String(photoID))
             
             var persistPhoto = PersistPhoto(context: self.manageObjectContext)
             
