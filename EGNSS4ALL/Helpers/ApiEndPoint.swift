@@ -8,11 +8,11 @@
 import UIKit
 
 struct ApiEndPoint {
-    static let login = "comm_login.php"
-    static let tasks = "comm_tasks.php"
-    static let getPhoto = "comm_get_photo.php"
-    static let status = "comm_status.php"
-    static let path = "comm_path.php"
-    static let unassigned = "comm_unassigned.php"
-    static let photo = "comm_photo.php"
+    static let login = "comm_login"
+    static let tasks = "comm_tasks"
+    static let getPhoto = "comm_get_photo"
+    static let status = "comm_status"
+    static let path = "comm_path"
+    static let unassigned = "comm_unassigned"
+    static let photo = "comm_photo"
 }

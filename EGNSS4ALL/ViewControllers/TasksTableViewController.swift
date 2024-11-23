@@ -204,7 +204,8 @@ class TasksTableViewController: UITableViewController {
         // Prepare URL Request Object
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
-        
+        request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+
         // HTTP Request Parameters which will be sent in HTTP Request Body
         let postString = "user_id="+userID
         // Set HTTP Request Body
@@ -251,7 +252,7 @@ class TasksTableViewController: UITableViewController {
             for task in answer.tasks ?? [] {
                 if task.status == "new" || task.status == "data provided" || task.status == "data checked" || task.status == "open" {
                     let persistTaskRequest: NSFetchRequest<PersistTask> = PersistTask.fetchRequest()
-                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@", userID, task.id)
+                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@", String(userID), String(task.id))
                     var perTasks = [PersistTask]()
                     do {
                         perTasks = try manageObjectContext.fetch(persistTaskRequest)
@@ -264,7 +265,7 @@ class TasksTableViewController: UITableViewController {
                             persistTask.status = task.status
                             persistTask.name = task.name
                             persistTask.text = task.text
-                            persistTask.photoCount = task.number_of_photos
+                            persistTask.photoCount = String(task.number_of_photos)
                             persistTask.text_returned = task.text_returned
                             persistTask.date_created = df.date(from: task.date_created)
                             persistTask.task_due_date = df.date(from: task.task_due_date)
@@ -327,7 +328,7 @@ class TasksTableViewController: UITableViewController {
         }
     }
     
-    func photoLoad(photoID: String?, taskId: String, completion: (() -> Void)?) {
+    func photoLoad(photoID: Int?, taskId: Int, completion: (() -> Void)?) {
         guard let photoID = photoID else { return }
         
         let urlStr = Configuration.baseURLString + ApiEndPoint.getPhoto
@@ -338,7 +339,7 @@ class TasksTableViewController: UITableViewController {
         guard let requestUrl = url else { return }
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
-        let postString = "photo_id=" + photoID
+        let postString = "photo_id=" + String(photoID)
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
@@ -369,7 +370,7 @@ class TasksTableViewController: UITableViewController {
                     persistPhoto = perPhoto
                 }
                 
-                persistPhoto.id = photoID
+                persistPhoto.id = String(photoID)
                 persistPhoto.userid = Int64(userId) ?? 0
                 persistPhoto.taskid = Int64(taskId) ?? 0
                 persistPhoto.note = photo.note
