@@ -361,6 +361,8 @@ class TaskViewController: UIViewController {
                 print("------------------------------------------")
                 print(urlStr)
                 print("------------------------------------------")
+                 print("IdToken:   \(UserStorage.token!)")
+                print("------------------------------------------")
                 let url = URL(string: urlStr)
                 guard let requestUrl = url else { return }
                 // Prepare URL Request Object
@@ -435,6 +437,8 @@ class TaskViewController: UIViewController {
             let urlStr = Configuration.baseURLString + ApiEndPoint.status
             print("------------------------------------------")
             print(urlStr)
+            print("------------------------------------------")
+            print("IdToken:   \(UserStorage.token!)")
             print("------------------------------------------")
             let url = URL(string: urlStr)
 

