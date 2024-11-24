@@ -368,7 +368,7 @@ class TaskViewController: UIViewController {
                 // Prepare URL Request Object
                 var request = URLRequest(url: requestUrl)
                 request.httpMethod = "POST"
-                          request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+                request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
 
                 print(request)
                 // HTTP Request Parameters which will be sent in HTTP Request Body
@@ -387,9 +387,19 @@ class TaskViewController: UIViewController {
                         }
                         return
                     }
+
+
+
                     // Convert HTTP Response Data to a String
                     if let data = data, let dataString = String(data: data, encoding: .utf8) {
                         DispatchQueue.main.async {
+                        print("------------------------------------------")
+                        print("Server response: \(dataString)")
+                        print("------------------------------------------")
+                        if let httpResponse = response as? HTTPURLResponse {
+                        print("HTTP Status Code: \(httpResponse.statusCode)")}
+                        print("------------------------------------------")
+
                             self.processResponseData1(data: dataString)
                         }
                     }
