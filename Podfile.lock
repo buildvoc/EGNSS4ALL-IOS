@@ -1,20 +1,16 @@
 PODS:
   - lottie-ios (4.4.3)
-  - SideMenuSwift (2.1.1)
 
 DEPENDENCIES:
   - lottie-ios
-  - SideMenuSwift
 
 SPEC REPOS:
   trunk:
     - lottie-ios
-    - SideMenuSwift
 
 SPEC CHECKSUMS:
   lottie-ios: fcb5e73e17ba4c983140b7d21095c834b3087418
-  SideMenuSwift: 4dc9c94ffd8874b8331c0d5e316928385add9150
 
-PODFILE CHECKSUM: 34aff5d822b3da119fd6394742a773bef2f6e333
+PODFILE CHECKSUM: 626259725942b18f156b1e8235311cdd0e2e8590
 
 COCOAPODS: 1.15.2

@@ -13,7 +13,7 @@ class AboutViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addMenuButton()
+
         // Do any additional setup after loading the view.
         // Support Dark Mode
         if #available(iOS 13.0, *) {
@@ -23,10 +23,6 @@ class AboutViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
-    }
 
     /*
     // MARK: - Navigation

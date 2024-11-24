@@ -24,7 +24,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     var satellites = [Satellite]()
     
     var timer = Timer()
-    var isForRecord: Bool = false
     
     let localStorage = UserDefaults.standard
     
@@ -134,9 +133,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     
     override func viewWillAppear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
-        if isForRecord {
-            recordToggle(UIButton.self)
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -241,19 +237,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
             azimAnnotations.append(Weak(azimAnnotation))
             i += 1
         }
-    }
-    
-    @IBAction func buttonPathDidTap(_ sender: Any) {
-        if let vc = UIStoryboard(name: "Map", bundle: nil).instantiateViewController(identifier: "PathTrackTableViewController") as? PathTrackTableViewController {
-            vc.isFromMenu = false
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-    
-    @IBAction func homeDidTap(_ sender: UIBarButtonItem) {
-        let homeStoryboard = UIStoryboard(name: "Home", bundle: nil)
-        guard let homeVc = homeStoryboard.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController else { return }
-        self.navigationController?.pushViewController(homeVc, animated: true)
     }
     
     private func customAnnotationView(in mapView: MKMapView, for annotation: MKAnnotation) -> CustomAnnotationView {

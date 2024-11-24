@@ -8,7 +8,6 @@
 import UIKit
 import CoreData
 import CryptoKit
-import SideMenuSwift
 
 extension Digest {
     var bytes: [UInt8] { Array(makeIterator()) }
@@ -50,10 +49,7 @@ class PhotosTableViewController: UITableViewController {
     }
     
     @IBAction func newPhoto(_ sender: UIBarButtonItem) {
-        guard let cameraVC = UIStoryboard(name: "Camera", bundle: nil).instantiateViewController(identifier: "CameraViewController") as? CameraViewController else { return  }
-        cameraVC.manageObjectContext = manageObjectContext
-        cameraVC.delegate = self
-        self.navigationController?.pushViewController(cameraVC, animated: true)
+        performSegue(withIdentifier: "ShowCamera", sender: self)
     }
     
     @IBAction func unwindToTableView(sender: UIStoryboardSegue) {
@@ -72,10 +68,7 @@ class PhotosTableViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.tableFooterView = UIView()
-        if let items = self.tabBarController?.tabBar.items {
-            items[3].image = UIImage(named: "unselect_record")
-            items[3].selectedImage = UIImage(named: "select_record")
-        }
+        
         
         
         manageObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -103,22 +96,12 @@ class PhotosTableViewController: UITableViewController {
                 scrollToBottom()
             }
         }
-        tabBarController?.tabBar.isHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
     }
     
-    @IBAction func menu(_ sender: UIBarButtonItem) {
-        self.sideMenuController?.revealMenu()
-    }
-    
-    @IBAction func homeDidTap(_ sender: UIBarButtonItem) {
-        let homeStoryboard = UIStoryboard(name: "Home", bundle: nil)
-        guard let homeVc = homeStoryboard.instantiateViewController(withIdentifier: "MainViewController") as? MainViewController else { return }
-        self.navigationController?.pushViewController(homeVc, animated: true)
-    }
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -447,7 +430,7 @@ extension PhotosTableViewController {
     
     
     func processResponsePhotoData(data: String, idPhoto: String) {
-        
+               
         let jsonData = data.data(using: .utf8)!
         let answer = try! JSONDecoder().decode(GetPhotoResponse.self, from: jsonData)
         
@@ -510,7 +493,7 @@ extension PhotosTableViewController {
                 var photos_ids: [String]
                 
             }
-            
+                        
             let jsonData = data.data(using: .utf8)!
             let answer = try! JSONDecoder().decode(Answer.self, from: jsonData)
             
@@ -541,13 +524,5 @@ extension PhotosTableViewController {
                 
             }
         }
-    }
-}
-
-
-extension PhotosTableViewController: CameraViewControllerDelegate {
-    func didCompletePhoto() {
-        loadPersistPhotos()
-        openDetail = true
     }
 }

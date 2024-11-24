@@ -7,7 +7,6 @@
 
 import UIKit
 import CoreData
-import SideMenuSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -33,9 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        SideMenuController.preferences.basic.direction = .right
-        SideMenuController.preferences.basic.position = .sideBySide
-        setUpTabBar()
         return true
     }
 
@@ -102,29 +98,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 // Created for the GSA in 2020-2021. Project management: SpaceTec Partners, software development: www.foxcom.eu
-
-extension AppDelegate {
-    
-    func setUpTabBar() {
-        let image = UIImage()
-        let appearance = UITabBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = UIColor.white
-        appearance.backgroundImage = UIImage()
-        appearance.shadowImage = image
-        appearance.configureWithDefaultBackground()
-        appearance.backgroundColor = UIColor.white
-        if #available(iOS 15.0, *) {
-            UITabBar.appearance().scrollEdgeAppearance = appearance
-        } else {
-            // Fallback on earlier versions
-        }
-        UITabBar.appearance().standardAppearance = appearance
-        
-        let navAppearance = UINavigationBarAppearance()
-         navAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navAppearance.backgroundColor = .red
-        UINavigationController().navigationItem.standardAppearance = navAppearance
-        
-    }
-}

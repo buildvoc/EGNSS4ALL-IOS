@@ -12,10 +12,6 @@ import CryptoKit
 import CoreLocation
 import CoreBluetooth
 
-protocol CameraViewControllerDelegate: AnyObject {
-    func didCompletePhoto()
-}
-
 class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     
     private enum MsgInfo {
@@ -68,16 +64,14 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     
     private var infoMessages:[MsgInfo: String] = [:]
     private var warningMessages:[MsgWarning: String] = [:]
-    var isPresented: Bool = false
-    weak var delegate: CameraViewControllerDelegate?
     
     var taskid:Int64 = -1
     
     //var persistPhotos = [PersistPhoto]()
     var manageObjectContext: NSManagedObjectContext!
     
-    
-    
+   
+
     @IBOutlet weak var previewView: UIView!
     
     
@@ -88,41 +82,38 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         
         
         super.viewDidLoad()
-        if isPresented {
-            setUpNavigation()
-        }
         //manager = CBCentralManager(delegate: self, queue: nil)
         /*snapshotButton.layer.cornerRadius = 10
-         snapshotButton.layer.shadowColor = UIColor.black.cgColor
-         snapshotButton.layer.shadowOffset = CGSize(width: 3, height: 3)
-         snapshotButton.layer.shadowOpacity = 0.3
-         snapshotButton.layer.shadowRadius = 2.0*/
+        snapshotButton.layer.shadowColor = UIColor.black.cgColor
+        snapshotButton.layer.shadowOffset = CGSize(width: 3, height: 3)
+        snapshotButton.layer.shadowOpacity = 0.3
+        snapshotButton.layer.shadowRadius = 2.0*/
         
         infoView.layer.cornerRadius = 10
         /*infoView.layer.shadowColor = UIColor.black.cgColor
-         infoView.layer.shadowOffset = CGSize(width: 3, height: 3)
-         infoView.layer.shadowOpacity = 0.3
-         infoView.layer.shadowRadius = 2.0*/
+        infoView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        infoView.layer.shadowOpacity = 0.3
+        infoView.layer.shadowRadius = 2.0*/
         
         centroidView.layer.cornerRadius = 10
         /*centroidView.layer.shadowColor = UIColor.black.cgColor
-         centroidView.layer.shadowOffset = CGSize(width: 3, height: 3)
-         centroidView.layer.shadowOpacity = 0.3
-         centroidView.layer.shadowRadius = 2.0*/
+        centroidView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        centroidView.layer.shadowOpacity = 0.3
+        centroidView.layer.shadowRadius = 2.0*/
         
         messageView.layer.cornerRadius = 5
         /*messageView.layer.shadowColor = UIColor.black.cgColor
-         messageView.layer.shadowOffset = CGSize(width: 3, height: 3)
-         messageView.layer.shadowOpacity = 0.3
-         messageView.layer.shadowRadius = 2.0*/
+        messageView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        messageView.layer.shadowOpacity = 0.3
+        messageView.layer.shadowRadius = 2.0*/
         let extGPS = localStorage.bool(forKey: "externalGPS")
         let perUUID = localStorage.string(forKey: "periphealUUID")
         
-        
+       
         photoDataController.locationReceiver = {location in
             
             if extGPS {
-                
+              
                 self.latitudeLabel.text = String(navPVTData["latitudine"] as? Double ?? 0.000000) + "°N"
                 self.longitudeLabel.text = String(navPVTData["longitudine"] as? Double ?? 0.000000) + "°E"
                 self.altitudeLabel.text = String(navPVTData["msl"] as? Double ?? 0.0)
@@ -134,7 +125,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
                 self.altitudeLabel.text = String(format: "%.0f", location.altitude)
                 self.accuracyLabel.text = String(format: "%.2f", location.horizontalAccuracy)
             }
-            
+           
         }
         photoDataController.headingReceiver = { heading in
             self.azimuthLabel.text = String(format: "%.0f", self.photoDataController.computePhotoHeading() ?? "unknown")
@@ -163,8 +154,6 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.tintColor = .white
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -196,15 +185,15 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animate(alongsideTransition: { _ in
-            if self.isCameraRunning {
-                self.adjustVideoPreviewLayer()
-                self.adjustStillImageOutput()
-            }
-            self.adjustPhotoDataController()
-        }, completion: { (context) in
-            //self.setVideoPreviewLayer()
-        })
+            coordinator.animate(alongsideTransition: { _ in
+                if self.isCameraRunning {
+                    self.adjustVideoPreviewLayer()
+                    self.adjustStillImageOutput()
+                }
+                self.adjustPhotoDataController()
+            }, completion: { (context) in
+                //self.setVideoPreviewLayer()
+            })
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -222,47 +211,47 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     }
     
     /*func getNavPvt(characteristic: CBCharacteristic) {
-     if (myPeripheal != nil) {
-     
-     if characteristic.value != nil {
-     
-     print(String(decoding: characteristic.value!, as: UTF8.self))
-     print("dentro")
-     
-     let str = String(decoding: characteristic.value!, as: UTF8.self)
-     let data = Data(str.utf8)
-     
-     //print(str)
-     
-     do {
-     // make sure this JSON is in the format we expect
-     if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-     // try to read out a string array
-     
-     
-     
-     navPVTData = json
-     
-     
-     }
-     
-     } catch let error as NSError {
-     //print("qui")
-     //print("Failed to load: \(error.localizedDescription)")
-     
-     }
-     
-     
-     }
-     
-     }
-     }
-     */
+        if (myPeripheal != nil) {
+            
+            if characteristic.value != nil {
+                
+                print(String(decoding: characteristic.value!, as: UTF8.self))
+                print("dentro")
+                
+                let str = String(decoding: characteristic.value!, as: UTF8.self)
+                let data = Data(str.utf8)
+                
+                //print(str)
+
+                do {
+                    // make sure this JSON is in the format we expect
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                        // try to read out a string array
+                        
+                        
+                        
+                        navPVTData = json
+                        
+                        
+                    }
+                                
+                } catch let error as NSError {
+                    //print("qui")
+                    //print("Failed to load: \(error.localizedDescription)")
+                   
+                }
+                
+                
+            }
+            
+        }
+    }
+    */
     
     
     func recordFunc() {
         if (myPeripheal != nil && myCharacteristic != nil) {
-            
+           
             if myCharacteristic?.value != nil {
                 //print(String(decoding: (myCharacteristic?.value)!, as: UTF8.self))
                 
@@ -271,7 +260,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
                 let data = Data(str.utf8)
                 
                 
-                
+
                 do {
                     // make sure this JSON is in the format we expect
                     if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
@@ -284,7 +273,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
                             let latitude = json["latitudine"] as! Double
                             let longitude = json["longitudine"] as! Double
                             let msl = json["msl"] as! Double
-                            
+                           
                             //self.save(accH: accuracyH, accV: accuracyV, msl: msl, longitude: longitude, latitude: latitude)
                             self.localStorage.set(accuracyH, forKey: "accuracy")
                             self.localStorage.set(latitude, forKey: "latitude")
@@ -312,57 +301,57 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
     }
     
     /*func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-     print(peripheral.debugDescription)
-     
-     if peripheral.identifier.uuidString == periphealUUID.uuidString {
-     myPeripheal = peripheral
-     myPeripheal?.delegate = self
-     manager?.connect(myPeripheal!, options: nil)
-     manager?.stopScan()
-     }
-     }
-     
-     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-     switch central.state {
-     case .poweredOff:
-     
-     print("Bluetooth disattivato")
-     case .poweredOn:
-     let extGPS = localStorage.bool(forKey: "externalGPS")
-     
-     
-     if extGPS {
-     manager?.scanForPeripherals(withServices:[serviceUUID], options: nil)
-     }
-     
-     print("Bluetooth attivo")
-     case .unsupported:
-     
-     print("Bluetooth non è supportato")
-     default:
-     
-     print("Stato sconosciuto")
-     }
-     }
-     
-     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-     peripheral.discoverServices([serviceUUID])
-     print("Connesso a " +  peripheral.name!)
-     
-     
-     }
-     
-     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-     print("Disconnesso da " +  peripheral.name!)
-     self.alertStandard(titolo: "WARNING", testo: "External GNSS Disconnected")
-     myPeripheal = nil
-     myCharacteristic = nil
-     
-     }
-     
-     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-     print(error!)
-     }*/
+        print(peripheral.debugDescription)
+        
+        if peripheral.identifier.uuidString == periphealUUID.uuidString {
+            myPeripheal = peripheral
+            myPeripheal?.delegate = self
+            manager?.connect(myPeripheal!, options: nil)
+            manager?.stopScan()
+        }
+    }
+    
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        switch central.state {
+        case .poweredOff:
+            
+            print("Bluetooth disattivato")
+        case .poweredOn:
+            let extGPS = localStorage.bool(forKey: "externalGPS")
+            
+            
+            if extGPS {
+                manager?.scanForPeripherals(withServices:[serviceUUID], options: nil)
+            }
+            
+            print("Bluetooth attivo")
+        case .unsupported:
+           
+            print("Bluetooth non è supportato")
+        default:
+            
+            print("Stato sconosciuto")
+        }
+    }
+    
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        peripheral.discoverServices([serviceUUID])
+        print("Connesso a " +  peripheral.name!)
+       
+    
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        print("Disconnesso da " +  peripheral.name!)
+        self.alertStandard(titolo: "WARNING", testo: "External GNSS Disconnected")
+        myPeripheal = nil
+        myCharacteristic = nil
+    
+    }
+    
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        print(error!)
+    }*/
     
     func setupLivePreview() {
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -397,7 +386,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         default:
             print("Unknown UI orientation for setting videoPreviewLayer.")
         }
-        
+    
     }
     
     private func adjustStillImageOutput() {
@@ -471,10 +460,10 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         let image = UIImage(data: imageData)
         print("Size of captured image: " + image!.size.debugDescription)
         print("Image orientation: \(image!.imageOrientation.rawValue)")
-        
+                
         let userID = String(UserStorage.userID)
         let df = MyDateFormatter.yyyyMMdd
-        
+
         let persistPhoto = PersistPhoto(context: manageObjectContext)
         
         persistPhoto.userid = Int64(userID) ?? 0
@@ -532,16 +521,10 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         } catch {
             print("Could not save data: \(error.localizedDescription)")
         }
-        
-        if isPresented {
-            guard let photoDetailsVC = UIStoryboard(name: "Photo", bundle: nil).instantiateViewController(identifier: "PhotoDetailViewController") as? PhotoDetailViewController else { return  }
-            photoDetailsVC.isPresented = isPresented
-            photoDetailsVC.persistPhoto = persistPhoto
-            photoDetailsVC.manageObjectContext = manageObjectContext
-            self.navigationController?.pushViewController(photoDetailsVC, animated: true)
+        if taskid == -1 {
+            performSegue(withIdentifier: "unwindToTableView", sender: self)
         } else {
-            delegate?.didCompletePhoto()
-            navigationController?.popViewController(animated: true)
+            performSegue(withIdentifier: "unwindToTaskView", sender: self)
         }
     }
     
@@ -600,7 +583,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         warningMessages[type] = message
         redrawWarninMsg()
     }
-    
+
     private func removeInfoMsg(type: MsgInfo) {
         infoMessages[type] = nil
         redrawInfoMsg()
@@ -631,104 +614,88 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate {
         }
         label.text = text
     }
-    
+
     /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
 }
 
 // Created for the GSA in 2020-2021. Project management: SpaceTec Partners, software development: www.foxcom.eu
 
 
 /*extension CameraViewController: CBPeripheralDelegate {
- func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
- guard let services = peripheral.services else { return }
- 
- for service in services {
- peripheral.discoverCharacteristics(nil, for: service)
- 
- 
- }
- 
- }
- 
- 
- 
- func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
- print(characteristic.debugDescription)
- 
- //NO
- }
- 
- func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
- //print(characteristic.debugDescription)
- 
- if characteristic == myCharacteristic {
- //print("update sfrbx")
- //self.addSat(characteristic: characteristic)
- }
- 
- if characteristic == navCharacteristic {
- //self.getNavSat(characteristic: characteristic)
- }
- 
- if characteristic == pvtCharacteristic {
- self.getNavPvt(characteristic: characteristic)
- }
- 
- if characteristic == telCharacteristic {
- //self.getTelemetry(characteristic: characteristic)
- }
- }
- 
- func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
- 
- //NO
- }
- 
- 
- 
- func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
- print(characteristic.debugDescription)
- }
- 
- 
- func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
- guard let characteristics = service.characteristics else { return }
- myCharacteristic = characteristics[0]
- telCharacteristic = characteristics[1]
- navCharacteristic = characteristics[2]
- pvtCharacteristic = characteristics[3]
- 
- myPeripheal?.setNotifyValue(true, for: myCharacteristic!)
- myPeripheal?.setNotifyValue(true, for: telCharacteristic!)
- myPeripheal?.setNotifyValue(true, for: navCharacteristic!)
- myPeripheal?.setNotifyValue(true, for: pvtCharacteristic!)
- 
- 
- }
- }*/
-
-
-
-extension CameraViewController {
-    
-    func setUpNavigation() {
-        let image = UIImage(named: "cross")
-        let crossBarButton = UIBarButtonItem(image: image, style: .plain, target: self, action:  #selector(didTapCrossButton))
-        crossBarButton.tintColor = .white
-        navigationItem.rightBarButtonItem = crossBarButton
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        guard let services = peripheral.services else { return }
+        
+        for service in services {
+            peripheral.discoverCharacteristics(nil, for: service)
+            
+            
+        }
+        
     }
     
-    @objc
-    func didTapCrossButton(sender: UIBarButtonItem) {
-        self.dismiss(animated: true)
+    
+    
+    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+        print(characteristic.debugDescription)
+        
+        //NO
     }
-}
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        //print(characteristic.debugDescription)
+        
+        if characteristic == myCharacteristic {
+            //print("update sfrbx")
+            //self.addSat(characteristic: characteristic)
+        }
+        
+        if characteristic == navCharacteristic {
+            //self.getNavSat(characteristic: characteristic)
+        }
+        
+        if characteristic == pvtCharacteristic {
+            self.getNavPvt(characteristic: characteristic)
+        }
+        
+        if characteristic == telCharacteristic {
+            //self.getTelemetry(characteristic: characteristic)
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
+        
+       //NO
+    }
+    
+    
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+        print(characteristic.debugDescription)
+    }
+   
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        guard let characteristics = service.characteristics else { return }
+        myCharacteristic = characteristics[0]
+        telCharacteristic = characteristics[1]
+        navCharacteristic = characteristics[2]
+        pvtCharacteristic = characteristics[3]
+        
+        myPeripheal?.setNotifyValue(true, for: myCharacteristic!)
+        myPeripheal?.setNotifyValue(true, for: telCharacteristic!)
+        myPeripheal?.setNotifyValue(true, for: navCharacteristic!)
+        myPeripheal?.setNotifyValue(true, for: pvtCharacteristic!)
+
+
+    }
+}*/
+

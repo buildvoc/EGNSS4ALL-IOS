@@ -10,7 +10,6 @@ import CoreLocation
 import CoreData
 import CoreBluetooth
 import Lottie
-import SideMenuSwift
 
 var myPeripheal:CBPeripheral?
 var myCharacteristic:CBCharacteristic?
@@ -61,8 +60,6 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         let bounds = CGRect(x: 0, y: 0, width: animView.frame.width, height: animView.frame.height)
         
        
@@ -124,23 +121,65 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
-        tabBarController?.tabBar.isHidden = true
-        navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.tintColor = .white
+        
         updateLoggedUser()
         updateBasicInfo()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
-        tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
         checkLoggedUser()
+        print(self.navigationController?.viewControllers.count)
+        if (self.navigationController?.viewControllers.count)! > 1 {
+            self.navigationController?.viewControllers.remove(at: 1)
+        }
+        
+    }
+    
+    //MARK: - IBActions -
+    
+    @IBAction func unwindToMainView(sender: UIStoryboardSegue) {
+        updateLoggedUser()
+        print("unwind")
+    }
+    
+    @IBAction func photosButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowPhotos", sender: self)
+    }
+    
+    @IBAction func tasksButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowTasks", sender: self)
+    }
+    
+    @IBAction func mapButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowMap", sender: self)
     }
     
     
+    @IBAction func skyMapButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowSkyMap", sender: self)
+    }
+    
+    @IBAction func settingsButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowSettings", sender: self)
+    }
+    @IBAction func aboutButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ShowAbout", sender: self)
+    }
+    
+    @IBAction func logout(_ sender: UIBarButtonItem) {
+        UserStorage.removeObject(key: UserStorage.Key.userID)
+        UserStorage.removeObject(key: UserStorage.Key.login)
+        UserStorage.removeObject(key: UserStorage.Key.userName)
+        UserStorage.removeObject(key: UserStorage.Key.userSurname)
+        
+        //updateLoggedUser()
+        
+        checkLoggedUser()
+    }
     
     //MARK: - Other Helpers -
     
@@ -466,11 +505,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         let isLogged = UserStorage.exists(key: UserStorage.Key.userID)
         
         if isLogged != true {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if let loginNavCon = storyboard.instantiateViewController(withIdentifier: "LoginNavigationController") as? UINavigationController {
-                loginNavCon.modalPresentationStyle = .fullScreen
-                present(loginNavCon, animated: true)
-            }
+            performSegue(withIdentifier: "ShowLoginScreen", sender: self)
         }
     }
     

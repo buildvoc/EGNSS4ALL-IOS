@@ -16,7 +16,6 @@ class PhotoDetailViewController: UIViewController {
     
     let localStorage = UserDefaults.standard
     var imageMap = UIImageView()
-    var isPresented: Bool = false
 
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var sendButton: UIBarButtonItem!
@@ -208,11 +207,6 @@ class PhotoDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if isPresented {
-            let navAppearance = UINavigationBarAppearance()
-            navAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-            navigationItem.standardAppearance = navAppearance
-        }
         mapScreenShot { image in
             if let mapImage = image {
                

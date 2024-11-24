@@ -143,7 +143,7 @@ class SkyViewVC: UIViewController, CLLocationManagerDelegate, UIPickerViewDelega
     }
     
     override func viewDidLoad() {
-        addMenuButton()
+        
         pickerConst.alpha = 0
         selectBtn.alpha = 0
         self.pickerConst.delegate = self
@@ -171,10 +171,6 @@ class SkyViewVC: UIViewController, CLLocationManagerDelegate, UIPickerViewDelega
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
-    }
 
     /*
     // MARK: - Navigation
