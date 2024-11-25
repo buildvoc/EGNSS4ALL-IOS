@@ -67,8 +67,6 @@ class PDFCreator: NSObject {
             let device = UIDevice.current
             let modelName = "\(PDFCreator.unameMachine)"+" (\(device.systemName) \(device.systemVersion))"
 
-            
-           
             let image = addImage(image: image, pageRect: pageRect, imageTop: 0, imageX: pageRect.width/4, maxHeight: pageRect.height/2+150, maxWidth: pageRect.width/2+150)
             let imageMap = addImage(image: map, pageRect: pageRect, imageTop: image, imageX: 0, maxHeight: 245, maxWidth: 300)
             
@@ -113,10 +111,7 @@ class PDFCreator: NSObject {
             }
             
             let title6Prop = addTextRight(text: validTxt, pageRect: pageRect, textTop: title5Prop+separator, textX: pageRect.width-40, textAttributes: propAttribute)
-            
-            
-            
-           
+ 
         }
         return data
     

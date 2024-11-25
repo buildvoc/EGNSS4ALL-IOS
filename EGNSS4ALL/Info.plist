@@ -23,15 +23,17 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Capture GPS Data for localize photo</string>
+	<string>Our app uses bluetooth to capture GPS Data for localise photo</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Capture GPS Data for localize photo</string>
+	<string>Our app uses bluetooth to capture GPS Data for localise photo</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Allows the user to take a picture of the required land lot.</string>
+	<string>Need to access your camera to capture a picture.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>To taking geotagged photos you must enable location services.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To taking geotagged photos you must enable location services.</string>
+	<string>To taking geo-tagged photos you must enable location services.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to your photo library to let you choose and upload photos</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

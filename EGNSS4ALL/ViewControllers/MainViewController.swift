@@ -16,6 +16,10 @@ var myCharacteristic:CBCharacteristic?
 var telCharacteristic:CBCharacteristic?
 var navCharacteristic:CBCharacteristic?
 var pvtCharacteristic:CBCharacteristic?
+var gnssBleCharacteristic:CBCharacteristic?
+
+
+
 var manager:CBCentralManager?
 var peripherals:[CBPeripheral] = []
 
@@ -24,11 +28,25 @@ var satelliti = [Satellite]()
 var navPVTData = [String: Any]()
 var telemetryData = [String: Any]()
 var sfrbxArray: NSMutableArray = []
+var gpgaData : NMEASentenceParser.GPGGA?
+var gpgsaData : NMEASentenceParser.GPGSA?
+var gpgsvData : NMEASentenceParser.GPGSV?
+
+let nmeaRegex = try! NSRegularExpression(pattern:
+                                            "(\\$(G[ABILNPQ][A-Z]{3}(?:,(-?\\d*(\\.\\d+)?(?:\\.\\d+)?|[a-zA-Z]+|))+\\w*\\*[\\dA-Fa-f]{2})$)"
+                                         , options: [.caseInsensitive])
+
 
 let sppServiceUUID = CBUUID(string: "00001101-0000-1000-8000-00805F9B34FB")
 let serviceUUID = CBUUID(string: "4fafc201-1fb5-459e-8fcc-c5c9c331914b")
 var periphealUUID = CBUUID(string: "A5A4976E-D2C6-46BA-98C9-2878B849C311")
 let animationView = LottieAnimationView(name: "egnss4all_anitest")
+
+let gnssBLEServiceUUID = CBUUID(string: "0000FFF0-0000-1000-8000-00805F9B34FB")
+let gnssBLECharacteristicUUID = CBUUID(string: "0000FFF1-0000-1000-8000-00805F9B34FB")
+
+var mainGNSSString = ""
+
 
 class MainViewController: UIViewController, CBCentralManagerDelegate {
     
@@ -60,16 +78,14 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let bounds = CGRect(x: 0, y: 0, width: animView.frame.width, height: animView.frame.height)
-        
-       
+        // let bounds = CGRect(x: 0, y: 0, width: animView.frame.width, height: animView.frame.height)
         
         animationView.frame = CGRect(x: 0, y: 0, width: self.view.layer.frame.width, height: self.view.layer.frame.height)
-           
+        
         //animationView.center = self.container.center
         animationView.contentMode = .scaleAspectFill
-                      
-                                    
+        
+        
         animView.insertSubview(animationView, at: 0)
         
         animationView.play(fromProgress: 0, toProgress: 1, loopMode: .loop, completion: nil)
@@ -128,6 +144,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.all)
+        disConnectBLEDevice()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -136,8 +153,15 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         if (self.navigationController?.viewControllers.count)! > 1 {
             self.navigationController?.viewControllers.remove(at: 1)
         }
-        
     }
+    
+    //discConnectBLEDevice
+    func disConnectBLEDevice()  {
+        if myPeripheal != nil {
+            manager?.cancelPeripheralConnection(myPeripheal!)
+        }
+    }
+    
     
     //MARK: - IBActions -
     
@@ -166,7 +190,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     @IBAction func settingsButton(_ sender: UIButton) {
         performSegue(withIdentifier: "ShowSettings", sender: self)
     }
-    @IBAction func aboutButton(_ sender: UIButton) {
+    @IBAction func aboutButton(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "ShowAbout", sender: self)
     }
     
@@ -188,7 +212,9 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         let str = "getNavPvt"
         
         let data = Data(str.utf8)
-        if myPeripheal == nil { return }
+        if myPeripheal == nil {
+            return
+        }
         if pvtCharacteristic == nil { return }
         
         myPeripheal!.writeValue(data, for: pvtCharacteristic!, type: .withResponse)
@@ -196,7 +222,6 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         print(peripheral.debugDescription)
-        
         if peripheral.identifier.uuidString == periphealUUID.uuidString {
             myPeripheal = peripheral
             myPeripheal?.delegate = self
@@ -208,14 +233,12 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
         case .poweredOff:
-            
             print("Bluetooth disattivato")
         case .poweredOn:
             let extGPS = localStorage.bool(forKey: "externalGPS")
-            
-            
             if extGPS {
-                manager?.scanForPeripherals(withServices:nil, options: nil)
+                //Uncomment below line if wnats to Enable connection on home screen
+                // manager?.scanForPeripherals(withServices:nil, options: nil)
             }
             
             print("Bluetooth attivo")
@@ -229,9 +252,8 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        peripheral.discoverServices([serviceUUID])
+        peripheral.discoverServices([gnssBLEServiceUUID])
         print("Connesso a " +  peripheral.name!)
-        
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
@@ -239,7 +261,6 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         self.alertStandard(titolo: "WARNING", testo: "External GNSS Disconnected")
         myPeripheal = nil
         myCharacteristic = nil
-        
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
@@ -270,13 +291,9 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                             let actSat = satelliti.first(where: { $0.gnssId == sat.gnssId && $0.id == sat.id })
                             if  actSat != nil {
                                 if (Int(Date().timeIntervalSince1970) > actSat!.timestamp! + 310 || actSat?.stato == false)  {
-                                    
                                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
-                                        
                                         let uuidSmartphone = UIDevice.current.identifierForVendor!.uuidString
                                         let json = ["uuid": uuidSmartphone, "uuidExt": "DVLGNSS2A001", "svId": sat.id!, "gnssId": 2, "source": "client", "numWords": 8, "version": sat.versione, "iTow": sat.iTow!, "timestamp": sat.timestamp, "manufacturer": sat.manufacturer!, "model": sat.model, "dwrd0": sat.dwrd![0], "dwrd1": sat.dwrd![1], "dwrd2": sat.dwrd![2], "dwrd3": sat.dwrd![3], "dwrd4": sat.dwrd![4], "dwrd5": sat.dwrd![5], "dwrd6": sat.dwrd![6], "dwrd7": sat.dwrd![7]] as [String : Any]
-                                        
-                                        
                                         if NetworkManager.shared.isNetworkAvailable() {
                                             print("Network ok")
                                             if sfrbxArray.count != 0 {
@@ -285,20 +302,13 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                                             self.validate(sat: sat)
                                         } else {
                                             print("Network not ok, save sfrbx")
-                                            
                                             sfrbxArray.add(json)
-                                            
                                             return
-                                            
                                         }
-                                        
-                                        
                                     })
                                 }
                             } else {
                                 satelliti.append(sat)
-                                
-                                
                                 
                                 if sat.dwrd![5] as! Int > 42 {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
@@ -310,9 +320,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                                             self.validate(sat: sat)
                                         } else {
                                             print("Network not ok, save sfrbx")
-                                            
                                             sfrbxArray.add(json)
-                                            
                                             return
                                             
                                         }
@@ -322,9 +330,6 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                             }
                             
                         }
-                        
-                        
-                        
                         
                     }
                     
@@ -368,13 +373,11 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
             
             DispatchQueue.main.async(execute: {
                 if let jsonDictionary = NetworkService.parseJSONFromData(data as Data) {
-                    
                     let dictionary = jsonDictionary["result"]
-                    let satId: Int = dictionary!["svId"] as? Int ?? 0
+                    let _: Int = dictionary!["svId"] as? Int ?? 0
                     let esitoValidazione: Bool = dictionary!["valid"] as! Bool
                     let osnmaStr = dictionary!["osnma"] as! String
                     let validTimeStamp = dictionary!["timestamp"] as? Int ?? 0
-                    
                 }
             })
             
@@ -481,23 +484,13 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                     // make sure this JSON is in the format we expect
                     if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                         // try to read out a string array
-                        
-                        
-                        
                         navPVTData = json
-                        
-                        
                     }
-                    
                 } catch let error as NSError {
                     //print("qui")
                     //print("Failed to load: \(error.localizedDescription)")
-                    
                 }
-                
-                
             }
-            
         }
     }
     
@@ -596,11 +589,11 @@ extension MainViewController: CBPeripheralDelegate {
         guard let services = peripheral.services else { return }
         
         for service in services {
-            peripheral.discoverCharacteristics(nil, for: service)
-            
-            
+            if(service.uuid == gnssBLEServiceUUID)
+            {
+                peripheral.discoverCharacteristics([gnssBLECharacteristicUUID], for: service)
+            }
         }
-        
     }
     
     
@@ -611,8 +604,29 @@ extension MainViewController: CBPeripheralDelegate {
         //NO
     }
     
+    
+    
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         //print(characteristic.debugDescription)
+        
+        if(characteristic == gnssBleCharacteristic){
+            
+            let str = String(decoding: characteristic.value!, as: UTF8.self)
+            let data = Data(str.utf8)
+            
+            
+            if(str.contains("*")){
+                let finalStr =  mainGNSSString + str
+                mainGNSSString = ""
+                
+                self.showToast(message: "NEMA : \(finalStr) ", font: .systemFont(ofSize: 12.0))
+            }
+            else {
+                mainGNSSString = str
+            }
+            
+            return
+        }
         
         if characteristic == myCharacteristic {
             //print("update sfrbx")
@@ -634,11 +648,8 @@ extension MainViewController: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
-        
         //NO
     }
-    
-    
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
         print(characteristic.debugDescription)
@@ -647,15 +658,26 @@ extension MainViewController: CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
-        myCharacteristic = characteristics[0]
-        telCharacteristic = characteristics[1]
-        navCharacteristic = characteristics[2]
-        pvtCharacteristic = characteristics[3]
         
-        myPeripheal?.setNotifyValue(true, for: myCharacteristic!)
-        myPeripheal?.setNotifyValue(true, for: telCharacteristic!)
-        myPeripheal?.setNotifyValue(true, for: navCharacteristic!)
-        myPeripheal?.setNotifyValue(true, for: pvtCharacteristic!)
+        for characteristic in characteristics {
+            if(characteristic.uuid == gnssBLECharacteristicUUID)
+            {
+                gnssBleCharacteristic = characteristic
+                myPeripheal?.setNotifyValue(true, for: gnssBleCharacteristic!)
+            }
+            
+        }
+        
+        
+        //        myCharacteristic = characteristics[0]
+        //        telCharacteristic = characteristics[1]
+        //        navCharacteristic = characteristics[2]
+        //        pvtCharacteristic = characteristics[3]
+        //
+        //        myPeripheal?.setNotifyValue(true, for: myCharacteristic!)
+        //        myPeripheal?.setNotifyValue(true, for: telCharacteristic!)
+        //        myPeripheal?.setNotifyValue(true, for: navCharacteristic!)
+        //        myPeripheal?.setNotifyValue(true, for: pvtCharacteristic!)
         
         
     }
@@ -703,6 +725,26 @@ extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location services are not enabled")
     }
+    
+    
+    func showToast(message : String, font: UIFont) {
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 65, y: self.view.frame.size.height-100, width: 200, height: 35))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.textAlignment = .center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
+    
 }
 
 

@@ -9,7 +9,6 @@ class PhotoMKAnnotationView: MKAnnotationView {
             guard let annotation = newValue as? PhotoMKAnnotation else {
                 return
             }
-            
             canShowCallout = true
             var photo: UIImage? = nil
             if (annotation.persistPhoto.photo != nil) {
@@ -31,7 +30,6 @@ class PhotoMKAnnotationView: MKAnnotationView {
             detailButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
             detailButton.addTarget(self, action: #selector(gotToDetail), for: .touchUpInside)
             rightCalloutAccessoryView = detailButton
-            
         }
     }
     
@@ -64,8 +62,8 @@ class PhotoMKAnnotationView: MKAnnotationView {
             return
         }
         detail.persistPhoto = annotation.persistPhoto
-        parent.present(detail, animated: true)
-        
+        parent.navigationController?.pushViewController(detail, animated: true)
+       // parent.present(detail, animated: true)
     }
 
 }

@@ -4,13 +4,11 @@ import CoreData
 class PathTrackTableViewController: UITableViewController, UIDocumentPickerDelegate {
     
     let db = DB()
-    
     var paths: [PTPath] = []
     var selectedPath: PTPath?
     let sendDQ = DispatchQueue(label: "sendDQ")
     let sendDB = DB()
     let c = DB().privateMOC
-    
     let localStorage = UserDefaults.standard
     
     @IBOutlet weak var editButton: UIBarButtonItem!
@@ -18,9 +16,7 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.tableFooterView = UIView()
-        
         loadPaths()
     }
     
@@ -29,13 +25,11 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return paths.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let path = paths[indexPath.row]
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: PathTrackTableViewCell.indentifier, for: indexPath) as! PathTrackTableViewCell
         cell.nameLabel.text = path.name
         cell.startLabel.text = Util.prettyDate(date: path.start!) + " " + Util.prettyTime(date: path.start!)
@@ -45,7 +39,6 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
         cell.selectionStyle = .none
         cell.kmlBtn.addTarget(self, action: #selector(kmlBtnTapped(_:)), for: .touchUpInside)
         cell.backgroundColor = .clear
-        
         return cell
     }
     
@@ -65,7 +58,6 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedPath = paths[indexPath.row]
         performSegue(withIdentifier: "ShowPathInMap", sender: self)
-        
     }
     
     @objc func kmlBtnTapped(_ sender: UIButton) {
@@ -81,7 +73,6 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
         if !self.genPathKML(ptPath: selectedPath!, dispatchGroup: dispatchGroup) {
             dispatchGroup.leave()
         }
-        
     }
     
     @IBAction func editTable(_ sender: UIBarButtonItem) {
@@ -98,7 +89,6 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
     
     @IBAction func sendAllAction(_ sender: UIBarButtonItem) {
         let pathsToSend = self.pathToSend(context: db.mainMOC)
-        
         let toUpload = pathsToSend.count > 0
         var msg = "\(pathsToSend.count) Paths not uploaded."
         if (msg == "1 Paths not uploaded.") {
@@ -123,7 +113,6 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
             DispatchQueue.main.sync {
                 self.present(waitAlert, animated: true, completion: nil)
             }
-            
             self.sendDB.privateMOC.reset()
             self.sendDB.privateMOC.retainsRegisteredObjects = true
             let pathsToSend = self.pathToSend(context: self.sendDB.privateMOC)
