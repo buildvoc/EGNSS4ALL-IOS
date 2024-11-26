@@ -355,7 +355,8 @@ extension PhotosTableViewController {
             // Prepare URL Request Object
             var request = URLRequest(url: requestUrl)
             request.httpMethod = "POST"
-            
+                    request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+
             // HTTP Request Parameters which will be sent in HTTP Request Body
             let postString = "user_id="+userID
             // Set HTTP Request Body
@@ -405,7 +406,9 @@ extension PhotosTableViewController {
             // Prepare URL Request Object
             var request = URLRequest(url: requestUrl)
             request.httpMethod = "POST"
-            
+                        // Set Authorization Header with Bearer Token
+          request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+
             // HTTP Request Parameters which will be sent in HTTP Request Body
             let postString = "photo_id="+idPhoto
             // Set HTTP Request Body
@@ -458,9 +461,9 @@ extension PhotosTableViewController {
             persistPhoto.userid = Int64(userID) ?? 0
             persistPhoto.id = idPhoto
             persistPhoto.note = answer.photo?.note
-            persistPhoto.lat = Double(answer.photo?.lat ?? "0.0") ?? 0.0
-            persistPhoto.lng = Double(answer.photo?.lng ?? "0.0") ?? 0.0
-            persistPhoto.photoHeading = Double(answer.photo?.photo_heading ?? "") ?? 0.0
+            persistPhoto.lat = Double(answer.photo?.lat ?? 0) ?? 0.0
+            persistPhoto.lng = Double(answer.photo?.lng ?? 0) ?? 0.0
+            persistPhoto.photoHeading = Double(answer.photo?.photo_heading ?? 0) ?? 0.0
             persistPhoto.taskid = -1
             persistPhoto.digest = answer.photo?.digest
             
@@ -502,6 +505,7 @@ extension PhotosTableViewController {
     func processResponseData(data:String) {
         
         let jsonData = data.data(using: .utf8)!
+        
         let answer = try! JSONDecoder().decode(Answer.self, from: jsonData)
         
         if answer.status == "ok" {
@@ -518,9 +522,10 @@ extension PhotosTableViewController {
                 
                 
                 for i in 0...answer.photos_ids.count-1 {
-                    if !existingIds.contains(answer.photos_ids[i]) {
+                    if !existingIds.contains(String(answer.photos_ids[i])) {
                         print("L'id \(answer.photos_ids[i]) non esiste nel db")
-                        self.photoQueue.append(answer.photos_ids[i])
+                        self.photoQueue.append(String(answer.photos_ids[i])
+                        )
                         //self.downloadPhoto(idPhoto: answer.photos_ids[i])
                         //answer.photos_ids.count-1
                         print(self.photoQueue)

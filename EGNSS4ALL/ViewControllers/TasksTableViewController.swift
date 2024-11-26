@@ -198,12 +198,15 @@ class TasksTableViewController: UITableViewController {
         let urlStr = Configuration.baseURLString + ApiEndPoint.tasks
         print("------------------------------------------")
         print(urlStr)
-        print("------------------------------------------")
+        print("------------------------------------------ ")
+        
+
         let url = URL(string: urlStr)
         guard let requestUrl = url else { fatalError() }
         // Prepare URL Request Object
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
+            // Set Authorization Header with Bearer Token
         request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
 
         // HTTP Request Parameters which will be sent in HTTP Request Body
@@ -252,7 +255,7 @@ class TasksTableViewController: UITableViewController {
             for task in answer.tasks ?? [] {
                 if task.status == "new" || task.status == "data provided" || task.status == "data checked" || task.status == "open" {
                     let persistTaskRequest: NSFetchRequest<PersistTask> = PersistTask.fetchRequest()
-                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@", String(userID), String(task.id))
+                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@", userID, String(task.id))
                     var perTasks = [PersistTask]()
                     do {
                         perTasks = try manageObjectContext.fetch(persistTaskRequest)
@@ -339,6 +342,9 @@ class TasksTableViewController: UITableViewController {
         guard let requestUrl = url else { return }
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
+                    // Set Authorization Header with Bearer Token
+        request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+
         let postString = "photo_id=" + String(photoID)
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -361,7 +367,7 @@ class TasksTableViewController: UITableViewController {
             let userId = String(UserStorage.userID)
             
             let persistPhotoRequest: NSFetchRequest<PersistPhoto> = PersistPhoto.fetchRequest()
-            persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %@ AND digest == %@ AND id == %@", String(UserStorage.userID), taskId, photo.digest,photoID)
+            persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %@ AND digest == %@ AND id == %@", String(UserStorage.userID), String(taskId), photo.digest,String(photoID))
             
             var persistPhoto = PersistPhoto(context: self.manageObjectContext)
             
@@ -374,9 +380,9 @@ class TasksTableViewController: UITableViewController {
                 persistPhoto.userid = Int64(userId) ?? 0
                 persistPhoto.taskid = Int64(taskId) ?? 0
                 persistPhoto.note = photo.note
-                persistPhoto.lat = Double(photo.lat ?? "") ?? 0
-                persistPhoto.lng = Double(photo.lng ?? "") ?? 0
-                persistPhoto.photoHeading = Double(photo.photo_heading ?? "") ?? 0
+                persistPhoto.lat = Double(photo.lat ?? 0) ?? 0
+                persistPhoto.lng = Double(photo.lng ?? 0) ?? 0
+                persistPhoto.photoHeading = Double(photo.photo_heading ?? 0) ?? 0
                 persistPhoto.digest = photo.digest
                 persistPhoto.created = MyDateFormatter.yyyyMMdd.date(from: photo.created)
                 if let base64Photo = photo.photo {
