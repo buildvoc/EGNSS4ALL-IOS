@@ -285,7 +285,7 @@ class TasksTableViewController: UITableViewController {
                 if task.status == "returned" {
                     
                     let persistTaskRequest: NSFetchRequest<PersistTask> = PersistTask.fetchRequest()
-                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@ and status <> %@", userID, task.id, "returned")
+                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@ and status <> %@", userID, String(task.id), "returned")
                     
                     var perTasks = [PersistTask]()
                     do {
