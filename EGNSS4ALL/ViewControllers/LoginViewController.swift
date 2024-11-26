@@ -112,7 +112,6 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         
         struct Answer_user: Decodable {
             var id: Int
-            var id: Int
             var name: String
             var surname: String
         }
