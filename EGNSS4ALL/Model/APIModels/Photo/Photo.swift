@@ -9,8 +9,8 @@ import Foundation
 
 struct Photo: Decodable {
     var note: String?// – photo note
-    var lat: Double?// – photo lattitude
-    var lng: Double?// – photo longitude
+    var lat: String?// – photo lattitude
+    var lng: String?// – photo longitude
     var photo_heading: Float?// – heading in degrees
     var created: String
     var photo: String?// – base64 encoded photo
