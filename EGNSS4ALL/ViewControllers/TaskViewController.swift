@@ -429,6 +429,7 @@ class TaskViewController: UIViewController {
         struct Answer: Decodable {
             var status: String
             var error_msg: String?
+            var photo_id:Int?
         }
 
         let jsonData = data.data(using: .utf8)!
@@ -436,6 +437,8 @@ class TaskViewController: UIViewController {
         
         if answer.status == "ok" {
             photosToSend[0].sended = true
+            persistTask.photoCount = String(Int(persistTask.photoCount!)!+1)
+            photosToSend[0].id = String(answer.photo_id!)
             do {
                 try self.manageObjectContext.save()
             } catch {
