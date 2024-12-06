@@ -10,5 +10,5 @@ import UIKit
 struct Answer: Decodable {
     var status: String
     var error_msg: String?
-    var photos_ids: [String]
+    var photos_ids: [Int]
 }

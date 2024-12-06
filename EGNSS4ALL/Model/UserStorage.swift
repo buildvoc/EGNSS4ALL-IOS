@@ -7,6 +7,8 @@ class UserStorage: PersistStorage {
         case userName
         case userSurname
         case gpsCapable
+        case token
+
     }
     
     typealias KeyEnum = Key
@@ -27,6 +29,9 @@ class UserStorage: PersistStorage {
     
     @item(key: Key.gpsCapable)
     static var gpsCapable: Bool?
+    
+    @item(key: Key.token)
+    static var token: String?
     
 }
 

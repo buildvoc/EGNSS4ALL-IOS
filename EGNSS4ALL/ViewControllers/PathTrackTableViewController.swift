@@ -307,10 +307,12 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
             var lat: Double
             var lng: Double
             var created: String
+            var altitude: Double
+            var accuracy : Double
         }
         var rPoints = [RPoint]()
         for p in ptPoints {
-            rPoints.append(RPoint(lat: p.lat, lng: p.lng, created: df.string(from: p.created!)))
+            rPoints.append(RPoint(lat: p.lat, lng: p.lng, created: df.string(from: p.created!),altitude: p.altitude,accuracy: p.accuracy))
         }
         let pointData: JSONEncoder.Output
         do {
@@ -339,6 +341,8 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
         guard let requestUrl = url else { fatalError() }
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
+                            request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+
         let postString = Util.encodeParameters(params: params)
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in

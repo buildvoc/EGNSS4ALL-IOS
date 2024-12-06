@@ -106,10 +106,12 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             var status: String
             var error_msg: String?
             var user: Answer_user?
+            var token: String?
+
         }
         
         struct Answer_user: Decodable {
-            var id: String
+            var id: Int
             var name: String
             var surname: String
         }
@@ -117,11 +119,13 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         let jsonData = data.data(using: .utf8)!
         let answer = try! JSONDecoder().decode(Answer.self, from: jsonData)
         
-        if answer.status == "ok" {
-            UserStorage.userID = Int((answer.user?.id)!)!
+        if answer.status == "ok",let user = answer.user {
+            UserStorage.userID = user.id
             UserStorage.login = loginTextField.text ?? ""
             UserStorage.userName = (answer.user?.name)!
-            UserStorage.userSurname = (answer.user?.surname)!       
+            UserStorage.userSurname = (answer.user?.surname)!
+            UserStorage.token = (answer.token)
+
                 
             performSegue(withIdentifier: "unwindToMainView", sender: self)
         } else {
