@@ -307,10 +307,12 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
             var lat: Double
             var lng: Double
             var created: String
+            var altitude: Double
+            var accuracy : Double
         }
         var rPoints = [RPoint]()
         for p in ptPoints {
-            rPoints.append(RPoint(lat: p.lat, lng: p.lng, created: df.string(from: p.created!)))
+            rPoints.append(RPoint(lat: p.lat, lng: p.lng, created: df.string(from: p.created!),altitude: p.altitude,accuracy: p.accuracy))
         }
         let pointData: JSONEncoder.Output
         do {
