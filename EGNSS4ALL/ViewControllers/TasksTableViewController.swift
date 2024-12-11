@@ -105,7 +105,15 @@ class TasksTableViewController: UITableViewController {
         }
         
         if task.status == "data checked" {
-            cell.statusImage.image = UIImage(named: "green_circle")
+         
+            if(task.flag_invalid=="1")
+            {
+                cell.statusImage.image =   UIImage(named: "red_circle")
+            }
+            else
+            {
+                cell.statusImage.image =  UIImage(named: "green_circle")
+            }
         }
         else if task.status == "new" {
             cell.statusImage.image = UIImage(named: "status_new")
@@ -255,10 +263,22 @@ class TasksTableViewController: UITableViewController {
             for task in answer.tasks ?? [] {
                 if task.status == "new" || task.status == "data provided" || task.status == "data checked" || task.status == "open" {
                     let persistTaskRequest: NSFetchRequest<PersistTask> = PersistTask.fetchRequest()
-                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@", userID, String(task.id))
+                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@ ", userID, String(task.id))
+                    //Define way to modify data here
                     var perTasks = [PersistTask]()
                     do {
                         perTasks = try manageObjectContext.fetch(persistTaskRequest)
+                        if let persistTask = perTasks.first {
+                            if persistTask.flag_valid != task.flag_valid || persistTask.flag_invalid != task.flag_invalid || persistTask.status != task.status  {
+                            persistTask.flag_valid = task.flag_valid
+                            persistTask.flag_invalid = task.flag_invalid
+                            persistTask.status = task.status
+                            // Save the changes
+                            try manageObjectContext.save()
+                            print("Flags updated for task ID: \(task.id)")
+                        }
+                        }
+
                         
                         if perTasks.count == 0 {
                             print("inserting task")
@@ -266,6 +286,8 @@ class TasksTableViewController: UITableViewController {
                             persistTask.userid = Int64(userID) ?? 0
                             persistTask.id = Int64(task.id) ?? 0
                             persistTask.status = task.status
+                            persistTask.flag_valid = task.flag_valid
+                            persistTask.flag_invalid = task.flag_invalid
                             persistTask.name = task.name
                             persistTask.text = task.text
                             persistTask.photoCount = String(task.number_of_photos)

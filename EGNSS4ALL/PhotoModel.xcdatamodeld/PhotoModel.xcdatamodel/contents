@@ -9,6 +9,7 @@
         <attribute name="centroidLng" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="digest" optional="YES" attributeType="String"/>
+        <attribute name="flag_valid" optional="YES" attributeType="Decimal" defaultValueString="0"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="lng" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -26,6 +27,8 @@
     </entity>
     <entity name="PersistTask" representedClassName="PersistTask" syncable="YES" codeGenerationType="category">
         <attribute name="date_created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="flag_invalid" optional="YES" attributeType="String"/>
+        <attribute name="flag_valid" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="note" optional="YES" attributeType="String"/>
