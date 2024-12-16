@@ -125,7 +125,7 @@ class TasksTableViewController: UITableViewController {
             cell.statusImage.image = UIImage(named: "status_provided")
         }
         
-        var persistPhotos = [PersistPhoto]()
+     /*  var persistPhotos = [PersistPhoto]()
         let persistPhotoRequest: NSFetchRequest<PersistPhoto> = PersistPhoto.fetchRequest()
         persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %i", String(UserStorage.userID), task.id)
         do {
@@ -134,6 +134,7 @@ class TasksTableViewController: UITableViewController {
         catch {
             print("Could not load save data: \(error.localizedDescription)")
         }
+        */
         
         //cell.countLabel.text = String(persistPhotos.count) + " photos"
         
@@ -284,7 +285,7 @@ class TasksTableViewController: UITableViewController {
                             print("inserting task")
                             let persistTask = PersistTask(context: manageObjectContext)
                             persistTask.userid = Int64(userID) ?? 0
-                            persistTask.id = Int64(task.id) ?? 0
+                            persistTask.id = Int64(task.id)
                             persistTask.status = task.status
                             persistTask.flag_valid = task.flag_valid
                             persistTask.flag_invalid = task.flag_invalid
@@ -400,11 +401,11 @@ class TasksTableViewController: UITableViewController {
                 
                 persistPhoto.id = String(photoID)
                 persistPhoto.userid = Int64(userId) ?? 0
-                persistPhoto.taskid = Int64(taskId) ?? 0
+                persistPhoto.taskid = Int64(taskId)
                 persistPhoto.note = photo.note
                 persistPhoto.lat = Double(photo.lat ?? "0.0") ?? 0
                 persistPhoto.lng = Double(photo.lng ?? "0.0") ?? 0
-                persistPhoto.photoHeading = Double(photo.photo_heading ?? 0) ?? 0
+                persistPhoto.photoHeading = Double(photo.photo_heading ?? 0)
                 persistPhoto.digest = photo.digest
                 persistPhoto.created = MyDateFormatter.yyyyMMdd.date(from: photo.created)
                 if let base64Photo = photo.photo {

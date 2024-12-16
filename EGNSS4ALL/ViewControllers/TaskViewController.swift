@@ -453,7 +453,7 @@ class TaskViewController: UIViewController {
     }
     
     func sendStatus() {
-        do {
+        
             let statusString = "data provided"
             let noteString = persistTask.note ?? ""
                         
@@ -496,7 +496,7 @@ class TaskViewController: UIViewController {
             }
             task.resume()
             
-        } catch { print(error) }
+    
     }
     
     func processResponseData2(data:String) {

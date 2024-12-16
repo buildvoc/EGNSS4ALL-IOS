@@ -96,12 +96,12 @@ class PDFCreator: NSObject {
             let title3Prop = addTextRight(text: String(shotDate), pageRect: pageRect, textTop: title2Prop+separator, textX: pageRect.width-40, textAttributes: propAttribute)
             let title4Prop = addTextRight(text: String(send), pageRect: pageRect, textTop: title3Prop+separator, textX: pageRect.width-40, textAttributes: propAttribute)
             let title5Prop = addTextRight(text: String(note), pageRect: pageRect, textTop: title4Prop+separator, textX: pageRect.width-40, textAttributes: propAttribute)
-            var sendTxt = ""
+         /*   var sendTxt = ""
             if send {
                 sendTxt = "yes"
             } else {
                 sendTxt = "no"
-            }
+            } */
             
             var validTxt = ""
             if validated {

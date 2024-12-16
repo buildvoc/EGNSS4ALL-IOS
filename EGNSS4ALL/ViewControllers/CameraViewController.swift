@@ -360,7 +360,6 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
                         let pkt = json["pkt"] as! Int
                         if pkt == 2 {
                             let accuracyH = json["accH"] as! Double
-                            let accuracyV = json["accV"] as! Double
                             let latitude = json["latitudine"] as! Double
                             let longitude = json["longitudine"] as! Double
                             let msl = json["msl"] as! Double
@@ -761,7 +760,6 @@ extension CameraViewController: CBPeripheralDelegate {
         
         if characteristic == gnssBleCharacteristic {
             let str = String(decoding: characteristic.value!, as: UTF8.self)
-            let data = Data(str.utf8)
             
             if str.contains("*") {
                 let finalStr = mainGNSSString + str
@@ -790,11 +788,7 @@ extension CameraViewController: CBPeripheralDelegate {
                                 self.photolng = Double(rmc.longitude?.description ?? "0.0") ?? 0.0
                                 self.latitudeLabel.text = rmc.latitude?.description
                                 self.longitudeLabel.text =  rmc.longitude?.description
-                            } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
-                            } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
-                                // Handle GPGSV parsing if necessary
-//                                self.azimuthLabel.text = gsv.azimuth?.description
-                            }
+                            } 
                         }
                     }
                 }

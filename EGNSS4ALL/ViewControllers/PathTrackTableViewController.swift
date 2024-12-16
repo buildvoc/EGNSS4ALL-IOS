@@ -166,14 +166,6 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
         }
         
         let jsonPointsString = String(data: pointData, encoding: .utf8)!
-        let params: [String: String] = [
-            "user_id": String(UserStorage.userID),
-            "name": ptPath.name!,
-            "start": df.string(from: ptPath.start!),
-            "end": df.string(from: ptPath.end!),
-            "area": ptPath.area.description,
-            "points": jsonPointsString
-        ]
         print(jsonPointsString)
         
         
@@ -183,7 +175,6 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
         
         let feature: [String: Any] = ["type": "Feature", "geometry": polygon, "properties": [:]]
         
-        let geojson: [String: Any] = ["type": "FeatureCollection", "features": [feature]]
         
         print(coordinates)
         
@@ -196,7 +187,9 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
                 try kmlData.write(to: fileURL)
                 print("File salvato con successo in \(fileURL.path)")
                 
-                let documentPicker = UIDocumentPickerViewController(url: fileURL, in: .exportToService)
+//              let documentPicker = UIDocumentPickerViewController(url: fileURL, in: .exportToService) depricated code 
+                let documentPicker = UIDocumentPickerViewController(forExporting: [fileURL])
+
                 documentPicker.delegate = self
                 present(documentPicker, animated: true)
             } catch {

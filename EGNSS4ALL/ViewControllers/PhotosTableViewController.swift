@@ -343,7 +343,6 @@ extension PhotosTableViewController {
         
         let userID = String(UserStorage.userID)
         
-        do {
             // Prepare URL
             let urlStr = Configuration.baseURLString + ApiEndPoint.unassigned
             print("------------------------------------------")
@@ -384,9 +383,7 @@ extension PhotosTableViewController {
             }
             task.resume()
             
-        } catch {
-            print(error)
-        }
+      
         
     }
     
@@ -394,7 +391,6 @@ extension PhotosTableViewController {
         
         let userID = String(UserStorage.userID)
         
-        do {
             // Prepare URL
             let urlStr = Configuration.baseURLString + ApiEndPoint.getPhoto
             print("------------------------------------------")
@@ -440,9 +436,7 @@ extension PhotosTableViewController {
             }
             task.resume()
             
-        } catch {
-            print(error)
-        }
+    
         
     }
     
@@ -463,7 +457,7 @@ extension PhotosTableViewController {
             persistPhoto.note = answer.photo?.note
             persistPhoto.lat = Double(answer.photo?.lat ?? "0.0") ?? 0.0
             persistPhoto.lng = Double(answer.photo?.lng ?? "0.0") ?? 0.0
-            persistPhoto.photoHeading = Double(answer.photo?.photo_heading ?? 0) ?? 0.0
+            persistPhoto.photoHeading = Double(answer.photo?.photo_heading ?? 0)
             persistPhoto.taskid = -1
             persistPhoto.digest = answer.photo?.digest
             
