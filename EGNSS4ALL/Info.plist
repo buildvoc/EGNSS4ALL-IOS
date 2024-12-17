@@ -79,5 +79,12 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>IBMPlexSans-SemiBold.ttf</string>
+		<string>IBMPlexSans-Bold.ttf</string>
+		<string>Metropolis-SemiBold.otf</string>
+		<string>Metropolis-Bold.otf</string>
+	</array>
 </dict>
 </plist>
