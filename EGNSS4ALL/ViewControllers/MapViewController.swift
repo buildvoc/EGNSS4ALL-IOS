@@ -220,7 +220,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         let latitude = navPVTData["latitudine"] as? Double ?? 0.000000
         let longitude = navPVTData["longitudine"] as? Double ?? 0.000000
         let accuracyH = navPVTData["accH"] as? Double ?? 0.0
-        let msl = navPVTData["msl"] as? Double ?? 0.0
+        //let msl = navPVTData["msl"] as? Double ?? 0.0
         let siv = navPVTData["siv"] as? Int ?? 0
         let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         //let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))

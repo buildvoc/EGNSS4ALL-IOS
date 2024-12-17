@@ -157,7 +157,7 @@ class PTManager: NSObject, CLLocationManagerDelegate {
                         ptPoint.lat = centroidPointX
                         ptPoint.lng = centroidPointY
                         ptPoint.altitude = newLocation.altitude
-                        ptPoint.accuracy = round((newLocation.horizontalAccuracy ?? 0) * 10) / 10
+                        ptPoint.accuracy = round((newLocation.horizontalAccuracy ) * 10) / 10
 
                         ptPoint.created = newLocation.timestamp
                         ptPoint.path = self.ptPath
@@ -181,7 +181,7 @@ class PTManager: NSObject, CLLocationManagerDelegate {
             ptPoint.lat = newLocation.coordinate.latitude
             ptPoint.lng = newLocation.coordinate.longitude
             ptPoint.altitude = newLocation.altitude
-            ptPoint.accuracy = round((newLocation.horizontalAccuracy ?? 0) * 10) / 10
+            ptPoint.accuracy = round((newLocation.horizontalAccuracy ) * 10) / 10
             ptPoint.created = newLocation.timestamp
             ptPoint.path = self.ptPath
 

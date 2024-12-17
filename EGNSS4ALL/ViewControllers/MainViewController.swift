@@ -149,7 +149,9 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         checkLoggedUser()
-        print(self.navigationController?.viewControllers.count)
+        if let count = self.navigationController?.viewControllers.count {
+            print(count)
+        }
         if (self.navigationController?.viewControllers.count)! > 1 {
             self.navigationController?.viewControllers.remove(at: 1)
         }
@@ -293,7 +295,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                                 if (Int(Date().timeIntervalSince1970) > actSat!.timestamp! + 310 || actSat?.stato == false)  {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                                         let uuidSmartphone = UIDevice.current.identifierForVendor!.uuidString
-                                        let json = ["uuid": uuidSmartphone, "uuidExt": "DVLGNSS2A001", "svId": sat.id!, "gnssId": 2, "source": "client", "numWords": 8, "version": sat.versione, "iTow": sat.iTow!, "timestamp": sat.timestamp, "manufacturer": sat.manufacturer!, "model": sat.model, "dwrd0": sat.dwrd![0], "dwrd1": sat.dwrd![1], "dwrd2": sat.dwrd![2], "dwrd3": sat.dwrd![3], "dwrd4": sat.dwrd![4], "dwrd5": sat.dwrd![5], "dwrd6": sat.dwrd![6], "dwrd7": sat.dwrd![7]] as [String : Any]
+                                        let json = ["uuid": uuidSmartphone, "uuidExt": "DVLGNSS2A001", "svId": sat.id!, "gnssId": 2, "source": "client", "numWords": 8, "version": sat.versione!, "iTow": sat.iTow!, "timestamp": sat.timestamp!, "manufacturer": sat.manufacturer!, "model": sat.model!, "dwrd0": sat.dwrd![0], "dwrd1": sat.dwrd![1], "dwrd2": sat.dwrd![2], "dwrd3": sat.dwrd![3], "dwrd4": sat.dwrd![4], "dwrd5": sat.dwrd![5], "dwrd6": sat.dwrd![6], "dwrd7": sat.dwrd![7]] as [String : Any]
                                         if NetworkManager.shared.isNetworkAvailable() {
                                             print("Network ok")
                                             if sfrbxArray.count != 0 {
@@ -375,9 +377,9 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                 if let jsonDictionary = NetworkService.parseJSONFromData(data as Data) {
                     let dictionary = jsonDictionary["result"]
                     let _: Int = dictionary!["svId"] as? Int ?? 0
-                    let esitoValidazione: Bool = dictionary!["valid"] as! Bool
-                    let osnmaStr = dictionary!["osnma"] as! String
-                    let validTimeStamp = dictionary!["timestamp"] as? Int ?? 0
+                   // let esitoValidazione: Bool = dictionary!["valid"] as! Bool
+                   // let osnmaStr = dictionary!["osnma"] as! String
+                   // let validTimeStamp = dictionary!["timestamp"] as? Int ?? 0
                 }
             })
             
@@ -391,7 +393,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         
         sat.check(state: 2)
         let uuidSmartphone = UIDevice.current.identifierForVendor!.uuidString
-        let json = ["uuid": uuidSmartphone, "uuidExt": "DVLGNSS2A001", "svId": sat.id!, "gnssId": 2, "source": "client", "numWords": 8, "version": sat.versione, "iTow": sat.iTow!, "timestamp": sat.timestamp, "manufacturer": sat.manufacturer!, "model": sat.model, "dwrd0": sat.dwrd![0], "dwrd1": sat.dwrd![1], "dwrd2": sat.dwrd![2], "dwrd3": sat.dwrd![3], "dwrd4": sat.dwrd![4], "dwrd5": sat.dwrd![5], "dwrd6": sat.dwrd![6], "dwrd7": sat.dwrd![7]] as [String : Any]
+        let json = ["uuid": uuidSmartphone, "uuidExt": "DVLGNSS2A001", "svId": sat.id!, "gnssId": 2, "source": "client", "numWords": 8, "version": sat.versione!, "iTow": sat.iTow!, "timestamp": sat.timestamp!, "manufacturer": sat.manufacturer!, "model": sat.model!, "dwrd0": sat.dwrd![0], "dwrd1": sat.dwrd![1], "dwrd2": sat.dwrd![2], "dwrd3": sat.dwrd![3], "dwrd4": sat.dwrd![4], "dwrd5": sat.dwrd![5], "dwrd6": sat.dwrd![6], "dwrd7": sat.dwrd![7]] as [String : Any]
         
         let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
         
@@ -487,7 +489,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                         navPVTData = json
                     }
                 } catch let error as NSError {
-                    //print("qui")
+                    print(error)
                     //print("Failed to load: \(error.localizedDescription)")
                 }
             }
@@ -612,7 +614,7 @@ extension MainViewController: CBPeripheralDelegate {
         if(characteristic == gnssBleCharacteristic){
             
             let str = String(decoding: characteristic.value!, as: UTF8.self)
-            let data = Data(str.utf8)
+           // let data = Data(str.utf8)
             
             
             if(str.contains("*")){

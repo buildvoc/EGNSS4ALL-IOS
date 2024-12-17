@@ -389,7 +389,7 @@ extension PhotosTableViewController {
     
     func downloadPhoto(idPhoto: String) {
         
-        let userID = String(UserStorage.userID)
+        //let userID = String(UserStorage.userID)
         
             // Prepare URL
             let urlStr = Configuration.baseURLString + ApiEndPoint.getPhoto

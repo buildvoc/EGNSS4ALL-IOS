@@ -171,9 +171,9 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
         
         
         
-        let polygon: [String: Any] = ["type": "Polygon", "coordinates": [coordinates]]
+       // let polygon: [String: Any] = ["type": "Polygon", "coordinates": [coordinates]]
         
-        let feature: [String: Any] = ["type": "Feature", "geometry": polygon, "properties": [:]]
+       // let feature: [String: Any] = ["type": "Feature", "geometry": polygon, "properties": [:]]
         
         
         print(coordinates)

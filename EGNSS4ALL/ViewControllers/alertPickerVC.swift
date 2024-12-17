@@ -108,7 +108,7 @@ class alertPickerVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         myPeripheal!.delegate = self
         self.localStorage.set(true, forKey: "externalGPS")
         self.localStorage.set(peripherals[indexPath.row].identifier.uuidString, forKey: "periphealUUID")
-        let selPeriphealUUID = localStorage.string(forKey: "periphealUUID")
+       // let selPeriphealUUID = localStorage.string(forKey: "periphealUUID")
         manager?.connect(myPeripheal!)
         periphealUUID = CBUUID(string: peripherals[indexPath.row].identifier.uuidString)
         peripherals.removeAll()
@@ -186,7 +186,7 @@ extension alertPickerVC: CBPeripheralDelegate {
         if(characteristic == gnssBleCharacteristic){
             
             let str = String(decoding: characteristic.value!, as: UTF8.self)
-            let data = Data(str.utf8)
+            //let data = Data(str.utf8)
             
             if(str.contains("*")){
 
