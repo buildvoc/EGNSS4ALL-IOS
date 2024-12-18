@@ -70,7 +70,7 @@ class PhotosTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated:Bool) {
         loadPersistPhotos()
-        AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
+       // AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
         
         if openDetail == true {
             openDetail = false

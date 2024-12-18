@@ -117,27 +117,27 @@ class SkyViewVC: UIViewController, CLLocationManagerDelegate, UIPickerViewDelega
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-         /*   guard let data = data, error == nil else {                                                 // controllo problemi di network
+            guard let data = data, error == nil else {                                                 // controllo problemi di network
                 print("error=\(String(describing: error))")
 
                 return
             }
-          */
+          
             
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // controllo errore
                 print("il codice dovrebbe essere 200, ma è \(httpStatus.statusCode)")
                 print("response = \(String(describing: response))")
             }
             
-           /* if let jsonDictionary = NetworkService.parseJSONFromData(data as Data) {
+           if let jsonDictionary = NetworkService.parseJSONFromData(data as Data) {
                  //Carico l'oggetto con tutto il contenuto appena scaricato
-                //print(jsonDictionary)
+                print(jsonDictionary)
                 DispatchQueue.main.async(execute: {
                     self.sats = Satellite.downloadAllSatsSkyView(datiJson: data as NSData)
                     
                     self.drawSats()
                 })
-            } */
+            }
             //let responseString = String(data: data, encoding: .utf8)
             //print(responseString)
         }

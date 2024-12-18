@@ -72,6 +72,10 @@
 		63E089D92C085C72009ACDDC /* NMEAParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E089D82C085C72009ACDDC /* NMEAParser.swift */; };
 		8D08F66B59398E63901EA443 /* Pods_PIC2BIM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EE3948FA8F480F9116EAAF4 /* Pods_PIC2BIM.framework */; };
 		A74875B61F7D110E027DFEF2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0A8E3E714E96A2A9D67DFEF2 /* README.md */; };
+		DB1BB4852D1334B3007BFECC /* Metropolis-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = DB1BB4832D1334B3007BFECC /* Metropolis-Bold.otf */; };
+		DB1BB4862D1334B3007BFECC /* IBMPlexSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB1BB4822D1334B3007BFECC /* IBMPlexSans-SemiBold.ttf */; };
+		DB1BB4872D1334B3007BFECC /* Metropolis-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = DB1BB4842D1334B3007BFECC /* Metropolis-SemiBold.otf */; };
+		DB1BB4882D1334B3007BFECC /* IBMPlexSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB1BB4812D1334B3007BFECC /* IBMPlexSans-Bold.ttf */; };
 		E00925E728E215AB00B2739B /* alertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00925E628E215AB00B2739B /* alertVC.swift */; };
 		E01E6F002844B9C30034C02D /* SkyViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01E6EFF2844B9C30034C02D /* SkyViewVC.swift */; };
 		E0AFE5492847DE9400FF5DBD /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AFE5482847DE9400FF5DBD /* CircleView.swift */; };
@@ -174,6 +178,10 @@
 		95E79B0CBFCF7AD2C96A0DBC /* Pods-EGNSS4ALL.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EGNSS4ALL.release.xcconfig"; path = "Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL.release.xcconfig"; sourceTree = "<group>"; };
 		AEFBA95353D5ABD8257053EF /* Pods-PIC2BIM.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PIC2BIM.release.xcconfig"; path = "Target Support Files/Pods-PIC2BIM/Pods-PIC2BIM.release.xcconfig"; sourceTree = "<group>"; };
 		C36948A497D4901D5F4AC5E2 /* Pods-EGNSS4ALL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EGNSS4ALL.debug.xcconfig"; path = "Target Support Files/Pods-EGNSS4ALL/Pods-EGNSS4ALL.debug.xcconfig"; sourceTree = "<group>"; };
+		DB1BB4812D1334B3007BFECC /* IBMPlexSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IBMPlexSans-Bold.ttf"; sourceTree = "<group>"; };
+		DB1BB4822D1334B3007BFECC /* IBMPlexSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IBMPlexSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		DB1BB4832D1334B3007BFECC /* Metropolis-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Metropolis-Bold.otf"; sourceTree = "<group>"; };
+		DB1BB4842D1334B3007BFECC /* Metropolis-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Metropolis-SemiBold.otf"; sourceTree = "<group>"; };
 		E00925E628E215AB00B2739B /* alertVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = alertVC.swift; sourceTree = "<group>"; };
 		E01E6EFF2844B9C30034C02D /* SkyViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyViewVC.swift; sourceTree = "<group>"; };
 		E0AFE5482847DE9400FF5DBD /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
@@ -347,6 +355,7 @@
 		61C3AC9C2551461F000CED80 /* EGNSS4ALL */ = {
 			isa = PBXGroup;
 			children = (
+				DB1BB4802D13349E007BFECC /* Font */,
 				04EB49F92B8DE9260064A1DC /* Helpers */,
 				E02CF41D284E443500EA189B /* Class */,
 				E02CF41C284E441E00EA189B /* UIKit Extensions */,
@@ -391,6 +400,17 @@
 				AEFBA95353D5ABD8257053EF /* Pods-PIC2BIM.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		DB1BB4802D13349E007BFECC /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				DB1BB4812D1334B3007BFECC /* IBMPlexSans-Bold.ttf */,
+				DB1BB4822D1334B3007BFECC /* IBMPlexSans-SemiBold.ttf */,
+				DB1BB4832D1334B3007BFECC /* Metropolis-Bold.otf */,
+				DB1BB4842D1334B3007BFECC /* Metropolis-SemiBold.otf */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 		E02CF41A284E43E300EA189B /* ViewControllers */ = {
@@ -520,6 +540,10 @@
 				61C3ACA52551461F000CED80 /* Main.storyboard in Resources */,
 				E0E5D2DF28D9F7250028CCDD /* Alerts.storyboard in Resources */,
 				187368EB2BE8E92B00970576 /* egnss4all_anitest.json in Resources */,
+				DB1BB4852D1334B3007BFECC /* Metropolis-Bold.otf in Resources */,
+				DB1BB4862D1334B3007BFECC /* IBMPlexSans-SemiBold.ttf in Resources */,
+				DB1BB4872D1334B3007BFECC /* Metropolis-SemiBold.otf in Resources */,
+				DB1BB4882D1334B3007BFECC /* IBMPlexSans-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,7 +815,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 50;
 				DEVELOPMENT_TEAM = 88F5L66NYR;
-				DEVELOPMENT_TEAM = 88F5L66NYR;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -820,7 +843,6 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 50;
-				DEVELOPMENT_TEAM = 88F5L66NYR;
 				DEVELOPMENT_TEAM = 88F5L66NYR;
 				INFOPLIST_FILE = "$(SRCROOT)/EGNSS4ALL/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

@@ -30,7 +30,7 @@ class TasksTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated:Bool) {
-        AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
+        // AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
         loadPersistTasks()
         tableView.reloadData()
     }
