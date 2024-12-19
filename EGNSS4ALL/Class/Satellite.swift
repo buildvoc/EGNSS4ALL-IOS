@@ -255,16 +255,35 @@ class Satellite
                 
                 let id = i
                
-                let actualSatId = id.dropFirst()
+                let actualSatId = String(id)
                 let azimuth = jsonArray[i]!["azimuth"] as! Double
                 let elevation = jsonArray[i]!["elevation"] as! Double
-   
-//                let singleSat = Satellite.init(id: (Int(actualSatId) ?? Int(i)) ?? 0, gnssId: 2, timestamp: 0, validTimeStamp: 0, source: "skyView", numWords: 0, versione: 0, iTow: 0, manufacturer: "none", model: "none", dwrd: [], stato: false, checked: 0, osnma: "Validating...", azim: Int(azimuth), elev: Int(elevation), cno: 0, valid: false)
-                let singleSat = Satellite.init(id: (Int(actualSatId) ?? Int(i)) ?? 0, gnssId: 2, timestamp: 0, validTimeStamp: 0, source: "skyView", numWords: 0, versione: 0, iTow: 0, manufacturer: deviceManufacturer, model: deviceModel, dwrd: [], stato: false, checked: 0, osnma: "Validating...", azim: Int(azimuth), elev: Int(elevation), cno: 0, valid: false)
+                let satNum : String? = formateData(from: actualSatId)
+            
+                let singleSat = Satellite.init(id: (Int(satNum ?? actualSatId) ?? Int(i)) ?? 0, gnssId: 2, timestamp: 0, validTimeStamp: 0, source: "skyView", numWords: 0, versione: 0, iTow: 0, manufacturer: deviceManufacturer, model: deviceModel, dwrd: [], stato: false, checked: 0, osnma: "Validating...", azim: Int(azimuth), elev: Int(elevation), cno: 0, valid: false)
                 sats.append(singleSat)
+
             }
         }
         return sats
     }
+    
+    
+    static func formateData(from string: String) -> String {
+        let components = string.components(separatedBy: " ")
+        if components.count > 1
+        {
+            let filteredComponents = components.filter { !$0.isEmpty }
+            
+            if let lastSubstring = filteredComponents.last {
+                return String(lastSubstring) 
+            }
+        }
+        let numbersOnly = string.filter { character in
+            return character.isWholeNumber
+        }
+        return numbersOnly
+
+            }
 
 }
