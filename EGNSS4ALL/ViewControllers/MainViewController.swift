@@ -227,8 +227,13 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     //MARK: - Other Helpers -
     func adjustForiPad() {
         let frameSize = 40.0
-        let fontSize = 16.0
+        let fontSize = 18.0
         let space = 0.0
+  
+        NSLayoutConstraint.activate([
+            animView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -120)
+        ])
+        
         if let widthConstraint = navPhotoImg.constraints.first(where: { $0.firstAttribute == .width }) {
             widthConstraint.constant = frameSize
         }
@@ -262,6 +267,9 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         if let heightConstraint = navGearImg.constraints.first(where: { $0.firstAttribute == .height }) {
             heightConstraint.constant = frameSize
         }
+
+        buttonView.frame.size.height = 10
+
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
