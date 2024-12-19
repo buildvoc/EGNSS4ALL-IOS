@@ -63,7 +63,21 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     @IBOutlet weak var serviceView: UIView!
     @IBOutlet weak var galileoView: UIView!
     @IBOutlet weak var animView: UIView!
-    
+    @IBOutlet weak var navPhotoStack: UIStackView!
+    @IBOutlet weak var navPhotoImg: UIImageView!
+    @IBOutlet weak var navPhotoLab: UILabel!
+    @IBOutlet weak var navClipStack: UIStackView!
+    @IBOutlet weak var navMapStack: UIStackView!
+    @IBOutlet weak var navNavStack: UIStackView!
+    @IBOutlet weak var navGearStack: UIStackView!
+    @IBOutlet weak var navClipImg: UIImageView!
+    @IBOutlet weak var navTaskLab: UILabel!
+    @IBOutlet weak var navMapImg: UIImageView!
+    @IBOutlet weak var navMapLab: UILabel!
+    @IBOutlet weak var navNavImg: UIImageView!
+    @IBOutlet weak var navNavLab: UILabel!
+    @IBOutlet weak var navGearImg: UIImageView!
+    @IBOutlet weak var navGearLab: UILabel!
     @IBAction func infoAction(_ sender: UIButton) {
         animView.isHidden = true
     }
@@ -126,7 +140,9 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
          buttonView.layer.shadowOffset = CGSize(width: 3, height: 3)
          buttonView.layer.shadowOpacity = 0.3
          buttonView.layer.shadowRadius = 2.0*/
-        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+                adjustForiPad()
+            }
         checkIfLocationServicesIsEnabled()
         
         //updateLoggedUser()
@@ -134,10 +150,11 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         
         timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(updateBasicInfo), userInfo: nil, repeats: true)
     }
-    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
     override func viewWillAppear(_ animated: Bool) {
-        AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
-        
+        //AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
         updateLoggedUser()
         updateBasicInfo()
     }
@@ -149,7 +166,9 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         checkLoggedUser()
-        print(self.navigationController?.viewControllers.count)
+        if let count = self.navigationController?.viewControllers.count {
+            print(count)
+        }
         if (self.navigationController?.viewControllers.count)! > 1 {
             self.navigationController?.viewControllers.remove(at: 1)
         }
@@ -206,7 +225,67 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
     }
     
     //MARK: - Other Helpers -
-    
+    func adjustForiPad() {
+        let frameSize = 40.0
+        let fontSize = 18.0
+        let space = 0.0
+  
+        NSLayoutConstraint.activate([
+            animView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -120)
+        ])
+        
+        if let widthConstraint = navPhotoImg.constraints.first(where: { $0.firstAttribute == .width }) {
+            widthConstraint.constant = frameSize
+        }
+        if let heightConstraint = navPhotoImg.constraints.first(where: { $0.firstAttribute == .height }) {
+            heightConstraint.constant = frameSize
+        }
+        if let widthConstraint = navClipImg.constraints.first(where: { $0.firstAttribute == .width }) {
+            widthConstraint.constant = frameSize
+        }
+        if let heightConstraint = navClipImg.constraints.first(where: { $0.firstAttribute == .height }) {
+            heightConstraint.constant = frameSize
+        }
+
+        if let widthConstraint = navMapImg.constraints.first(where: { $0.firstAttribute == .width }) {
+            widthConstraint.constant = frameSize
+        }
+        if let heightConstraint = navMapImg.constraints.first(where: { $0.firstAttribute == .height }) {
+            heightConstraint.constant = frameSize
+        }
+ 
+        if let widthConstraint = navNavImg.constraints.first(where: { $0.firstAttribute == .width }) {
+            widthConstraint.constant = frameSize
+        }
+        if let heightConstraint = navNavImg.constraints.first(where: { $0.firstAttribute == .height }) {
+            heightConstraint.constant = frameSize
+        }
+ 
+        if let widthConstraint = navGearImg.constraints.first(where: { $0.firstAttribute == .width }) {
+            widthConstraint.constant = frameSize
+        }
+        if let heightConstraint = navGearImg.constraints.first(where: { $0.firstAttribute == .height }) {
+            heightConstraint.constant = frameSize
+        }
+
+        buttonView.frame.size.height = 10
+
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+        navPhotoStack.spacing = space
+        navClipStack.spacing = space
+        navMapStack.spacing = space
+        navNavStack.spacing = space
+        navGearStack.spacing = space
+
+        navPhotoLab.font = UIFont.systemFont(ofSize: fontSize)
+        navTaskLab.font = UIFont.systemFont(ofSize: fontSize)
+        navMapLab.font = UIFont.systemFont(ofSize: fontSize)
+        navNavLab.font = UIFont.systemFont(ofSize: fontSize)
+        navGearLab.font = UIFont.systemFont(ofSize: fontSize)
+
+    }
     func triggerPvt() {
         print("pvtTrigger")
         let str = "getNavPvt"
@@ -293,7 +372,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                                 if (Int(Date().timeIntervalSince1970) > actSat!.timestamp! + 310 || actSat?.stato == false)  {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                                         let uuidSmartphone = UIDevice.current.identifierForVendor!.uuidString
-                                        let json = ["uuid": uuidSmartphone, "uuidExt": "DVLGNSS2A001", "svId": sat.id!, "gnssId": 2, "source": "client", "numWords": 8, "version": sat.versione, "iTow": sat.iTow!, "timestamp": sat.timestamp, "manufacturer": sat.manufacturer!, "model": sat.model, "dwrd0": sat.dwrd![0], "dwrd1": sat.dwrd![1], "dwrd2": sat.dwrd![2], "dwrd3": sat.dwrd![3], "dwrd4": sat.dwrd![4], "dwrd5": sat.dwrd![5], "dwrd6": sat.dwrd![6], "dwrd7": sat.dwrd![7]] as [String : Any]
+                                        let json = ["uuid": uuidSmartphone, "uuidExt": "DVLGNSS2A001", "svId": sat.id!, "gnssId": 2, "source": "client", "numWords": 8, "version": sat.versione!, "iTow": sat.iTow!, "timestamp": sat.timestamp!, "manufacturer": sat.manufacturer!, "model": sat.model!, "dwrd0": sat.dwrd![0], "dwrd1": sat.dwrd![1], "dwrd2": sat.dwrd![2], "dwrd3": sat.dwrd![3], "dwrd4": sat.dwrd![4], "dwrd5": sat.dwrd![5], "dwrd6": sat.dwrd![6], "dwrd7": sat.dwrd![7]] as [String : Any]
                                         if NetworkManager.shared.isNetworkAvailable() {
                                             print("Network ok")
                                             if sfrbxArray.count != 0 {
@@ -375,9 +454,9 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                 if let jsonDictionary = NetworkService.parseJSONFromData(data as Data) {
                     let dictionary = jsonDictionary["result"]
                     let _: Int = dictionary!["svId"] as? Int ?? 0
-                    let esitoValidazione: Bool = dictionary!["valid"] as! Bool
-                    let osnmaStr = dictionary!["osnma"] as! String
-                    let validTimeStamp = dictionary!["timestamp"] as? Int ?? 0
+                   // let esitoValidazione: Bool = dictionary!["valid"] as! Bool
+                   // let osnmaStr = dictionary!["osnma"] as! String
+                   // let validTimeStamp = dictionary!["timestamp"] as? Int ?? 0
                 }
             })
             
@@ -391,7 +470,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
         
         sat.check(state: 2)
         let uuidSmartphone = UIDevice.current.identifierForVendor!.uuidString
-        let json = ["uuid": uuidSmartphone, "uuidExt": "DVLGNSS2A001", "svId": sat.id!, "gnssId": 2, "source": "client", "numWords": 8, "version": sat.versione, "iTow": sat.iTow!, "timestamp": sat.timestamp, "manufacturer": sat.manufacturer!, "model": sat.model, "dwrd0": sat.dwrd![0], "dwrd1": sat.dwrd![1], "dwrd2": sat.dwrd![2], "dwrd3": sat.dwrd![3], "dwrd4": sat.dwrd![4], "dwrd5": sat.dwrd![5], "dwrd6": sat.dwrd![6], "dwrd7": sat.dwrd![7]] as [String : Any]
+        let json = ["uuid": uuidSmartphone, "uuidExt": "DVLGNSS2A001", "svId": sat.id!, "gnssId": 2, "source": "client", "numWords": 8, "version": sat.versione!, "iTow": sat.iTow!, "timestamp": sat.timestamp!, "manufacturer": sat.manufacturer!, "model": sat.model!, "dwrd0": sat.dwrd![0], "dwrd1": sat.dwrd![1], "dwrd2": sat.dwrd![2], "dwrd3": sat.dwrd![3], "dwrd4": sat.dwrd![4], "dwrd5": sat.dwrd![5], "dwrd6": sat.dwrd![6], "dwrd7": sat.dwrd![7]] as [String : Any]
         
         let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
         
@@ -487,7 +566,7 @@ class MainViewController: UIViewController, CBCentralManagerDelegate {
                         navPVTData = json
                     }
                 } catch let error as NSError {
-                    //print("qui")
+                    print(error)
                     //print("Failed to load: \(error.localizedDescription)")
                 }
             }
@@ -612,7 +691,7 @@ extension MainViewController: CBPeripheralDelegate {
         if(characteristic == gnssBleCharacteristic){
             
             let str = String(decoding: characteristic.value!, as: UTF8.self)
-            let data = Data(str.utf8)
+           // let data = Data(str.utf8)
             
             
             if(str.contains("*")){

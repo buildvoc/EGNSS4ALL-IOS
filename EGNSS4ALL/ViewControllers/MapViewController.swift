@@ -142,7 +142,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
+       // AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -220,8 +220,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         let latitude = navPVTData["latitudine"] as? Double ?? 0.000000
         let longitude = navPVTData["longitudine"] as? Double ?? 0.000000
         let accuracyH = navPVTData["accH"] as? Double ?? 0.0
-        let accuracyV = navPVTData["accV"] as? Double ?? 0.0
-        let msl = navPVTData["msl"] as? Double ?? 0.0
+        //let msl = navPVTData["msl"] as? Double ?? 0.0
         let siv = navPVTData["siv"] as? Int ?? 0
         let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         //let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
@@ -232,7 +231,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
        self.actLatLabel.text = String(latitude)
        self.actLonLabel.text = String(longitude)
        self.actAccLabel.text = String(accuracyH)
-        var numValidSats = navPVTData["validsat"] as? Int ?? 0
+       let numValidSats = navPVTData["validsat"] as? Int ?? 0
        /* print(satelliti.count)
         if satelliti.count != 0 {
             for i in 0...satelliti.count - 1 {
@@ -481,7 +480,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, PTManagerDelegate,
         }
         var exist: Bool
         do {
-            exist = try db.mainMOC.existingObject(with: path.objectID) != nil
+            let _ = try db.mainMOC.existingObject(with: path.objectID)
+            exist = true
+
         } catch {
             exist = false
         }
@@ -703,7 +704,6 @@ extension MapViewController: CBPeripheralDelegate {
 
         if characteristic == gnssBleCharacteristic {
             let str = String(decoding: characteristic.value!, as: UTF8.self)
-            let data = Data(str.utf8)
 
             if str.contains("*") {
                 let finalStr = mainGNSSString + str
@@ -735,8 +735,8 @@ extension MapViewController: CBPeripheralDelegate {
                             } else if let rmc = parsedItem as? NMEASentenceParser.GPRMC {
 //                                self.photolat = Double(rmc.latitude?.description ?? "0.0") ?? 0.0
 //                                self.photolng = Double(rmc.longitude?.description ?? "0.0") ?? 0.0
-                                print(rmc.latitude?.description)
-                                print(rmc.longitude?.description)
+//                                print(rmc.latitude?.description)
+//                                print(rmc.longitude?.description)
                                 self.actLatLabel.text = "\(rmc.latitude?.description ?? "")"
                                 self.actLonLabel.text = "\(rmc.longitude?.description ?? "")"
                                 

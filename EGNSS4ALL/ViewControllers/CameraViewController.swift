@@ -13,6 +13,8 @@ import CoreLocation
 import CoreBluetooth
 import CoreMotion
 
+import CoreMotion
+
 extension Digest {
     var bytes: [UInt8] { Array(makeIterator()) }
     var data: Data { Data(bytes) }
@@ -44,7 +46,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
     
     let localStorage = UserDefaults.standard
     private let motionManager = CMMotionManager()
-    
+
     @IBOutlet weak var latitudeLabel: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var altitudeLabel: UILabel!
@@ -93,6 +95,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
     override func viewDidLoad() {
         
         super.viewDidLoad()
+
         startMotionUpdates()
         
         manager = CBCentralManager(delegate: self, queue: nil)
@@ -147,7 +150,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
             
         }
         photoDataController.headingReceiver = { heading in
-            //            self.azimuthLabel.text = String(format: "%.0f", self.photoDataController.computePhotoHeading() ?? "unknown")
+//            self.azimuthLabel.text = String(format: "%.0f", self.photoDataController.computePhotoHeading() ?? "unknown")
         }
         photoDataController.motionReceiver = { attitude in
             let tilt = self.photoDataController.computeTilt()
@@ -228,7 +231,7 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
         motionManager.stopMagnetometerUpdates()
         motionManager.stopAccelerometerUpdates()
         motionManager.stopDeviceMotionUpdates()
-        
+
         disConnectBLEDevice()
     }
     
@@ -357,7 +360,6 @@ class CameraViewController: UIViewController,AVCapturePhotoCaptureDelegate, CBCe
                         let pkt = json["pkt"] as! Int
                         if pkt == 2 {
                             let accuracyH = json["accH"] as! Double
-                            let accuracyV = json["accV"] as! Double
                             let latitude = json["latitudine"] as! Double
                             let longitude = json["longitudine"] as! Double
                             let msl = json["msl"] as! Double
@@ -758,7 +760,6 @@ extension CameraViewController: CBPeripheralDelegate {
         
         if characteristic == gnssBleCharacteristic {
             let str = String(decoding: characteristic.value!, as: UTF8.self)
-            let data = Data(str.utf8)
             
             if str.contains("*") {
                 let finalStr = mainGNSSString + str
@@ -787,10 +788,7 @@ extension CameraViewController: CBPeripheralDelegate {
                                 self.photolng = Double(rmc.longitude?.description ?? "0.0") ?? 0.0
                                 self.latitudeLabel.text = rmc.latitude?.description
                                 self.longitudeLabel.text =  rmc.longitude?.description
-                            } else if let gsv = parsedItem as? NMEASentenceParser.GPGSV {
-                                // Handle GPGSV parsing if necessary
-                                //                                self.azimuthLabel.text = gsv.azimuth?.description
-                            }
+                            } 
                         }
                     }
                 }

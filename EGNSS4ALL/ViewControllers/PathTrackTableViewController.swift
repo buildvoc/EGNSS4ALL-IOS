@@ -166,24 +166,15 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
         }
         
         let jsonPointsString = String(data: pointData, encoding: .utf8)!
-        let params: [String: String] = [
-            "user_id": String(UserStorage.userID),
-            "name": ptPath.name!,
-            "start": df.string(from: ptPath.start!),
-            "end": df.string(from: ptPath.end!),
-            "area": ptPath.area.description,
-            "points": jsonPointsString
-        ]
         print(jsonPointsString)
         
         
         
         
-        let polygon: [String: Any] = ["type": "Polygon", "coordinates": [coordinates]]
+       // let polygon: [String: Any] = ["type": "Polygon", "coordinates": [coordinates]]
         
-        let feature: [String: Any] = ["type": "Feature", "geometry": polygon, "properties": [:]]
+       // let feature: [String: Any] = ["type": "Feature", "geometry": polygon, "properties": [:]]
         
-        let geojson: [String: Any] = ["type": "FeatureCollection", "features": [feature]]
         
         print(coordinates)
         
@@ -196,7 +187,9 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
                 try kmlData.write(to: fileURL)
                 print("File salvato con successo in \(fileURL.path)")
                 
-                let documentPicker = UIDocumentPickerViewController(url: fileURL, in: .exportToService)
+//              let documentPicker = UIDocumentPickerViewController(url: fileURL, in: .exportToService) depricated code 
+                let documentPicker = UIDocumentPickerViewController(forExporting: [fileURL])
+
                 documentPicker.delegate = self
                 present(documentPicker, animated: true)
             } catch {
@@ -307,10 +300,12 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
             var lat: Double
             var lng: Double
             var created: String
+            var altitude: Double
+            var accuracy : Double
         }
         var rPoints = [RPoint]()
         for p in ptPoints {
-            rPoints.append(RPoint(lat: p.lat, lng: p.lng, created: df.string(from: p.created!)))
+            rPoints.append(RPoint(lat: p.lat, lng: p.lng, created: df.string(from: p.created!),altitude: p.altitude,accuracy: p.accuracy))
         }
         let pointData: JSONEncoder.Output
         do {
@@ -339,6 +334,8 @@ class PathTrackTableViewController: UITableViewController, UIDocumentPickerDeleg
         guard let requestUrl = url else { fatalError() }
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
+                            request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+
         let postString = Util.encodeParameters(params: params)
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in

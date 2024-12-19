@@ -54,7 +54,7 @@ class TaskViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
+       // AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -355,17 +355,32 @@ class TaskViewController: UIViewController {
             do {
                 let jsonData = try JSONEncoder().encode(photo)
                 let jsonString = String(data: jsonData, encoding: .utf8)!
+
+                    // Print the request payload
+
+                if let payloadString = String(data: jsonData, encoding: .utf8) {
+                    print("------------------------------------------")
+                    print("Request payload: \(payloadString)")
+                    print("------------------------------------------")
+
+                }
+    
+
                 
                 // Prepare URL
                 let urlStr = Configuration.baseURLString + ApiEndPoint.photo
                 print("------------------------------------------")
                 print(urlStr)
                 print("------------------------------------------")
+                 print("IdToken:   \(UserStorage.token!)")
+                print("------------------------------------------")
                 let url = URL(string: urlStr)
                 guard let requestUrl = url else { return }
                 // Prepare URL Request Object
                 var request = URLRequest(url: requestUrl)
                 request.httpMethod = "POST"
+                request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+
                 print(request)
                 // HTTP Request Parameters which will be sent in HTTP Request Body
                 let postString = "user_id="+userID+"&task_id="+String(persistTask.id)+"&photo="+jsonString
@@ -383,9 +398,19 @@ class TaskViewController: UIViewController {
                         }
                         return
                     }
+
+
+
                     // Convert HTTP Response Data to a String
                     if let data = data, let dataString = String(data: data, encoding: .utf8) {
                         DispatchQueue.main.async {
+                        print("------------------------------------------")
+                        print("Server response: \(dataString)")
+                        print("------------------------------------------")
+                        if let httpResponse = response as? HTTPURLResponse {
+                        print("HTTP Status Code: \(httpResponse.statusCode)")}
+                        print("------------------------------------------")
+
                             self.processResponseData1(data: dataString)
                         }
                     }
@@ -404,6 +429,7 @@ class TaskViewController: UIViewController {
         struct Answer: Decodable {
             var status: String
             var error_msg: String?
+            var photo_id:Int?
         }
 
         let jsonData = data.data(using: .utf8)!
@@ -411,6 +437,8 @@ class TaskViewController: UIViewController {
         
         if answer.status == "ok" {
             photosToSend[0].sended = true
+            persistTask.photoCount = String(Int(persistTask.photoCount!)!+1)
+            photosToSend[0].id = String(answer.photo_id!)
             do {
                 try self.manageObjectContext.save()
             } catch {
@@ -425,7 +453,7 @@ class TaskViewController: UIViewController {
     }
     
     func sendStatus() {
-        do {
+        
             let statusString = "data provided"
             let noteString = persistTask.note ?? ""
                         
@@ -434,13 +462,16 @@ class TaskViewController: UIViewController {
             print("------------------------------------------")
             print(urlStr)
             print("------------------------------------------")
+            print("IdToken:   \(UserStorage.token!)")
+            print("------------------------------------------")
             let url = URL(string: urlStr)
 
             guard let requestUrl = url else { fatalError() }
             // Prepare URL Request Object
             var request = URLRequest(url: requestUrl)
             request.httpMethod = "POST"
-             
+                         request.httpMethod = "POST"
+                    request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
             // HTTP Request Parameters which will be sent in HTTP Request Body
             let postString = "task_id="+String(persistTask.id)+"&status="+statusString+"&note="+noteString
             // Set HTTP Request Body
@@ -465,7 +496,7 @@ class TaskViewController: UIViewController {
             }
             task.resume()
             
-        } catch { print(error) }
+    
     }
     
     func processResponseData2(data:String) {

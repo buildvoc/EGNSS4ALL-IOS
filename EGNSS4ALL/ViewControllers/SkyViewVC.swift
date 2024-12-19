@@ -122,15 +122,16 @@ class SkyViewVC: UIViewController, CLLocationManagerDelegate, UIPickerViewDelega
 
                 return
             }
+          
             
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // controllo errore
                 print("il codice dovrebbe essere 200, ma è \(httpStatus.statusCode)")
                 print("response = \(String(describing: response))")
             }
             
-            if let jsonDictionary = NetworkService.parseJSONFromData(data as Data) {
+           if let jsonDictionary = NetworkService.parseJSONFromData(data as Data) {
                  //Carico l'oggetto con tutto il contenuto appena scaricato
-                //print(jsonDictionary)
+                print(jsonDictionary)
                 DispatchQueue.main.async(execute: {
                     self.sats = Satellite.downloadAllSatsSkyView(datiJson: data as NSData)
                     

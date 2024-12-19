@@ -30,7 +30,7 @@ class TasksTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated:Bool) {
-        AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
+        // AppDelegate.AppUtility.lockOrientation(UIInterfaceOrientationMask.portrait, andRotateTo: UIInterfaceOrientation.portrait)
         loadPersistTasks()
         tableView.reloadData()
     }
@@ -105,7 +105,15 @@ class TasksTableViewController: UITableViewController {
         }
         
         if task.status == "data checked" {
-            cell.statusImage.image = UIImage(named: "green_circle")
+         
+            if(task.flag_invalid=="1")
+            {
+                cell.statusImage.image =   UIImage(named: "red_circle")
+            }
+            else
+            {
+                cell.statusImage.image =  UIImage(named: "green_circle")
+            }
         }
         else if task.status == "new" {
             cell.statusImage.image = UIImage(named: "status_new")
@@ -117,7 +125,7 @@ class TasksTableViewController: UITableViewController {
             cell.statusImage.image = UIImage(named: "status_provided")
         }
         
-        var persistPhotos = [PersistPhoto]()
+     /*  var persistPhotos = [PersistPhoto]()
         let persistPhotoRequest: NSFetchRequest<PersistPhoto> = PersistPhoto.fetchRequest()
         persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %i", String(UserStorage.userID), task.id)
         do {
@@ -126,6 +134,7 @@ class TasksTableViewController: UITableViewController {
         catch {
             print("Could not load save data: \(error.localizedDescription)")
         }
+        */
         
         //cell.countLabel.text = String(persistPhotos.count) + " photos"
         
@@ -198,13 +207,17 @@ class TasksTableViewController: UITableViewController {
         let urlStr = Configuration.baseURLString + ApiEndPoint.tasks
         print("------------------------------------------")
         print(urlStr)
-        print("------------------------------------------")
+        print("------------------------------------------ ")
+        
+
         let url = URL(string: urlStr)
         guard let requestUrl = url else { fatalError() }
         // Prepare URL Request Object
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
-        
+            // Set Authorization Header with Bearer Token
+        request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+
         // HTTP Request Parameters which will be sent in HTTP Request Body
         let postString = "user_id="+userID
         // Set HTTP Request Body
@@ -251,20 +264,34 @@ class TasksTableViewController: UITableViewController {
             for task in answer.tasks ?? [] {
                 if task.status == "new" || task.status == "data provided" || task.status == "data checked" || task.status == "open" {
                     let persistTaskRequest: NSFetchRequest<PersistTask> = PersistTask.fetchRequest()
-                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@", userID, task.id)
+                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@ ", userID, String(task.id))
+                    //Define way to modify data here
                     var perTasks = [PersistTask]()
                     do {
                         perTasks = try manageObjectContext.fetch(persistTaskRequest)
+                        if let persistTask = perTasks.first {
+                            if persistTask.flag_valid != task.flag_valid || persistTask.flag_invalid != task.flag_invalid || persistTask.status != task.status  {
+                            persistTask.flag_valid = task.flag_valid
+                            persistTask.flag_invalid = task.flag_invalid
+                            persistTask.status = task.status
+                            // Save the changes
+                            try manageObjectContext.save()
+                            print("Flags updated for task ID: \(task.id)")
+                        }
+                        }
+
                         
                         if perTasks.count == 0 {
                             print("inserting task")
                             let persistTask = PersistTask(context: manageObjectContext)
                             persistTask.userid = Int64(userID) ?? 0
-                            persistTask.id = Int64(task.id) ?? 0
+                            persistTask.id = Int64(task.id)
                             persistTask.status = task.status
+                            persistTask.flag_valid = task.flag_valid
+                            persistTask.flag_invalid = task.flag_invalid
                             persistTask.name = task.name
                             persistTask.text = task.text
-                            persistTask.photoCount = task.number_of_photos
+                            persistTask.photoCount = String(task.number_of_photos)
                             persistTask.text_returned = task.text_returned
                             persistTask.date_created = df.date(from: task.date_created)
                             persistTask.task_due_date = df.date(from: task.task_due_date)
@@ -284,7 +311,7 @@ class TasksTableViewController: UITableViewController {
                 if task.status == "returned" {
                     
                     let persistTaskRequest: NSFetchRequest<PersistTask> = PersistTask.fetchRequest()
-                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@ and status <> %@", userID, task.id, "returned")
+                    persistTaskRequest.predicate = NSPredicate(format: "userid == %@ and id == %@ and status <> %@", userID, String(task.id), "returned")
                     
                     var perTasks = [PersistTask]()
                     do {
@@ -327,7 +354,7 @@ class TasksTableViewController: UITableViewController {
         }
     }
     
-    func photoLoad(photoID: String?, taskId: String, completion: (() -> Void)?) {
+    func photoLoad(photoID: Int?, taskId: Int, completion: (() -> Void)?) {
         guard let photoID = photoID else { return }
         
         let urlStr = Configuration.baseURLString + ApiEndPoint.getPhoto
@@ -338,7 +365,10 @@ class TasksTableViewController: UITableViewController {
         guard let requestUrl = url else { return }
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "POST"
-        let postString = "photo_id=" + photoID
+                    // Set Authorization Header with Bearer Token
+        request.setValue("Bearer \(UserStorage.token!)", forHTTPHeaderField: "Authorization")
+
+        let postString = "photo_id=" + String(photoID)
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
@@ -360,7 +390,7 @@ class TasksTableViewController: UITableViewController {
             let userId = String(UserStorage.userID)
             
             let persistPhotoRequest: NSFetchRequest<PersistPhoto> = PersistPhoto.fetchRequest()
-            persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %@ AND digest == %@ AND id == %@", String(UserStorage.userID), taskId, photo.digest,photoID)
+            persistPhotoRequest.predicate = NSPredicate(format: "userid == %@ AND taskid == %@ AND digest == %@ AND id == %@", String(UserStorage.userID), String(taskId), photo.digest,String(photoID))
             
             var persistPhoto = PersistPhoto(context: self.manageObjectContext)
             
@@ -369,13 +399,13 @@ class TasksTableViewController: UITableViewController {
                     persistPhoto = perPhoto
                 }
                 
-                persistPhoto.id = photoID
+                persistPhoto.id = String(photoID)
                 persistPhoto.userid = Int64(userId) ?? 0
-                persistPhoto.taskid = Int64(taskId) ?? 0
+                persistPhoto.taskid = Int64(taskId)
                 persistPhoto.note = photo.note
-                persistPhoto.lat = Double(photo.lat ?? "") ?? 0
-                persistPhoto.lng = Double(photo.lng ?? "") ?? 0
-                persistPhoto.photoHeading = Double(photo.photo_heading ?? "") ?? 0
+                persistPhoto.lat = Double(photo.lat ?? "0.0") ?? 0
+                persistPhoto.lng = Double(photo.lng ?? "0.0") ?? 0
+                persistPhoto.photoHeading = Double(photo.photo_heading ?? 0)
                 persistPhoto.digest = photo.digest
                 persistPhoto.created = MyDateFormatter.yyyyMMdd.date(from: photo.created)
                 if let base64Photo = photo.photo {

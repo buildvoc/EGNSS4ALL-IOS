@@ -31,7 +31,12 @@ class NetworkService
                     }
                 }
             } else {
-                print("Error: \(error?.localizedDescription)")
+                if let errorDescription = error?.localizedDescription {
+                    print("Error: \(errorDescription)")
+                } else {
+                    print("Error: Unknown error occurred")
+                }
+              //  print("Error: \(error?.localizedDescription)")
             }
         })
         dataTask.resume()
