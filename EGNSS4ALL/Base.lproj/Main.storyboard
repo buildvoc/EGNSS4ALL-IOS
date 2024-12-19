@@ -604,6 +604,21 @@
                         <outlet property="locationCheckImage" destination="Frd-FQ-aNo" id="PJX-xM-k1Y"/>
                         <outlet property="loginLabel" destination="GQt-c2-kGO" id="Yey-cb-P0a"/>
                         <outlet property="nameLabel" destination="nXa-vL-ZTf" id="VmC-Ub-Cor"/>
+                        <outlet property="navClipImg" destination="OtP-79-Tjp" id="Dfw-KQ-spv"/>
+                        <outlet property="navClipStack" destination="kUa-Ak-HzE" id="VOe-YH-2nH"/>
+                        <outlet property="navGearImg" destination="SWk-0m-5Su" id="9yw-by-htX"/>
+                        <outlet property="navGearLab" destination="cU1-S8-2mU" id="fkk-47-9W3"/>
+                        <outlet property="navGearStack" destination="hav-EY-QLH" id="kOl-3e-VUE"/>
+                        <outlet property="navMapImg" destination="FdK-Vy-LtW" id="fYC-pa-YvA"/>
+                        <outlet property="navMapLab" destination="CBz-wE-azX" id="rLd-y7-IJx"/>
+                        <outlet property="navMapStack" destination="wFx-85-nuC" id="3ou-dP-VHY"/>
+                        <outlet property="navNavImg" destination="aBG-au-D6D" id="2aw-TX-cZw"/>
+                        <outlet property="navNavLab" destination="xx0-WL-Uos" id="GHf-uq-haw"/>
+                        <outlet property="navNavStack" destination="DyI-uY-t8a" id="NJ8-1t-LXq"/>
+                        <outlet property="navPhotoImg" destination="qaD-vC-aWk" id="rbF-Fp-zSQ"/>
+                        <outlet property="navPhotoLab" destination="t26-lO-OcD" id="hPh-ns-feC"/>
+                        <outlet property="navPhotoStack" destination="HcD-3g-yQ2" id="F81-5M-f3G"/>
+                        <outlet property="navTaskLab" destination="osy-UT-BlM" id="kbG-wV-EMh"/>
                         <outlet property="serviceView" destination="D5L-rO-8YF" id="tur-yM-Rwj"/>
                         <outlet property="surnameLabel" destination="vY5-Qg-fGO" id="IAN-MW-dWe"/>
                         <outlet property="userView" destination="sxN-vZ-CQi" id="dHB-hV-6LY"/>
@@ -4077,7 +4092,7 @@ Galileo capacity check: green light if this device is capable to use Galileo.</s
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ahd-b5-uU5"/>
+        <segue reference="xTh-uZ-EyI"/>
         <segue reference="RZU-VQ-uz0"/>
         <segue reference="fPr-1p-8Ps"/>
     </inferredMetricsTieBreakers>
